@@ -2,6 +2,7 @@
 #   macOS ARM / Intel (.dmg)
 #   Windows x64 NSIS setup + portable zip (绿色版)
 #   Linux x64 AppImage / .deb / .rpm (Ubuntu/Debian + Fedora/RHEL family)
+# Keep this workflow on the default branch so GitHub can discover it after repository detachment.
 # 触发方式 / Triggers:
 #   - 推送 v* Tag：正式 Release，并刷新自动更新与官网下载资产。
 #   - 手动运行：在 Run workflow 中选择 dev 等分支，发布独立 Prerelease；

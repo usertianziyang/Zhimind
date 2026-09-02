@@ -1,4 +1,5 @@
 # PR / push smoke: typecheck, unit tests, UI build, and Rust tests.
+# Keep this workflow on the default branch so GitHub can discover it after repository detachment.
 name: ci
 
 on:
