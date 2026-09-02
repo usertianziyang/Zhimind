@@ -51,7 +51,7 @@ export const ruProject = {
   "project.continueCwdOk": "Продолжена сессия «{title}»",
   "project.continueCwdFailed": "Не удалось продолжить последнюю сессию агента",
   "project.continueCwdNoProject": "Сначала выберите проект.",
-  "project.continueCwdNoCli": "Grok Build CLI не найден — установите его или укажите путь к CLI и повторите попытку.",
+  "project.continueCwdNoCli": "Zhimind Runtime не найден — установите его или укажите путь к CLI и повторите попытку.",
   "project.continueCwdUntrusted": "Сначала разрешите доступ к проекту, затем продолжите последнюю сессию агента.",
   "project.continueCwdHostOnly": "Продолжение последней сессии агента доступно только в настольном приложении.",
   "project.continueCwdImportFailed": "Сессия агента найдена, но её не удалось импортировать в приложение.",

@@ -277,7 +277,7 @@ export function WorkbenchSidebar(props: WorkbenchSidebarProps) {
                 activeCustomProvider
                   ? activeCustomProvider.name.trim() ||
                     activeCustomProvider.id
-                  : "Grok"
+                  : "Zhimind"
               }
             />
             <SidebarUpdateButton t={tr} />

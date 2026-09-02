@@ -421,14 +421,14 @@ pub async fn pick_cli_binary() -> Result<Option<String>, String> {
         #[cfg(target_os = "windows")]
         {
             let dlg = rfd::FileDialog::new()
-                .set_title("Select Grok Build binary / 选择 Grok Build 可执行文件")
+        .set_title("Select Zhimind Runtime binary / 选择 Zhimind Runtime 可执行文件")
                 .add_filter("Executable", &["exe", "cmd", "bat"]);
             dlg.pick_file()
         }
         #[cfg(not(target_os = "windows"))]
         {
             rfd::FileDialog::new()
-                .set_title("Select Grok Build binary / 选择 Grok Build 可执行文件")
+        .set_title("Select Zhimind Runtime binary / 选择 Zhimind Runtime 可执行文件")
                 .pick_file()
         }
     })
@@ -831,8 +831,8 @@ pub fn open_session_window(
         .as_ref()
         .map(|s| s.trim())
         .filter(|s| !s.is_empty())
-        .map(|t| format!("Grok · {t}"))
-        .unwrap_or_else(|| "Grok".to_string());
+        .map(|t| format!("Zhimind · {t}"))
+        .unwrap_or_else(|| "Zhimind".to_string());
 
     if let Some(w) = app.get_webview_window(&label) {
         let _ = w.set_title(&win_title);

@@ -1,4 +1,4 @@
-//! List Grok Build CLI-tracked worktrees (`grok worktree list`).
+//! List Zhimind Runtime CLI-tracked worktrees (`grok worktree list`).
 //!
 //! Prefers `grok worktree list --json`; falls back to careful text parsing when
 //! `--json` is rejected by older CLIs. Soft-fails when the CLI is missing.
@@ -262,7 +262,7 @@ fn is_cli_worktree_text_noise(line: &str) -> bool {
 
 /// Pure parse helper for human table from `grok worktree list` (no --json).
 ///
-/// Columns observed (Grok Build 0.2.x):
+/// Columns observed (Zhimind Runtime 0.2.x):
 /// `ID TYPE REPO LABEL BRANCH AGE PATH`
 /// Path is last; id is first; type is second. Branch is often `HEAD` or a name
 /// just before the age token (`4d`, `4d ago`, `12h`).
@@ -451,7 +451,7 @@ pub fn looks_like_unsupported_worktree_db(stderr: &str, stdout: &str) -> bool {
     false
 }
 
-// ── CLI worktree DB (path / stats / rebuild) — Grok Build 0.2.117+ ───────────
+// ── CLI worktree DB (path / stats / rebuild) — Zhimind Runtime 0.2.117+ ───────────
 
 /// Parsed fields from `grok worktree db stats` (text or JSON).
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Default)]
@@ -644,7 +644,7 @@ fn apply_stats_kv(stats: &mut CliWorktreeDbStats, key: &str, val: &str) {
 
 /// Pure parse helper for human `grok worktree db stats` output.
 ///
-/// Observed shape (Grok Build 0.2.117):
+/// Observed shape (Zhimind Runtime 0.2.117):
 /// ```text
 /// Worktree DB Statistics
 /// ======================
@@ -834,7 +834,7 @@ fn run_grok_cli_args(args: &[&str], timeout_secs: u64) -> Result<(String, String
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-        return Err("Grok Build CLI not found".into());
+        return Err("Zhimind Runtime CLI not found".into());
     };
 
     let args_owned: Vec<String> = args.iter().map(|s| (*s).to_string()).collect();
@@ -906,7 +906,7 @@ fn list_cli_worktrees_blocking(
         return CliWorktreesResult {
             available: false,
             worktrees: vec![],
-            reason: Some("Grok Build CLI not found".into()),
+            reason: Some("Zhimind Runtime CLI not found".into()),
             cli_found: false,
             source: Some("none".into()),
         };
@@ -1101,7 +1101,7 @@ pub async fn cli_worktree_db_path() -> Result<CliWorktreeDbPathResult, String> {
 fn cli_worktree_db_path_blocking(home: PathBuf) -> CliWorktreeDbPathResult {
     let (cli_found, _) = db_cli_probe();
     if !cli_found {
-        return soft_db_path_err(false, false, "Grok Build CLI not found");
+        return soft_db_path_err(false, false, "Zhimind Runtime CLI not found");
     }
     match run_grok_cli_args(&["worktree", "db", "path"], CLI_WORKTREE_DB_TIMEOUT_SECS) {
         Ok((stdout, stderr, ok)) => {
@@ -1109,7 +1109,7 @@ fn cli_worktree_db_path_blocking(home: PathBuf) -> CliWorktreeDbPathResult {
                 return soft_db_path_err(
                     true,
                     true,
-                    "CLI worktree DB requires Grok Build CLI 0.2.117+",
+                    "CLI worktree DB requires Zhimind Runtime CLI 0.2.117+",
                 );
             }
             if let Some(path) = parse_cli_worktree_db_path_stdout(&stdout, &home) {
@@ -1159,7 +1159,7 @@ pub async fn cli_worktree_db_stats() -> Result<CliWorktreeDbStatsResult, String>
 fn cli_worktree_db_stats_blocking() -> CliWorktreeDbStatsResult {
     let (cli_found, _) = db_cli_probe();
     if !cli_found {
-        return soft_db_stats_err(false, false, "Grok Build CLI not found");
+        return soft_db_stats_err(false, false, "Zhimind Runtime CLI not found");
     }
     match run_grok_cli_args(&["worktree", "db", "stats"], CLI_WORKTREE_DB_TIMEOUT_SECS) {
         Ok((stdout, stderr, ok)) => {
@@ -1167,7 +1167,7 @@ fn cli_worktree_db_stats_blocking() -> CliWorktreeDbStatsResult {
                 return soft_db_stats_err(
                     true,
                     true,
-                    "CLI worktree DB requires Grok Build CLI 0.2.117+",
+                    "CLI worktree DB requires Zhimind Runtime CLI 0.2.117+",
                 );
             }
             let raw_trim = stdout.trim();
@@ -1255,7 +1255,7 @@ pub async fn cli_worktree_db_rebuild() -> Result<CliWorktreeDbRebuildResult, Str
 fn cli_worktree_db_rebuild_blocking() -> CliWorktreeDbRebuildResult {
     let (cli_found, _) = db_cli_probe();
     if !cli_found {
-        return soft_db_rebuild_err(false, false, "Grok Build CLI not found");
+        return soft_db_rebuild_err(false, false, "Zhimind Runtime CLI not found");
     }
     match run_grok_cli_args(&["worktree", "db", "rebuild"], CLI_WORKTREE_DB_TIMEOUT_SECS) {
         Ok((stdout, stderr, ok)) => {
@@ -1263,7 +1263,7 @@ fn cli_worktree_db_rebuild_blocking() -> CliWorktreeDbRebuildResult {
                 return soft_db_rebuild_err(
                     true,
                     true,
-                    "CLI worktree DB requires Grok Build CLI 0.2.117+",
+                    "CLI worktree DB requires Zhimind Runtime CLI 0.2.117+",
                 );
             }
             let (discovered, registered, already) = parse_cli_worktree_db_rebuild_text(&stdout);

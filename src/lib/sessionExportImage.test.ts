@@ -67,7 +67,7 @@ describe("buildShareCardModel", () => {
 });
 
 describe("shareCardToHtml", () => {
-  it("escapes content and always shows Grok App footer", () => {
+  it("escapes content and always shows Zhimind footer", () => {
     const model = buildShareCardModel({
       title: '<script>alert(1)</script>',
       messages: [{ role: "user", content: "a <b>b</b>" }],
@@ -75,7 +75,7 @@ describe("shareCardToHtml", () => {
         "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==",
     });
     const html = shareCardToHtml(model);
-    expect(html).toContain("Generated with Grok App");
+    expect(html).toContain("Generated with Zhimind");
     expect(html).toContain("&lt;script&gt;");
     expect(html).not.toContain("<script>alert");
     expect(html).toContain('class="sc-logo"');

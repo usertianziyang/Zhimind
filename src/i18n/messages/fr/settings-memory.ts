@@ -1,7 +1,7 @@
 /** fr messages — domain: settings-memory */
 export const frSettingsMemory = {
   "settings.memoryBrowser": "Fichiers de mémoire de l’espace de travail",
-  "settings.memoryBrowserDesc": "Parcourir et rechercher la mémoire Grok Build sur disque du projet actuel ({GROK_HOME}/memory). La recherche de contenu est plafonnée ; les aperçus et extraits masquent les clés API probables. Ouvrez ou affichez les fichiers dans le système. Ne change pas l’historique de chat dans l’app.",
+  "settings.memoryBrowserDesc": "Parcourir et rechercher la mémoire Zhimind Runtime sur disque du projet actuel ({GROK_HOME}/memory). La recherche de contenu est plafonnée ; les aperçus et extraits masquent les clés API probables. Ouvrez ou affichez les fichiers dans le système. Ne change pas l’historique de chat dans l’app.",
   "settings.memoryBrowser.off": "La mémoire est désactivée. Activez Mémoire inter-sessions ci-dessus pour parcourir les fichiers.",
   "settings.memoryBrowser.loading": "Chargement des fichiers de mémoire…",
   "settings.memoryBrowser.empty": "Aucun fichier de mémoire trouvé pour ce projet.",
@@ -31,7 +31,7 @@ export const frSettingsMemory = {
   "settings.memoryBrowser.delete": "Supprimer",
   "settings.memoryBrowser.deleting": "Suppression…",
   "settings.memoryBrowser.deleteConfirmTitle": "Supprimer le fichier de mémoire ?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Supprimer « {name} » du magasin de mémoire Grok Build ? Irréversible.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Supprimer « {name} » du magasin de mémoire Zhimind Runtime ? Irréversible.",
   "settings.memoryBrowser.noProject": "Ouvrez un projet pour correspondre à la mémoire de portée espace de travail. MEMORY.md global apparaît encore s’il est présent.",
   "settings.memoryBrowser.root": "Racine mémoire : {path}",
   "settings.memoryBrowser.kind.all": "Tout",

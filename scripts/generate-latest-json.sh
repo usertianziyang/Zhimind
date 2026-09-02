@@ -6,8 +6,8 @@
 #
 # Example:
 #   ./scripts/generate-latest-json.sh 0.1.9 \
-#     darwin-aarch64:./Grok.app.tar.gz.sig:https://github.com/org/grok-app/releases/download/grok-desktop-latest/Grok_aarch64.app.tar.gz \
-#     linux-x86_64:./Grok.AppImage.sig:https://github.com/org/grok-app/releases/download/grok-desktop-latest/Grok.AppImage
+#     darwin-aarch64:./Zhimind.app.tar.gz.sig:https://github.com/org/repo/releases/download/grok-desktop-latest/Zhimind_aarch64.app.tar.gz \
+#     linux-x86_64:./Zhimind.AppImage.sig:https://github.com/org/repo/releases/download/grok-desktop-latest/Zhimind.AppImage
 #
 # Platform keys (Tauri 2):
 #   darwin-aarch64 | darwin-x86_64 | linux-x86_64 | windows-x86_64
@@ -64,7 +64,7 @@ done
 
 jq -n \
   --arg version "$VERSION" \
-  --arg notes "Grok App v$VERSION" \
+  --arg notes "Zhimind v$VERSION" \
   --arg pub_date "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   "${platform_args[@]}" \
   "{ version: \$version, notes: \$notes, pub_date: \$pub_date, platforms: ($platforms_obj) }"

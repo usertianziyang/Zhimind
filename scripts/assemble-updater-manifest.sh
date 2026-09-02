@@ -3,9 +3,9 @@
 # latest.json, and clobber-upload to the rolling `grok-desktop-latest` release.
 #
 # Usage (CI after all platform builds):
-#   TAG=v0.1.9 REPO=owner/grok-app bash scripts/assemble-updater-manifest.sh
+#   TAG=v0.1.9 REPO=owner/Zhimind bash scripts/assemble-updater-manifest.sh
 #
-# Optional: PLATFORM_HINTS="darwin-aarch64:Grok_0.1.9_aarch64.app.tar.gz,..."
+# Optional: PLATFORM_HINTS="darwin-aarch64:Zhimind_0.1.9_aarch64.app.tar.gz,..."
 #   Prefer explicit matrix mappings over filename heuristics.
 #
 # Requires: gh, jq. Optional: GH_TOKEN for higher rate limit.
@@ -193,8 +193,8 @@ if ! gh release view "$ROLLING_TAG" --repo "$REPO" >/dev/null 2>&1; then
   echo "==> Creating rolling release $ROLLING_TAG"
   gh release create "$ROLLING_TAG" \
     --repo "$REPO" \
-    --title "Grok Desktop auto-updater (rolling)" \
-    --notes "Rolling release for the Tauri auto-updater. Prefer versioned vX.Y.Z releases for first-time installs." \
+    --title "Zhimind Desktop auto-updater (rolling)" \
+    --notes "Rolling release for the Zhimind desktop updater. Prefer versioned vX.Y.Z releases for first-time installs." \
     --latest=false || true
 fi
 

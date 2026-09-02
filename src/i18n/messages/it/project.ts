@@ -51,7 +51,7 @@ export const itProject = {
   "project.continueCwdOk": "Ripresa «{title}»",
   "project.continueCwdFailed": "Impossibile riprendere l’ultimo agente",
   "project.continueCwdNoProject": "Seleziona prima un progetto.",
-  "project.continueCwdNoCli": "Grok Build CLI non trovata — installala o imposta il percorso CLI, poi riprova Continue.",
+  "project.continueCwdNoCli": "Zhimind Runtime non trovata — installala o imposta il percorso CLI, poi riprova Continue.",
   "project.continueCwdUntrusted": "Rendi attendibile questo progetto, poi riprendi l’ultima sessione agente.",
   "project.continueCwdHostOnly": "Riprendere l’ultimo agente richiede la finestra dell’app desktop.",
   "project.continueCwdImportFailed": "Trovata una sessione agente, ma non è stato possibile importarla nell’app.",

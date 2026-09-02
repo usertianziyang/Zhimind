@@ -82,8 +82,18 @@ fn user_grok_home() -> PathBuf {
 
 /// Newest official catalog id used as the empty-cache / preferred default.
 pub const OFFICIAL_FALLBACK_MODEL_ID: &str = "grok-4.6";
-const OFFICIAL_FALLBACK_MODEL_LABEL: &str = "Grok 4.6";
+const OFFICIAL_FALLBACK_MODEL_LABEL: &str = "Zhimind 4.6";
 const OFFICIAL_PREFERRED_IDS: &[&str] = &["grok-4.6", "grok-4.5"];
+
+fn display_model_label(id: &str, label: &str) -> String {
+    match id.trim().to_ascii_lowercase().as_str() {
+        "grok-4.6" => "Zhimind 4.6".into(),
+        "grok-4.5" => "Zhimind 4.5".into(),
+        _ if label == "Grok 4" => "Zhimind 4".into(),
+        _ if label == "Grok Mini" => "Zhimind Mini".into(),
+        _ => label.to_string(),
+    }
+}
 
 fn official_fallback_efforts() -> Vec<ReasoningEffort> {
     vec![
@@ -245,6 +255,7 @@ fn read_models_cache(
             .filter(|s| !s.is_empty())
             .unwrap_or(id)
             .to_string();
+        let label = display_model_label(id, &label);
         let reasoning_efforts = parse_reasoning_efforts(body);
         let context_window = body
             .pointer("/info/totalContextTokens")
@@ -386,7 +397,7 @@ mod tests {
         let (map, origin, _) = read_models_cache(&path).expect("cache");
         assert_eq!(
             map.get("grok-4.5").map(|m| m.label.as_str()),
-            Some("Grok 4.5")
+            Some("Zhimind 4.5")
         );
         assert!(map
             .get("grok-4.5")
@@ -394,6 +405,18 @@ mod tests {
             .unwrap_or(false));
         assert!(origin.unwrap().contains("cli-chat-proxy"));
         let _ = fs::remove_dir_all(&dir);
+    }
+
+    #[test]
+    fn display_model_label_hides_official_brand() {
+        assert_eq!(display_model_label("grok-4.6", "Grok 4.6"), "Zhimind 4.6");
+        assert_eq!(display_model_label("grok-4.5", "Grok 4.5"), "Zhimind 4.5");
+        assert_eq!(display_model_label("grok-4", "Grok 4"), "Zhimind 4");
+        assert_eq!(
+            display_model_label("grok-mini", "Grok Mini"),
+            "Zhimind Mini"
+        );
+        assert_eq!(display_model_label("custom", "My Model"), "My Model");
     }
 
     #[test]

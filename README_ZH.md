@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="Grok App Logo" width="128" height="128" />
+  <img src="assets/logo.png" alt="Zhimind Logo" width="128" height="128" />
 </p>
 
 <h1 align="center">Grok App</h1>

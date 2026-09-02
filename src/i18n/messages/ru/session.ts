@@ -272,7 +272,7 @@ export const ruSession = {
   "session.exportTraceFail": "Ошибка экспорта trace",
   "session.exportTraceUploadFail": "Ошибка отправки trace",
   "session.exportTraceNoAgent": "Сессия агента ещё не связана. Сначала начните диалог, затем экспортируйте trace.",
-  "session.exportTraceNoCli": "Grok Build CLI не найден. Установите CLI или укажите путь в Настройках и повторите попытку.",
+  "session.exportTraceNoCli": "Zhimind Runtime не найден. Установите CLI или укажите путь в Настройках и повторите попытку.",
   "session.exportTraceTimeout": "Истекло время ожидания grok trace. Попробуйте снова или используйте локальный экспорт.",
   "session.traces": "Трейсы",
   "session.tracesTitle": "Недавние traces",

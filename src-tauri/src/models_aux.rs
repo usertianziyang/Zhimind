@@ -271,7 +271,7 @@ pub fn ensure_official_aux_model_section(text: &str, api_key: Option<&str>) -> S
     let table = format!("model.{OFFICIAL_CATALOG_MODEL}");
     let mut out = text.to_string();
     out = set_table_string(&out, &table, "model", OFFICIAL_CATALOG_MODEL);
-    out = set_table_string(&out, &table, "name", "Grok 4.6");
+    out = set_table_string(&out, &table, "name", "Zhimind 4.6");
     out = set_table_string(&out, &table, "base_url", OFFICIAL_GROK_BASE_URL);
     out = set_table_string(&out, &table, "api_backend", OFFICIAL_GROK_API_BACKEND);
     if let Some(key) = api_key.map(str::trim).filter(|k| !k.is_empty()) {
@@ -298,10 +298,10 @@ pub fn ensure_official_reachable(text: &str, active_source: &str) -> Result<Stri
     // Official main route can use auth.json / OIDC without a pasted API key.
     if active_source != "official" && !has_key {
         return Err(
-            "image/search aux points at official Grok but no official API key is configured, \
+            "image/search aux points at official Zhimind but no official API key is configured, \
              and the main route is a custom relay (auth.json cleared). \
              Add an official API key under Account → Custom providers → Official, \
-             or point aux slots at a Grok-capable custom provider (Amux / Yun)."
+             or point aux slots at a Zhimind-capable custom provider (Amux / Yun)."
                 .into(),
         );
     }
@@ -323,14 +323,14 @@ pub fn build_options(list: &crate::providers::ProvidersListResult) -> Vec<Models
         id: AUTO.into(),
         label: "Auto (CLI default)".into(),
         source: "auto".into(),
-        hint: "Use Grok Build built-in defaults for this task".into(),
+        hint: "Use Zhimind Runtime built-in defaults for this task".into(),
     }];
 
     opts.push(ModelsAuxOption {
         id: OFFICIAL_CATALOG_MODEL.into(),
         label: format!("Official · {OFFICIAL_CATALOG_MODEL}"),
         source: "official".into(),
-        hint: "Grok catalog model (needs official API key when main route is custom)".into(),
+        hint: "Zhimind catalog model (needs official API key when main route is custom)".into(),
     });
 
     for p in &list.providers {
@@ -533,7 +533,7 @@ pub fn apply_save_grok() -> Result<ModelsAuxState, String> {
     let (target, _label, reason) = resolve_save_grok_target(&list, has_key);
     let target = target.ok_or_else(|| {
         format!(
-            "no multimodal target for Save Grok (reason={reason}): add an official API key or a Grok-capable custom provider"
+            "no multimodal target for Save Zhimind (reason={reason}): add an official API key or a Zhimind-compatible custom provider"
         )
     })?;
 
@@ -1318,7 +1318,7 @@ pub async fn prepare_agent_prompt_for_main_detailed(
                 .collect::<Vec<_>>()
                 .join("\n");
             blocks.push(format!(
-                "[Images not described — sign in with Grok (official aux) or set Model layers image_description. Paths:\n{list}]"
+                "[Images not described — sign in with Zhimind (official aux) or set Model layers image_description. Paths:\n{list}]"
             ));
         }
     }

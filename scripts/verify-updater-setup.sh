@@ -30,7 +30,7 @@ pass() { ok=$((ok + 1)); printf 'OK   %s\n' "$*"; }
 warn() { warn=$((warn + 1)); printf 'WARN %s\n' "$*"; }
 fail() { fail=$((fail + 1)); printf 'FAIL %s\n' "$*"; }
 
-echo "== Grok App updater setup check =="
+echo "== Zhimind updater setup check =="
 
 # 1) Workflow references required secrets
 WF=".github/workflows/release.yml"
@@ -94,7 +94,7 @@ REPO="${GITHUB_REPOSITORY:-}"
 if [[ -z "$REPO" ]] && command -v gh >/dev/null 2>&1; then
   REPO="$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)"
 fi
-REPO="${REPO:-RongleCat/grok-app}"
+REPO="${REPO:-usertianziyang/Zhimind}"
 
 if command -v gh >/dev/null 2>&1; then
   if secret_list="$(gh secret list --repo "$REPO" 2>/dev/null)"; then
@@ -127,12 +127,12 @@ fi
 LATEST_URL="https://github.com/${REPO}/releases/download/grok-desktop-latest/latest.json"
 if [[ $FETCH_LATEST -eq 1 ]]; then
   if command -v curl >/dev/null 2>&1; then
-    code=$(curl -sS -o /tmp/grok-latest.json -w '%{http_code}' -L "$LATEST_URL" || true)
+    code=$(curl -sS -o /tmp/zhimind-latest.json -w '%{http_code}' -L "$LATEST_URL" || true)
     if [[ "$code" == "200" ]]; then
       if command -v python3 >/dev/null 2>&1; then
-        if python3 -c 'import json,sys; d=json.load(open("/tmp/grok-latest.json")); assert "version" in d and "platforms" in d' 2>/dev/null; then
-          ver=$(python3 -c 'import json; print(json.load(open("/tmp/grok-latest.json"))["version"])')
-          plats=$(python3 -c 'import json; print(",".join(sorted(json.load(open("/tmp/grok-latest.json")).get("platforms",{}).keys())))')
+        if python3 -c 'import json,sys; d=json.load(open("/tmp/zhimind-latest.json")); assert "version" in d and "platforms" in d' 2>/dev/null; then
+          ver=$(python3 -c 'import json; print(json.load(open("/tmp/zhimind-latest.json"))["version"])')
+          plats=$(python3 -c 'import json; print(",".join(sorted(json.load(open("/tmp/zhimind-latest.json")).get("platforms",{}).keys())))')
           pass "latest.json OK version=$ver platforms=[$plats]"
         else
           fail "latest.json HTTP 200 but missing version/platforms"

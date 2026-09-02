@@ -378,7 +378,7 @@ export function buildExternalOtelChecklist(
  */
 export function formatExternalOtelEnvHints(): string {
   return [
-    "# External OpenTelemetry (enterprise) — Grok Build dual opt-in",
+    "# External OpenTelemetry (enterprise) — Zhimind Runtime dual opt-in",
     "# Master alone enables nothing; exporters alone enable nothing.",
     "# Content-free by default (no prompts / code / tool args).",
     "# Collector auth: env headers only — never store tokens in config.toml.",

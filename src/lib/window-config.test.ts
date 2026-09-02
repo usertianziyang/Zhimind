@@ -130,13 +130,13 @@ describe("window chrome", () => {
     expect(inner).toContain("ActivationPolicy::Regular");
   });
 
-  it("base product identity is Grok", () => {
+  it("base product identity is Zhimind", () => {
     const conf = JSON.parse(readFileSync(CONF_PATH, "utf8")) as {
       productName?: string;
       app: { windows: Array<{ title?: string }> };
     };
-    expect(conf.productName).toBe("Grok");
-    expect(conf.app.windows[0]!.title).toBe("Grok");
+    expect(conf.productName).toBe("Zhimind");
+    expect(conf.app.windows[0]!.title).toBe("Zhimind");
   });
 
   it("uses window-vibrancy for native frosted glass on macOS", () => {

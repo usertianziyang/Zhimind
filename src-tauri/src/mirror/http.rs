@@ -281,7 +281,7 @@ async fn serve_index(state: &HttpState, headers: &HeaderMap) -> Response {
             );
             // Temporary placeholder when dist missing (Slice 1 gate proof still works).
             let placeholder = format!(
-                r#"<!doctype html><html><head><meta charset="utf-8"><title>Grok Mirror</title>
+                r#"<!doctype html><html><head><meta charset="utf-8"><title>Zhimind Mirror</title>
 <script>window.__MIRROR__={{token:{tok},protocol:1}};</script>
 <base href="/t/{token}/">
 </head><body><p>Mirror host online (dist not found). Build UI or set GROK_MIRROR_DIST.</p></body></html>"#,

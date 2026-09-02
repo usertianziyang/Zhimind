@@ -51,7 +51,7 @@ export const frProject = {
   "project.continueCwdOk": "« {title} » poursuivie",
   "project.continueCwdFailed": "Impossible de poursuivre le dernier agent",
   "project.continueCwdNoProject": "Sélectionnez d’abord un projet.",
-  "project.continueCwdNoCli": "Grok Build CLI introuvable — installez ou définissez le chemin CLI, puis réessayez Poursuivre.",
+  "project.continueCwdNoCli": "Zhimind Runtime introuvable — installez ou définissez le chemin CLI, puis réessayez Poursuivre.",
   "project.continueCwdUntrusted": "Approuvez d’abord ce projet, puis poursuivez la dernière session d’agent.",
   "project.continueCwdHostOnly": "Poursuivre le dernier agent nécessite la fenêtre de l’application de bureau.",
   "project.continueCwdImportFailed": "Une session d’agent a été trouvée mais n’a pas pu être importée dans l’application.",

@@ -272,7 +272,7 @@ export const ukSession = {
   "session.exportTraceFail": "Експорт траси не вдався",
   "session.exportTraceUploadFail": "Вивантаження траси не вдалося",
   "session.exportTraceNoAgent": "Ще не пов’язано сесію агента. Спершу почніть розмову, потім експортуйте трасу.",
-  "session.exportTraceNoCli": "Grok Build CLI не знайдено. Установіть або вкажіть шлях до CLI в Налаштуваннях, потім повторіть.",
+  "session.exportTraceNoCli": "Zhimind Runtime не знайдено. Установіть або вкажіть шлях до CLI в Налаштуваннях, потім повторіть.",
   "session.exportTraceTimeout": "Час очікування grok trace вичерпано. Спробуйте знову або скористайтеся «Експортувати локально» для швидшого шляху лише архіву.",
   "session.traces": "Траси",
   "session.tracesTitle": "Нещодавні траси",

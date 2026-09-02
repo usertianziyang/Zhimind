@@ -1,7 +1,7 @@
 /** uk messages — domain: settings-memory */
 export const ukSettingsMemory = {
   "settings.memoryBrowser": "Файли пам’яті робочої області",
-  "settings.memoryBrowserDesc": "Перегляньте та знайдіть на диску Grok Build пам'ять для поточного проєкту ({GROK_HOME}/пам'ять). Пошук вмісту обмежено; попередній перегляд і фрагменти редагують ймовірні ключі API. Відкрийте або розкрийте файли в системі. Не змінює історію чату у застосунку.",
+  "settings.memoryBrowserDesc": "Перегляньте та знайдіть на диску Zhimind Runtime пам'ять для поточного проєкту ({GROK_HOME}/пам'ять). Пошук вмісту обмежено; попередній перегляд і фрагменти редагують ймовірні ключі API. Відкрийте або розкрийте файли в системі. Не змінює історію чату у застосунку.",
   "settings.memoryBrowser.off": "Пам'ять вимкнена. Увімкніть міжсесійну пам’ять вище, щоб переглядати файли.",
   "settings.memoryBrowser.loading": "Завантаження файлів пам’яті…",
   "settings.memoryBrowser.empty": "Немає файлів пам'яті для цього проєкту.",
@@ -31,7 +31,7 @@ export const ukSettingsMemory = {
   "settings.memoryBrowser.delete": "Видалити",
   "settings.memoryBrowser.deleting": "Видалення…",
   "settings.memoryBrowser.deleteConfirmTitle": "Видалити файл пам’яті?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Видалити “{name}” із сховища пам’яті Grok Build? Це неможливо скасувати.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Видалити “{name}” із сховища пам’яті Zhimind Runtime? Це неможливо скасувати.",
   "settings.memoryBrowser.noProject": "Відкрийте проєкт, щоб відповідати пам’яті в межах робочої області. Global MEMORY.md все ще відображається, якщо він присутній.",
   "settings.memoryBrowser.root": "Корінь пам’яті: {path}",
   "settings.memoryBrowser.kind.all": "Усі",

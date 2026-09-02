@@ -581,7 +581,7 @@ html[data-theme="light"][data-wallpaper="1"]
   .sidebar
   .user-avatar--logo
   .grok-logo
-  svg {
+  .grok-logo__asset {
   color: var(--text-inverse);
   filter: none;
 }

@@ -15,7 +15,7 @@ import {
 describe("buildErrorDeck", () => {
   it("returns problem/cause/actions for the four product classes (en)", () => {
     const cli = buildErrorDeck("CLI_NOT_FOUND", "en");
-    expect(cli.problem.toLowerCase()).toMatch(/cli/);
+    expect(cli.problem.toLowerCase()).toMatch(/runtime|cli/);
     expect(cli.cause.length).toBeGreaterThan(8);
     expect(cli.primary.id).toBe("open_doctor");
     expect(cli.secondary?.id).toBe("open_runtime");

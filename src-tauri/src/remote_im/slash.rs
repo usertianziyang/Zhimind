@@ -14,7 +14,7 @@ pub enum BuiltinCommand {
     /// Show current/last-reported context usage for the bound session.
     Context,
     Stop,
-    /// List saved Grok accounts + quota; optional query picks/switches by number or label.
+    /// List saved Zhimind accounts + quota; optional query picks/switches by number or label.
     Account {
         query: Option<String>,
     },
@@ -113,13 +113,13 @@ pub fn native_bot_commands() -> &'static [NativeBotCommand] {
         },
         NativeBotCommand {
             command: "switch",
-            description_en: "Switch Grok account by number",
-            description_zh: "按序号切换 Grok 账号",
+            description_en: "Switch Zhimind account by number",
+            description_zh: "按序号切换 Zhimind 账号",
         },
         NativeBotCommand {
             command: "quota",
-            description_en: "Show SuperGrok remaining quota",
-            description_zh: "查看 SuperGrok 剩余额度",
+            description_en: "Show Zhimind remaining quota",
+            description_zh: "查看 Zhimind 剩余额度",
         },
     ]
 }
@@ -176,7 +176,7 @@ pub fn parse_slash(text: &str) -> Option<BuiltinCommand> {
 pub fn help_text(lang: &str) -> String {
     if lang == "en" {
         [
-            "**Grok Remote IM** — local Grok Build via IM (Rust)",
+            "**Zhimind Remote IM** — local Zhimind Runtime via IM (Rust)",
             "",
             "Commands (Telegram: type `/` for the native menu):",
             "- `/start` · `/help` — this message",
@@ -185,8 +185,8 @@ pub fn help_text(lang: &str) -> String {
             "- `/r` · `/resume` — list / resume a prior session",
             "- `/r <n>` — resume by number",
             "- `/new` — fresh session (keep project)",
-            "- `/account` · `/quota` — list accounts & remaining SuperGrok quota",
-            "- `/account <n|label>` · `/switch <n>` — switch Grok account",
+            "- `/account` · `/quota` — list accounts & remaining Zhimind quota",
+            "- `/account <n|label>` · `/switch <n>` — switch Zhimind account",
             "- `/whoami` — show your sender id",
             "- `/status` — snapshot",
             "- `/context` — current context usage (agent-reported or clearly marked estimate)",
@@ -197,7 +197,7 @@ pub fn help_text(lang: &str) -> String {
         .join("\n")
     } else {
         [
-            "**Grok Remote IM** — 本地 Grok Build 远程 IM 桥（Rust 内置）",
+            "**Zhimind Remote IM** — 本地 Zhimind Runtime 远程 IM 桥（Rust 内置）",
             "",
             "命令（Telegram 输入 `/` 可唤起原生命令菜单）：",
             "- `/start` · `/help` — 显示帮助",
@@ -207,7 +207,7 @@ pub fn help_text(lang: &str) -> String {
             "- `/r <序号>` — 按序号恢复",
             "- `/new` — 保持项目，开启新会话",
             "- `/account` · `/quota` — 查看已保存账号与剩余额度",
-            "- `/account <序号|标签>` · `/switch <序号>` — 切换 Grok 账号",
+            "- `/account <序号|标签>` · `/switch <序号>` — 切换 Zhimind 账号",
             "- `/whoami` — 查看发送者 id",
             "- `/status` — 状态快照",
             "- `/context` — 当前会话上下文用量（上报值或明确标注的估算值）",

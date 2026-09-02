@@ -272,7 +272,7 @@ export const itSession = {
   "session.exportTraceFail": "Esportazione del trace non riuscita",
   "session.exportTraceUploadFail": "Caricamento del trace non riuscito",
   "session.exportTraceNoAgent": "Nessuna sessione agente ancora collegata. Avvia prima una conversazione, poi esporta il trace.",
-  "session.exportTraceNoCli": "Grok Build CLI non trovata. Installala o imposta il percorso CLI in Impostazioni, poi riprova.",
+  "session.exportTraceNoCli": "Zhimind Runtime non trovata. Installala o imposta il percorso CLI in Impostazioni, poi riprova.",
   "session.exportTraceTimeout": "Timeout in attesa di grok trace. Riprova, oppure usa Esporta in locale per un percorso più veloce solo-archivio.",
   "session.traces": "Trace",
   "session.tracesTitle": "Trace recenti",

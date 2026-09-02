@@ -272,7 +272,7 @@ export const filSession = {
   "session.exportTraceFail": "Nabigo ang pag-export ng trace",
   "session.exportTraceUploadFail": "Nabigo ang pag-upload ng trace",
   "session.exportTraceNoAgent": "Wala pang naka-link na session ng agent. Magsimula muna ng usapan, tapos i-export ang trace.",
-  "session.exportTraceNoCli": "Hindi nahanap ang Grok Build CLI. I-install o itakda ang path ng CLI sa Mga setting, tapos subukan ulit.",
+  "session.exportTraceNoCli": "Hindi nahanap ang Zhimind Runtime. I-install o itakda ang path ng CLI sa Mga setting, tapos subukan ulit.",
   "session.exportTraceTimeout": "Nag-timeout habang hinihintay ang grok trace. Subukan ulit, o gamitin ang I-export nang lokal para sa mas mabilis na archive-only na path.",
   "session.traces": "Mga trace",
   "session.tracesTitle": "Mga kamakailang trace",

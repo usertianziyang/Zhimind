@@ -51,7 +51,7 @@ export const ukProject = {
   "project.continueCwdOk": "Продовжено «{title}»",
   "project.continueCwdFailed": "Не вдалося продовжити останнього агента",
   "project.continueCwdNoProject": "Спершу виберіть проєкт.",
-  "project.continueCwdNoCli": "Grok Build CLI не знайдено — установіть або вкажіть шлях до CLI, потім знову натисніть «Продовжити».",
+  "project.continueCwdNoCli": "Zhimind Runtime не знайдено — установіть або вкажіть шлях до CLI, потім знову натисніть «Продовжити».",
   "project.continueCwdUntrusted": "Спершу довірте цей проєкт, потім продовжте останню сесію агента.",
   "project.continueCwdHostOnly": "Продовження останнього агента потребує вікна настільного застосунку.",
   "project.continueCwdImportFailed": "Сесію агента знайдено, але не вдалося імпортувати її в застосунок.",

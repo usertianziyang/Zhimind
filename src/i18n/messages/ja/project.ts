@@ -51,7 +51,7 @@ export const jaProject = {
   "project.continueCwdOk": "「{title}」を再開しました",
   "project.continueCwdFailed": "直前のエージェントを再開できませんでした",
   "project.continueCwdNoProject": "先にプロジェクトを選択してください。",
-  "project.continueCwdNoCli": "Grok Build CLI が見つかりません — インストールするか CLI パスを設定してから、再開を再試行してください。",
+  "project.continueCwdNoCli": "Zhimind Runtime が見つかりません — インストールするか CLI パスを設定してから、再開を再試行してください。",
   "project.continueCwdUntrusted": "先にこのプロジェクトを信頼してから、直前のエージェントセッションを再開してください。",
   "project.continueCwdHostOnly": "直前のエージェント再開にはデスクトップアプリのウィンドウが必要です。",
   "project.continueCwdImportFailed": "エージェントセッションは見つかりましたが、アプリに取り込めませんでした。",

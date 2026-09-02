@@ -568,9 +568,9 @@ impl Engine {
                 let profiles = listed.profiles;
                 if profiles.is_empty() {
                     let t = if self.lang() == "en" {
-                        "No saved accounts yet. Add accounts in Grok App first."
+                        "No saved accounts yet. Add accounts in Zhimind first."
                     } else {
-                        "尚无已保存账号。请先在 Grok App 中添加账号。"
+                        "尚无已保存账号。请先在 Zhimind 中添加账号。"
                     };
                     let _ = self.reply_msg(msg, t).await;
                     return;
@@ -750,9 +750,9 @@ impl Engine {
         if let Some(q) = query {
             if profiles.is_empty() {
                 let t = if self.lang() == "en" {
-                    "No saved accounts yet. Sign in / add accounts in Grok App → Settings → Account, then try again."
+                    "No saved accounts yet. Sign in / add accounts in Zhimind → Settings → Account, then try again."
                 } else {
-                    "尚无已保存账号。请先在 Grok App「设置 → 账号」登录或添加账号后再试。"
+                    "尚无已保存账号。请先在 Zhimind「设置 → 账号」登录或添加账号后再试。"
                 };
                 let _ = self.reply_msg(msg, t).await;
                 return;
@@ -1209,9 +1209,9 @@ impl Engine {
         let projects = self.scoped_projects_for(&msg.instance_id);
         if projects.is_empty() {
             let t = if self.lang() == "en" {
-                "No trusted projects in scope. Trust a folder in Grok App, or widen project scope in Remote control settings."
+                "No trusted projects in scope. Trust a folder in Zhimind, or widen project scope in Remote control settings."
             } else {
-                "当前范围内没有已信任项目。请先在 Grok App 中信任项目，或在远程控制设置中放宽项目范围。"
+                "当前范围内没有已信任项目。请先在 Zhimind 中信任项目，或在远程控制设置中放宽项目范围。"
             };
             let _ = self.reply_msg(msg, t).await;
             return;
@@ -1684,6 +1684,20 @@ fn chunk_text(s: &str, max: usize) -> Vec<String> {
     out
 }
 
+fn display_tier_label(raw: &str) -> String {
+    let normalized = raw.to_ascii_lowercase().replace([' ', '_', '-'], "");
+    if normalized.contains("heavy") || normalized == "supergrokpro" {
+        return "Zhimind Heavy".into();
+    }
+    if normalized == "grokbuild" || normalized == "grok" {
+        return "Zhimind Runtime".into();
+    }
+    if normalized.contains("grok") || normalized.contains("supergrok") {
+        return "Zhimind".into();
+    }
+    raw.to_string()
+}
+
 fn format_quota_brief(billing: &crate::account::BillingSnapshot, lang: &str) -> String {
     let rem = billing.remaining_percent.map(|p| format!("{p:.0}%"));
     let used = billing.credit_usage_percent.map(|p| format!("{p:.0}%"));
@@ -1691,7 +1705,8 @@ fn format_quota_brief(billing: &crate::account::BillingSnapshot, lang: &str) -> 
         .subscription_tier
         .as_deref()
         .filter(|s| !s.is_empty())
-        .unwrap_or("-");
+        .map(display_tier_label)
+        .unwrap_or_else(|| "-".into());
     if lang == "en" {
         match (rem.as_deref(), used.as_deref()) {
             (Some(r), Some(u)) => format!("Quota: **{r} remaining** · used {u} · plan {tier}"),
@@ -1718,12 +1733,12 @@ fn format_quota_brief(billing: &crate::account::BillingSnapshot, lang: &str) -> 
 fn format_account_menu(lines: &[AccountQuotaLine], lang: &str) -> String {
     if lines.is_empty() {
         return if lang == "en" {
-            "No Grok account signed in, and no saved multi-account snapshots.\n\
-Sign in in Grok App → Settings → Account, then use **Add account** to save snapshots for switching."
+            "No Zhimind account signed in, and no saved multi-account snapshots.\n\
+Sign in in Zhimind → Settings → Account, then use **Add account** to save snapshots for switching."
                 .into()
         } else {
             "当前未登录，且没有已保存的多账号快照。\n\
-请先在 Grok App「设置 → 账号」登录，并用「添加账号」保存快照后再切换。"
+请先在 Zhimind「设置 → 账号」登录，并用「添加账号」保存快照后再切换。"
                 .into()
         };
     }
@@ -1731,10 +1746,10 @@ Sign in in Grok App → Settings → Account, then use **Add account** to save s
     let only_current = lines.len() == 1 && lines[0].account.id == "_current";
     let mut out: Vec<String> = Vec::new();
     if lang == "en" {
-        out.push("**Grok accounts & SuperGrok quota**".into());
+        out.push("**Zhimind accounts & quota**".into());
         out.push("".into());
     } else {
-        out.push("**Grok 账号与 SuperGrok 额度**".into());
+        out.push("**Zhimind 账号与额度**".into());
         out.push("".into());
     }
 
@@ -1780,6 +1795,7 @@ Sign in in Grok App → Settings → Account, then use **Add account** to save s
             .subscription_tier
             .as_deref()
             .filter(|s| !s.is_empty())
+            .map(display_tier_label)
             .map(|s| format!(" · {s}"))
             .unwrap_or_default();
         out.push(format!("{n}. {star}{who} — {quota}{tier}"));
@@ -1790,13 +1806,13 @@ Sign in in Grok App → Settings → Account, then use **Add account** to save s
         if lang == "en" {
             out.push(
                 "Only the current CLI session is shown (no multi-account snapshots).\n\
-Add more accounts in Grok App → Settings → Account to enable `/account n` switching."
+Add more accounts in Zhimind → Settings → Account to enable `/account n` switching."
                     .into(),
             );
         } else {
             out.push(
                 "当前仅显示 CLI 登录账号（尚无多账号快照）。\n\
-在 Grok App「设置 → 账号」添加账号后，可用 `/account 序号` 切换。"
+在 Zhimind「设置 → 账号」添加账号后，可用 `/account 序号` 切换。"
                     .into(),
             );
         }
@@ -2133,6 +2149,7 @@ mod tests {
         assert!(t.contains("62%"));
         assert!(t.contains("★"));
         assert!(t.contains("序号") || t.contains("/account"));
+        assert!(!t.contains("SuperGrok"));
     }
 
     #[test]

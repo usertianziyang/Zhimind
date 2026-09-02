@@ -15,7 +15,7 @@ import { resolve } from "node:path";
 //
 // Usage (CI):
 //   GROK_UPDATER_PUBLIC_KEY=... \
-//   GROK_UPDATER_ENDPOINT=https://github.com/<org>/grok-app/releases/download/grok-desktop-latest/latest.json \
+//   GROK_UPDATER_ENDPOINT=https://github.com/<owner>/<repo>/releases/download/grok-desktop-latest/latest.json \
 //   node scripts/build-release-config.mjs
 //
 // Then:

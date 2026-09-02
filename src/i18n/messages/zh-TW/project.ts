@@ -51,7 +51,7 @@ export const zhTWProject = {
   "project.continueCwdOk": "已繼續「{title}」",
   "project.continueCwdFailed": "無法繼續最近的 Agent",
   "project.continueCwdNoProject": "請先選擇一個專案。",
-  "project.continueCwdNoCli": "找不到 Grok Build CLI — 請先安裝或設定 CLI 路徑，再試「繼續」。",
+  "project.continueCwdNoCli": "找不到 Zhimind Runtime — 請先安裝或設定 CLI 路徑，再試「繼續」。",
   "project.continueCwdUntrusted": "請先信任此專案，再繼續最近的 Agent 工作階段。",
   "project.continueCwdHostOnly": "繼續最近的 Agent 需要在桌面應用視窗中操作。",
   "project.continueCwdImportFailed": "找到了 Agent 工作階段，但無法匯入到應用中。",

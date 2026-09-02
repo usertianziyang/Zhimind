@@ -357,7 +357,7 @@ describe("composer chip portal pops", () => {
     expect(pop).not.toBeNull();
     fireEvent.mouseEnter(pop!.querySelector(".cmm__row")!);
     const pick = await waitFor(() => {
-      const el = screen.getByRole("button", { name: /Grok 4\.5/ });
+      const el = screen.getByRole("button", { name: /Zhimind 4\.5/ });
       expect(el).toBeTruthy();
       return el;
     });

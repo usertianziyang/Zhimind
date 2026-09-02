@@ -1,4 +1,4 @@
-//! Install / update Grok Build CLI with multi-mirror download fallback.
+//! Install / update Zhimind Runtime CLI with multi-mirror download fallback.
 //!
 //! Mirrors (preference order — GCS first: more reliable in CN / restricted networks):
 //! 1. Direct GCS `https://storage.googleapis.com/grok-build-public-artifacts/cli`
@@ -219,14 +219,14 @@ fn platform_triple() -> Result<(&'static str, &'static str), String> {
     } else if cfg!(target_os = "linux") {
         "linux"
     } else {
-        return Err("Unsupported OS for Grok Build auto-install".into());
+        return Err("Unsupported OS for Zhimind Runtime auto-install".into());
     };
     let arch = if cfg!(target_arch = "aarch64") {
         "aarch64"
     } else if cfg!(target_arch = "x86_64") {
         "x86_64"
     } else {
-        return Err("Unsupported CPU architecture for Grok Build auto-install".into());
+        return Err("Unsupported CPU architecture for Zhimind Runtime auto-install".into());
     };
     Ok((os, arch))
 }
@@ -291,7 +291,7 @@ async fn resolve_version(
         app,
         progress(
             "resolving",
-            "Resolving latest Grok Build version…",
+            "Resolving latest Zhimind Runtime version…",
             Some(0.0),
             None,
             None,
@@ -330,7 +330,7 @@ async fn resolve_version(
         }
     }
     Err(format!(
-        "Could not resolve Grok Build version from any mirror. {}",
+        "Could not resolve Zhimind Runtime version from any mirror. {}",
         errors.last().cloned().unwrap_or_default()
     ))
 }
@@ -680,7 +680,7 @@ fn env_flag_truthy(name: &str) -> bool {
         .unwrap_or(false)
 }
 
-/// Download latest stable Grok Build and install into `~/.grok`.
+/// Download latest stable Zhimind Runtime and install into `~/.grok`.
 ///
 /// `allow_unverified`: when true, continue if the mirror has no published
 /// checksum (still fail on mismatch). Default path should pass `false`.
@@ -695,7 +695,7 @@ pub async fn install_cli_latest(
         &app,
         progress(
             "downloading",
-            format!("Found Grok Build v{version}"),
+            format!("Found Zhimind Runtime v{version}"),
             Some(4.0),
             Some(preferred.clone()),
             Some(version.clone()),
@@ -840,7 +840,7 @@ pub async fn install_cli_latest(
         path,
         version: version_out,
         mirror_used: Some(mirror_used),
-        message: "Grok Build installed".into(),
+        message: "Zhimind Runtime installed".into(),
         sha256: Some(digest),
         checksum_verified: Some(checksum_verified),
     })

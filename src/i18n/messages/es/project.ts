@@ -51,7 +51,7 @@ export const esProject = {
   "project.continueCwdOk": "Se continuó «{title}»",
   "project.continueCwdFailed": "No se pudo continuar el último agente",
   "project.continueCwdNoProject": "Selecciona primero un proyecto.",
-  "project.continueCwdNoCli": "No se encontró Grok Build CLI — instálala o define la ruta de la CLI y vuelve a Continuar.",
+  "project.continueCwdNoCli": "No se encontró Zhimind Runtime — instálala o define la ruta de la CLI y vuelve a Continuar.",
   "project.continueCwdUntrusted": "Confía primero en este proyecto y luego continúa la última sesión del agente.",
   "project.continueCwdHostOnly": "Continuar el último agente requiere la ventana de la aplicación de escritorio.",
   "project.continueCwdImportFailed": "Se encontró una sesión de agente, pero no se pudo importar a la aplicación.",

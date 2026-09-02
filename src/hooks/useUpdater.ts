@@ -61,10 +61,10 @@ const BACKGROUND_BLOCKED_STATES = new Set<UpdateStatus["state"]>([
   "manual-required",
 ]);
 
-/** Override via VITE_GROK_RELEASES_URL when the repo path differs. */
+/** Override via VITE_GROK_RELEASES_URL when the repository path differs. */
 const GITHUB_RELEASES_URL =
   (import.meta.env.VITE_GROK_RELEASES_URL as string | undefined) ||
-  "https://github.com/RongleCat/grok-app/releases/latest";
+  "https://github.com/usertianziyang/Zhimind/releases/latest";
 
 function toErrorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
@@ -406,7 +406,7 @@ export function useUpdater() {
               version: UPDATE_SIM_VERSION,
               releaseUrl: GITHUB_RELEASES_URL,
               downloadUrl: GITHUB_RELEASES_URL,
-              assetNames: ["GrokApp-sim.dmg", "GrokApp-sim.exe"],
+              assetNames: ["Zhimind-sim.dmg", "Zhimind-sim.exe"],
             });
             return;
           }
@@ -482,7 +482,7 @@ export function useUpdater() {
             await runGithubFallback({ background });
             return;
           }
-          // Plugin on but endpoint/network failed — fall back so one button still works.
+          // Plugin on but endpoint/network failed — fall back to GitHub.
           console.warn(
             `updater check failed, falling back to GitHub: ${message}`,
           );

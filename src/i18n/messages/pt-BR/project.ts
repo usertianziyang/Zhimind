@@ -51,7 +51,7 @@ export const ptBRProject = {
   "project.continueCwdOk": "“{title}” continuada",
   "project.continueCwdFailed": "Não foi possível continuar o último agente",
   "project.continueCwdNoProject": "Selecione um projeto primeiro.",
-  "project.continueCwdNoCli": "Grok Build CLI não encontrada — instale ou defina o caminho da CLI e tente Continuar de novo.",
+  "project.continueCwdNoCli": "Zhimind Runtime não encontrada — instale ou defina o caminho da CLI e tente Continuar de novo.",
   "project.continueCwdUntrusted": "Confie neste projeto primeiro e depois continue a última sessão do agente.",
   "project.continueCwdHostOnly": "Continuar o último agente exige a janela do app de desktop.",
   "project.continueCwdImportFailed": "Encontrou uma sessão de agente, mas não foi possível importá-la para o app.",

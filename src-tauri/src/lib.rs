@@ -1775,7 +1775,7 @@ pub fn run() {
 
         .build(context)
 
-        .expect("error while building Grok App")
+        .expect("error while building Zhimind")
 
         .run(|app, event| {
 

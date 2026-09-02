@@ -51,7 +51,7 @@ export const idProject = {
   "project.continueCwdOk": "“{title}” dilanjutkan",
   "project.continueCwdFailed": "Agen terakhir tidak dapat dilanjutkan",
   "project.continueCwdNoProject": "Pilih proyek terlebih dahulu.",
-  "project.continueCwdNoCli": "Grok Build CLI tidak ditemukan — pasang atau atur jalur CLI, lalu coba Lanjutkan lagi.",
+  "project.continueCwdNoCli": "Zhimind Runtime tidak ditemukan — pasang atau atur jalur CLI, lalu coba Lanjutkan lagi.",
   "project.continueCwdUntrusted": "Percayai proyek ini terlebih dahulu, lalu lanjutkan sesi agen terakhir.",
   "project.continueCwdHostOnly": "Melanjutkan agen terakhir memerlukan jendela aplikasi desktop.",
   "project.continueCwdImportFailed": "Sesi agen ditemukan tetapi tidak dapat diimpor ke aplikasi.",

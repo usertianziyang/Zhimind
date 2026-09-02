@@ -7,11 +7,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/RongleCat/grok-app.git"
+    "url": "https://github.com/usertianziyang/Zhimind.git"
   },
-  "homepage": "https://grok-app.com",
+  "homepage": "https://zhimind.berrytick.com",
   "bugs": {
-    "url": "https://github.com/RongleCat/grok-app/issues"
+    "url": "https://github.com/usertianziyang/Zhimind/issues"
   },
   "type": "module",
   "packageManager": "pnpm@9.15.9",

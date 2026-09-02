@@ -1,4 +1,4 @@
-//! Grok Build **agent serve** process management for Settings → Runtime.
+//! Zhimind Runtime **agent serve** process management for Settings → Runtime.
 //!
 //! CLI surface:
 //! - `grok agent serve --bind <addr> --secret <token> [--remote <url>]`
@@ -276,7 +276,9 @@ pub fn derive_serve_state(
     if !cli_found {
         return (
             "error",
-            Some("Grok Build CLI not found. Install or set the CLI path under Runtime.".into()),
+            Some(
+                "Zhimind Runtime CLI not found. Install or set the CLI path under Runtime.".into(),
+            ),
         );
     }
     if !cli_supports_serve {
@@ -285,7 +287,7 @@ pub fn derive_serve_state(
             Some(
                 support_msg
                     .unwrap_or(
-                        "This Grok Build CLI version does not expose `agent serve` (WebSocket server).",
+                        "This Zhimind Runtime CLI version does not expose `agent serve` (WebSocket server).",
                     )
                     .to_string(),
             ),
@@ -303,7 +305,7 @@ fn run_grok_cli_args(args: &[&str], timeout_secs: u64) -> Result<(String, String
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-        return Err("Grok Build CLI not found".into());
+        return Err("Zhimind Runtime CLI not found".into());
     };
 
     let args_owned: Vec<String> = args.iter().map(|s| (*s).to_string()).collect();
@@ -332,7 +334,12 @@ fn probe_cli_supports_serve() -> (bool, bool, bool, Option<String>) {
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     if !probe.found {
-        return (false, false, false, Some("Grok Build CLI not found".into()));
+        return (
+            false,
+            false,
+            false,
+            Some("Zhimind Runtime CLI not found".into()),
+        );
     }
     match run_grok_cli_args(&["agent", "serve", "--help"], 8) {
         Ok((stdout, stderr, ok)) => {
@@ -346,7 +353,7 @@ fn probe_cli_supports_serve() -> (bool, bool, bool, Option<String>) {
                     false,
                     false,
                     Some(
-                        "This Grok Build CLI version does not expose `agent serve` (WebSocket server)."
+                        "This Zhimind Runtime CLI version does not expose `agent serve` (WebSocket server)."
                             .into(),
                     ),
                 )
@@ -635,7 +642,7 @@ pub async fn serve_start(
             return Ok(collect_status_sync(true));
         }
         if !current.cli_found {
-            return Err("Grok Build CLI not found".into());
+            return Err("Zhimind Runtime CLI not found".into());
         }
         if !current.cli_supports_serve {
             return Err(current.message.unwrap_or_else(|| {
@@ -649,7 +656,7 @@ pub async fn serve_start(
         let remote_norm = normalize_remote_url(remote.as_deref())?;
         if remote_norm.is_some() && !current.cli_supports_remote {
             return Err(
-                "This Grok Build CLI version does not support `agent serve --remote` (proxy mode)."
+                "This Zhimind Runtime CLI version does not support `agent serve --remote` (proxy mode)."
                     .into(),
             );
         }
@@ -662,7 +669,7 @@ pub async fn serve_start(
         let settings = store::load_settings();
         let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
         let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-            return Err("Grok Build CLI not found".into());
+            return Err("Zhimind Runtime CLI not found".into());
         };
 
         let secret = generate_serve_secret();

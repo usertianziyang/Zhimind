@@ -1,7 +1,7 @@
 /** id messages — domain: settings-memory */
 export const idSettingsMemory = {
   "settings.memoryBrowser": "Berkas memori ruang kerja",
-  "settings.memoryBrowserDesc": "Telusuri dan cari memori Grok Build di disk untuk proyek saat ini ({GROK_HOME}/memory). Pencarian isi dibatasi; pratinjau dan cuplikan menyunting kunci API yang mungkin. Buka atau tampilkan berkas di sistem. Tidak mengubah riwayat obrolan di aplikasi.",
+  "settings.memoryBrowserDesc": "Telusuri dan cari memori Zhimind Runtime di disk untuk proyek saat ini ({GROK_HOME}/memory). Pencarian isi dibatasi; pratinjau dan cuplikan menyunting kunci API yang mungkin. Buka atau tampilkan berkas di sistem. Tidak mengubah riwayat obrolan di aplikasi.",
   "settings.memoryBrowser.off": "Memori mati. Aktifkan Memori lintas sesi di atas untuk menelusuri berkas.",
   "settings.memoryBrowser.loading": "Memuat berkas memori…",
   "settings.memoryBrowser.empty": "Tidak ada berkas memori untuk proyek ini.",
@@ -31,7 +31,7 @@ export const idSettingsMemory = {
   "settings.memoryBrowser.delete": "Hapus",
   "settings.memoryBrowser.deleting": "Menghapus…",
   "settings.memoryBrowser.deleteConfirmTitle": "Hapus berkas memori?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Hapus “{name}” dari penyimpanan memori Grok Build? Tindakan ini tidak dapat dibatalkan.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Hapus “{name}” dari penyimpanan memori Zhimind Runtime? Tindakan ini tidak dapat dibatalkan.",
   "settings.memoryBrowser.noProject": "Buka proyek untuk mencocokkan memori cakupan ruang kerja. MEMORY.md global tetap muncul jika ada.",
   "settings.memoryBrowser.root": "Akar memori: {path}",
   "settings.memoryBrowser.kind.all": "Semua",

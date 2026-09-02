@@ -14180,7 +14180,7 @@ export function AppWorkbench() {
               }}
               onAiCreate={() => {
               void newChat(null, {
-              seedDraft: aiCreateSeedPrompt("Grok"),
+              seedDraft: aiCreateSeedPrompt("Zhimind"),
               switchToChat: true,
               automationSetup: true,
               });

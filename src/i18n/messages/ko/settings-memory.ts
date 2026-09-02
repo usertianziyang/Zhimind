@@ -1,7 +1,7 @@
 /** ko messages — domain: settings-memory */
 export const koSettingsMemory = {
   "settings.memoryBrowser": "작업 공간 메모리 파일",
-  "settings.memoryBrowserDesc": "현재 프로젝트의 디스크 Grok Build 메모리를 찾아보고 검색합니다({GROK_HOME}/memory). 내용 검색은 제한되며 미리보기와 스니펫은 API 키처럼 보이는 값을 마스킹합니다. 시스템에서 파일을 열거나 표시합니다. 앱의 채팅 기록은 바꾸지 않습니다.",
+  "settings.memoryBrowserDesc": "현재 프로젝트의 디스크 Zhimind Runtime 메모리를 찾아보고 검색합니다({GROK_HOME}/memory). 내용 검색은 제한되며 미리보기와 스니펫은 API 키처럼 보이는 값을 마스킹합니다. 시스템에서 파일을 열거나 표시합니다. 앱의 채팅 기록은 바꾸지 않습니다.",
   "settings.memoryBrowser.off": "메모리가 꺼져 있습니다. 파일을 보려면 위의 세션 간 메모리를 켜세요.",
   "settings.memoryBrowser.loading": "메모리 파일 불러오는 중…",
   "settings.memoryBrowser.empty": "이 프로젝트의 메모리 파일을 찾을 수 없습니다.",
@@ -31,7 +31,7 @@ export const koSettingsMemory = {
   "settings.memoryBrowser.delete": "삭제",
   "settings.memoryBrowser.deleting": "삭제 중…",
   "settings.memoryBrowser.deleteConfirmTitle": "메모리 파일을 삭제할까요?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Grok Build 메모리 저장소에서 “{name}”을(를) 삭제할까요? 되돌릴 수 없습니다.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Zhimind Runtime 메모리 저장소에서 “{name}”을(를) 삭제할까요? 되돌릴 수 없습니다.",
   "settings.memoryBrowser.noProject": "작업 공간 범위 메모리를 맞추려면 프로젝트를 여세요. 전역 MEMORY.md는 있으면 계속 나타납니다.",
   "settings.memoryBrowser.root": "메모리 루트: {path}",
   "settings.memoryBrowser.kind.all": "모두",

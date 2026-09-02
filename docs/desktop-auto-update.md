@@ -1,8 +1,14 @@
-# Desktop auto-update
+# Zhimind desktop auto-update
 
-Grok App uses the same **Tauri 2 updater** shape as Minos / Buzz: signed release
-artifacts, a rolling `latest.json` endpoint, in-app check/download/install, and
-a hard stop of managed agent / mirror / voice / IM processes before binary swap.
+Zhimind uses the **Tauri 2 updater** shape: signed desktop release artifacts, a
+rolling `latest.json` endpoint on GitHub Releases, in-app
+check/download/install, and a hard stop of managed agent / mirror / voice / IM
+processes before binary swap. The desktop brand is Zhimind; the managed runtime
+behind it remains the official `grok` CLI / Grok Build.
+
+CLI updates are a separate channel and continue to use the official `grok
+update` flow and its configured x.ai / GCS mirrors. They are not served by the
+Zhimind desktop updater.
 
 ## Architecture
 
@@ -13,13 +19,17 @@ CI release
         └── latest.json  + per-platform archive + .sig
                  ▲
                  │ check()
+        GitHub  grok-desktop-latest/latest.json
+                  ▲
+                  │
         Desktop  tauri-plugin-updater  (release builds only)
                  │ prepare_for_app_update → stop agents / mirror / voice / IM
                  │ install + relaunch
         UI: Settings → About
 ```
 
-Unsigned / local builds keep the previous GitHub “open release page” path.
+GitHub Releases is both the signed updater store and the manual-download
+fallback. Unsigned / local builds open the current repository's latest Release.
 
 ## App pieces
 
@@ -76,7 +86,7 @@ Before treating silent update as “on” for users:
 3. **Release cut:** tag `vX.Y.Z` so CI builds installers **and** refreshes `grok-desktop-latest` + `latest.json` + `.sig`.
 4. **Smoke on a prior signed build:** Settings → About shows **Update channel: in-app (signed release)** → Check → Download → Install and restart → version matches tag.
 5. **Failure path:** if install fails, agents / Remote IM / mirror must keep running (`prepare_for_app_update` only after successful `install()`).
-6. **Unsigned / local builds:** About must show **GitHub download** channel and still open Release / download installer (no crash; never claims silent update).
+6. **Unsigned / local builds:** About must show the **GitHub manual download** channel and open the latest Release / installer (no crash; never claims silent update).
 7. **Linux non-AppImage:** About shows **unsupported** package-type channel + AppImage-only note when the plugin is compiled in.
 
 In-app host command `updater_status` reports `{ channel, pluginEnabled, platformSupported, endpoint }` for Doctor / About (`channel` is `silent` | `github_manual` | `unsupported`).
@@ -84,21 +94,25 @@ In-app host command `updater_status` reports `{ channel, pluginEnabled, platform
 ## Rolling endpoint
 
 ```text
-https://github.com/<owner>/grok-app/releases/download/grok-desktop-latest/latest.json
+https://github.com/usertianziyang/Zhimind/releases/download/grok-desktop-latest/latest.json
 ```
 
-Publish two GitHub releases per cut:
+Publish two GitHub Releases per formal version:
 
-1. **`vX.Y.Z`** — human installers + notes + **stable aliases** (`Grok_mac_x64.dmg`, `Grok_windows_x64-setup.exe`, …) + `downloads.json` for grok-app.com
+1. **`vX.Y.Z`** — human installers + notes + stable installer aliases + `downloads.json` for the Zhimind download page
 2. **`grok-desktop-latest`** — updater archives + `latest.json` (clobber each release)
 
-Do **not** point website download buttons at `grok-desktop-latest`. That tag is the silent updater channel. First-time installs use `/releases/latest/download/<stable-alias>` (see `docs/llm-wiki/release.md`).
+Do **not** point website download buttons at `grok-desktop-latest`; it is only
+the signed in-app updater channel. First-time installs use the normal latest
+Release and its stable installer aliases.
+The historical `Grok_*` asset aliases may remain in CI for compatibility; they
+are not desktop UI copy.
 
 ## Build steps (outline)
 
 ```sh
 export GROK_UPDATER_PUBLIC_KEY=...
-export GROK_UPDATER_ENDPOINT=https://github.com/<owner>/grok-app/releases/download/grok-desktop-latest/latest.json
+export GROK_UPDATER_ENDPOINT=https://github.com/usertianziyang/Zhimind/releases/download/grok-desktop-latest/latest.json
 export TAURI_SIGNING_PRIVATE_KEY=...
 export TAURI_SIGNING_PRIVATE_KEY_PASSWORD=...
 
@@ -116,7 +130,7 @@ file not found. The crate is always a hard dependency (Tauri ACL); only
 After all platforms upload assets to `vX.Y.Z`:
 
 ```sh
-TAG=v0.1.9 REPO=<owner>/grok-app bash scripts/assemble-updater-manifest.sh
+TAG=v0.1.9 REPO=<owner>/Zhimind bash scripts/assemble-updater-manifest.sh
 ```
 
 Platform keys: `darwin-aarch64`, `darwin-x86_64`, `linux-x86_64`, `windows-x86_64`.
@@ -139,6 +153,6 @@ post-build.
 
 1. `pnpm typecheck` / `pnpm test` — UI unit tests
 2. `cargo test --manifest-path src-tauri/Cargo.toml updater::` — Rust helpers
-3. Settings → About shows **manual GitHub check** on local builds (expected)
+3. Settings → About shows the **manual GitHub update path** on local builds (expected)
 4. Release smoke: build with both env vars, confirm `is_updater_plugin_enabled`
-   is true in a release binary, and that check hits `latest.json`
+   is true in a release binary, and that check hits GitHub `latest.json`

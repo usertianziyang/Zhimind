@@ -551,7 +551,7 @@ pub fn busy_tooltip(base: &str, count: u32) -> String {
 ///
 /// - **macOS Dock**: `set_badge_label` (+ count) on the main window. No-op while
 ///   the app is Accessory / dock-hidden (close-to-tray) — tray chrome still updates.
-/// - **macOS menu-bar tray**: tooltip `Grok · N` and a numeric title next to the icon.
+/// - **macOS menu-bar tray**: tooltip `Zhimind · N` and a numeric title next to the icon.
 /// - **Windows**: tray tooltip only. Taskbar *button* overlay is a separate
 ///   opt-in (`tray_set_windows_overlay`); this path must not call `set_overlay_icon`.
 /// - **Linux**: dock-like badge when supported + tray tooltip.
@@ -690,22 +690,22 @@ mod badge_tests {
 
     #[test]
     fn busy_tooltip_suffix() {
-        assert_eq!(busy_tooltip("Grok", 0), "Grok");
-        assert_eq!(busy_tooltip("Grok", 2), "Grok · 2");
+        assert_eq!(busy_tooltip("Zhimind", 0), "Zhimind");
+        assert_eq!(busy_tooltip("Zhimind", 2), "Zhimind · 2");
     }
 
     #[test]
     fn quit_label_shows_ctrl_q_without_owning_the_text() {
         assert_eq!(
-            quit_tray_label_for("Quit Grok", false),
-            "Quit Grok (Ctrl+Q)"
+            quit_tray_label_for("Quit Zhimind", false),
+            "Quit Zhimind (Ctrl+Q)"
         );
         assert_eq!(
-            quit_tray_label_for("退出 Grok", false),
-            "退出 Grok (Ctrl+Q)"
+            quit_tray_label_for("退出 Zhimind", false),
+            "退出 Zhimind (Ctrl+Q)"
         );
-        assert_eq!(quit_tray_label_for("Quit Grok", true), "Quit Grok");
-        assert_eq!(quit_tray_label_for("退出 Grok", true), "退出 Grok");
+        assert_eq!(quit_tray_label_for("Quit Zhimind", true), "Quit Zhimind");
+        assert_eq!(quit_tray_label_for("退出 Zhimind", true), "退出 Zhimind");
     }
 
     #[test]

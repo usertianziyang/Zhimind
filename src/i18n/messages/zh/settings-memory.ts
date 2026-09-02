@@ -1,7 +1,7 @@
 /** Simplified Chinese messages — domain: settings-memory */
 export const zhSettingsMemory = {
   "settings.memoryBrowser": "工作区记忆文件",
-  "settings.memoryBrowserDesc": "浏览并搜索当前项目在磁盘上的 Grok Build 记忆（{GROK_HOME}/memory）。正文搜索有上限；预览与摘录会脱敏疑似 API Key。可打开或在文件管理器中显示。不会改动应用内聊天记录。",
+  "settings.memoryBrowserDesc": "浏览并搜索当前项目在磁盘上的 Zhimind Runtime 记忆（{GROK_HOME}/memory）。正文搜索有上限；预览与摘录会脱敏疑似 API Key。可打开或在文件管理器中显示。不会改动应用内聊天记录。",
   "settings.memoryBrowser.off": "记忆已关闭。请先打开上方的「跨会话记忆」后再浏览文件。",
   "settings.memoryBrowser.loading": "正在加载记忆文件…",
   "settings.memoryBrowser.empty": "当前项目未找到记忆文件。",
@@ -31,7 +31,7 @@ export const zhSettingsMemory = {
   "settings.memoryBrowser.delete": "删除",
   "settings.memoryBrowser.deleting": "删除中…",
   "settings.memoryBrowser.deleteConfirmTitle": "删除记忆文件？",
-  "settings.memoryBrowser.deleteConfirmMsg": "从 Grok Build 记忆库删除「{name}」？此操作不可撤销。",
+  "settings.memoryBrowser.deleteConfirmMsg": "从 Zhimind Runtime 记忆库删除「{name}」？此操作不可撤销。",
   "settings.memoryBrowser.noProject": "打开项目以匹配工作区记忆。若存在全局 MEMORY.md 仍会显示。",
   "settings.memoryBrowser.root": "记忆目录：{path}",
   "settings.memoryBrowser.kind.all": "全部",

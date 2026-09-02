@@ -2,7 +2,7 @@
  * Conversation → share-card PNG (Claude/ChatGPT-style export image).
  *
  * Pure builders for card model + offscreen DOM; rasterization uses canvas
- * (no runtime CDN). Footer always credits "Generated with Grok App".
+ * (no runtime CDN). Footer always credits "Generated with Zhimind".
  */
 
 import { escapeHtml, type ExportableMessage } from "@/lib/sessionExport";
@@ -30,7 +30,7 @@ import {
   type Attachment,
 } from "@/lib/attachments";
 
-export const GROK_APP_SHARE_FOOTER = "Generated with Grok App";
+export const GROK_APP_SHARE_FOOTER = "Generated with Zhimind";
 
 /** One body block inside a full-transcript share message. */
 export type ShareCardBodyPart =
@@ -107,7 +107,7 @@ const DEFAULT_WIDTH = 720;
 
 function roleLabel(role: string): string {
   if (role === "user") return "You";
-  if (role === "assistant") return "Grok";
+  if (role === "assistant") return "Zhimind";
   if (role === "tool") return "Tool";
   return role;
 }
@@ -794,7 +794,7 @@ export async function rasterizeShareCardPng(
       m.role === "user"
         ? "You"
         : m.role === "assistant"
-          ? "Grok"
+          ? "Zhimind"
           : m.role === "tool"
             ? "Tool"
             : m.role;
@@ -1143,7 +1143,7 @@ export async function copyPngBlob(blob: Blob): Promise<boolean> {
 
 /**
  * Rasterize a smart summary poster (curated skin + bullets + takeaway).
- * Canvas-only; no foreignObject. Footer always credits Grok App.
+ * Canvas-only; no foreignObject. Footer always credits Zhimind.
  */
 export async function rasterizeSmartShareCardPng(
   summary: SmartShareSummary,

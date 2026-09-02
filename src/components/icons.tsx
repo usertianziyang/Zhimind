@@ -176,7 +176,7 @@ function wrap(Tb: TbIcon, defaults?: { stroke?: number; className?: string }) {
   return TablerAppIcon;
 }
 
-/** Zhimind monogram: an open mind shape with a central connection path. */
+/** Zhimind monogram: the supplied positive/negative mark, colorized by CSS. */
 export function IconGrokMark({
   size = 22,
   title = "Zhimind",
@@ -203,18 +203,7 @@ export function IconGrokMark({
       aria-label={title}
       title={title}
     >
-      <svg
-        width={size}
-        height={size}
-        viewBox="0 0 32 32"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden
-      >
-        <path d="M5 7.5h17L8 24.5h19" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        <path d="M21 7.5h6v6" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="16" cy="16" r="2.6" fill="currentColor" />
-      </svg>
+      <span className="grok-logo__asset" aria-hidden />
     </span>
   );
 }

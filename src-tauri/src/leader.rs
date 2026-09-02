@@ -1,6 +1,6 @@
-//! Grok Build **agent leader** process management for Settings → Runtime.
+//! Zhimind Runtime **agent leader** process management for Settings → Runtime.
 //!
-//! CLI surface (verified against current Grok Build):
+//! CLI surface (verified against current Zhimind Runtime):
 //! - `grok agent leader` — long-running shared backend (Unix socket)
 //! - `grok leader list --json` / `kill` / `info`
 //! - Default socket: `~/.grok/leader.sock` (override: `GROK_LEADER_SOCKET` or `--leader-socket`)
@@ -352,14 +352,16 @@ pub fn derive_leader_state(
     if !cli_found {
         return (
             "error",
-            Some("Grok Build CLI not found. Install or set the CLI path under Runtime.".into()),
+            Some(
+                "Zhimind Runtime CLI not found. Install or set the CLI path under Runtime.".into(),
+            ),
         );
     }
     if !cli_supports_leader {
         return (
             "unsupported",
             Some(
-                "This Grok Build CLI version does not expose `agent leader` / `leader` commands."
+                "This Zhimind Runtime CLI version does not expose `agent leader` / `leader` commands."
                     .into(),
             ),
         );
@@ -402,7 +404,7 @@ fn run_grok_cli_args(args: &[&str], timeout_secs: u64) -> Result<(String, String
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-        return Err("Grok Build CLI not found".into());
+        return Err("Zhimind Runtime CLI not found".into());
     };
 
     let args_owned: Vec<String> = args.iter().map(|s| (*s).to_string()).collect();
@@ -430,7 +432,7 @@ fn probe_cli_supports_leader() -> (bool, bool, Option<String>) {
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     if !probe.found {
-        return (false, false, Some("Grok Build CLI not found".into()));
+        return (false, false, Some("Zhimind Runtime CLI not found".into()));
     }
     // Prefer `grok leader --help` (management surface); fall back to agent leader.
     match run_grok_cli_args(&["leader", "--help"], 8) {
@@ -719,12 +721,12 @@ pub async fn leader_list() -> Result<serde_json::Value, String> {
         let (cli_found, cli_supports, support_msg) = probe_cli_supports_leader();
         if !cli_found {
             return soft_list_error(
-                support_msg.unwrap_or_else(|| "Grok Build CLI not found".into()),
+                support_msg.unwrap_or_else(|| "Zhimind Runtime CLI not found".into()),
             );
         }
         if !cli_supports {
             return soft_list_error(support_msg.unwrap_or_else(|| {
-                "This Grok Build CLI version does not expose `grok leader list`.".into()
+                "This Zhimind Runtime CLI version does not expose `grok leader list`.".into()
             }));
         }
         match run_grok_cli_args(&["leader", "list", "--json"], LEADER_CMD_TIMEOUT_SECS) {
@@ -768,14 +770,14 @@ pub async fn leader_info(pid: Option<u64>) -> Result<LeaderInfoDto, String> {
         let (cli_found, cli_supports, support_msg) = probe_cli_supports_leader();
         if !cli_found {
             return soft_info_error(
-                support_msg.unwrap_or_else(|| "Grok Build CLI not found".into()),
+                support_msg.unwrap_or_else(|| "Zhimind Runtime CLI not found".into()),
                 false,
             );
         }
         if !cli_supports {
             return soft_info_error(
                 support_msg.unwrap_or_else(|| {
-                    "This Grok Build CLI version does not expose `grok leader info`.".into()
+                    "This Zhimind Runtime CLI version does not expose `grok leader info`.".into()
                 }),
                 true,
             );
@@ -831,7 +833,7 @@ pub async fn leader_start() -> Result<LeaderStatusDto, String> {
             return Ok(current);
         }
         if !current.cli_found {
-            return Err("Grok Build CLI not found".into());
+            return Err("Zhimind Runtime CLI not found".into());
         }
         if !current.cli_supports_leader {
             return Err(current
@@ -842,7 +844,7 @@ pub async fn leader_start() -> Result<LeaderStatusDto, String> {
         let settings = store::load_settings();
         let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
         let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-            return Err("Grok Build CLI not found".into());
+            return Err("Zhimind Runtime CLI not found".into());
         };
         let socket = default_leader_socket_path();
         if let Some(parent) = socket.parent() {

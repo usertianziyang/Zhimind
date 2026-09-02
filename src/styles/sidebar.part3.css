@@ -327,18 +327,25 @@
   transform-origin: center center;
 }
 
-/* Brand mark: theme via currentColor (dark → light glyph, light → dark glyph) */
+/* Brand mark: the supplied positive/negative asset, colorized by currentColor. */
 .g-icon--grok-mark,
 .grok-logo {
   color: var(--text-primary);
 }
 
-.g-icon--grok-mark svg,
-.grok-logo svg {
+.grok-logo__asset {
   display: block;
   width: 100%;
   height: 100%;
-  fill: currentColor;
+  background: currentColor;
+  -webkit-mask-image: url("/logo.png");
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-image: url("/logo.png");
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
 }
 
 .sidebar-brand-row__left .grok-logo,
@@ -508,7 +515,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .g-icon--grok-mark svg,
+  .grok-logo__asset,
   .nav-item:hover .g-icon--anim svg,
   .nav-new:hover .g-icon--anim svg,
   .brand__collapse:hover .g-icon--anim svg,

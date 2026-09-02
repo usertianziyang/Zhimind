@@ -78,7 +78,7 @@ fn label_from_profile(p: &AccountProfile) -> String {
     p.email
         .clone()
         .or_else(|| p.display_name.clone())
-        .unwrap_or_else(|| "Grok account".into())
+        .unwrap_or_else(|| "Zhimind account".into())
 }
 
 /// List saved account snapshots + active id.

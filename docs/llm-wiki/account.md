@@ -143,7 +143,7 @@ Fallback (confirmed live JSON):
 
 ### Subscription tier (brand-facing)
 
-Quota endpoints **do not** return SuperGrok vs SuperGrok Heavy. Fetch in parallel with quota:
+Quota endpoints **do not** return the Zhimind plan label. Fetch in parallel with quota:
 
 | Source | Field | Example |
 |--------|-------|---------|
@@ -151,12 +151,12 @@ Quota endpoints **do not** return SuperGrok vs SuperGrok Heavy. Fetch in paralle
 | `GET …/v1/user?include=subscription` | `subscriptionTier` | `"SuperGrokPro"` (API enum → Heavy) |
 | JWT claim `tier` | numeric | soft fallback only (`≥5` → Heavy, `≥2` → SuperGrok) |
 
-Never invent `"SuperGrok"` for paywall bodies (GrowthBook whitelist uses official enums). Map enums only for **display** / brand SVG selection.
+Never invent `"SuperGrok"` for paywall bodies (GrowthBook whitelist uses official enums). Map enums only for **display** / welcome-logo state selection.
 
 - `subscriptionTier` → `BillingSnapshot.subscriptionTier` (display label)
-- Empty-session brand: `SuperGrokMark` (`supergrok` \| `heavy`) above the floating composer
-- **Custom relay active** (`providers` `activeSource === "custom"`): always show plain **SuperGrok**, never Heavy (Heavy is official membership branding only)
-- Assets: `docs/svg/SuperGrok.svg`, `docs/svg/SuperGrokHeavy.svg` (Heavy badge via CSS `data-theme`, not Tailwind `dark:`)
+- Empty-session brand: `SuperGrokMark` (`supergrok` \| `heavy`) above the floating composer; both states render the Zhimind logo asset
+- **Custom relay active** (`providers` `activeSource === "custom"`): keep the plain Zhimind logo, never a membership badge
+- Asset: `public/logo.png`, consumed through the Zhimind CSS mask; the old `docs/svg/SuperGrok*.svg` files are retained as historical source material and are not runtime UI assets
 
 UI shows **remaining %** (100 − used), product tags, reset time — same semantics as grok-go Accounts.
 

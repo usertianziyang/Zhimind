@@ -322,7 +322,7 @@ export function UserMenu({
   const tier = billing
     ? tierLabel(billing, channel)
     : signedIn
-      ? "Grok Build"
+      ? "Zhimind Runtime"
       : "—";
 
   const themeLabel = (pref: ThemePreference) => {

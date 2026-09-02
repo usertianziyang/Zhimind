@@ -152,7 +152,7 @@ fn collect_plugins_list() -> Result<Vec<PluginDto>, String> {
     parse_plugin_list_json(&stdout, &disabled, &inspect_extra)
 }
 
-/// List installed plugins (Grok Build inventory + enable state + inspect extras).
+/// List installed plugins (Zhimind Runtime inventory + enable state + inspect extras).
 /// Always returns Ok; on CLI missing / failure, `plugins` is empty and `error` is set.
 #[tauri::command]
 pub async fn plugins_list() -> Result<serde_json::Value, String> {
@@ -737,7 +737,7 @@ pub async fn plugin_validate(
                     "ok": false,
                     "messages": [
                         format!(
-                            "This Grok CLI does not support `plugin validate`; version {} or newer is required. Run `grok update`, then fully restart the app.",
+                            "This Zhimind Runtime CLI does not support `plugin validate`; version {} or newer is required. Run `grok update`, then fully restart the app.",
                             crate::cli_probe::min_cli_version_str()
                         )
                     ],

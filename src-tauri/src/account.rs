@@ -1069,7 +1069,8 @@ async fn fetch_billing_remote(token: &str) -> BillingSnapshot {
         available: false,
         source: "unavailable".into(),
         message: Some(
-            "Could not fetch billing. Open Grok usage on the web, or re-login via CLI.".into(),
+            "Could not fetch billing. Open usage on the web, or sign in again via the Runtime CLI."
+                .into(),
         ),
         manage_url: USAGE_MANAGE_URL.into(),
         subscribe_url: SUBSCRIBE_URL.into(),
@@ -1531,7 +1532,7 @@ pub async fn account_status_opts(
             BillingSnapshot {
                 available: false,
                 source: "no_token".into(),
-                message: Some("Sign in with official Grok Build to load quota.".into()),
+                message: Some("Sign in with your official account to load quota.".into()),
                 manage_url: USAGE_MANAGE_URL.into(),
                 subscribe_url: SUBSCRIBE_URL.into(),
                 products: vec![],
@@ -1601,7 +1602,9 @@ pub async fn account_login(method: &str, manual_cli: Option<&str>) -> LoginResul
             return LoginResult {
                 ok: false,
                 method: method.into(),
-                message: "Grok Build CLI not found. Install or set CLI path in Settings.".into(),
+                message:
+                    "Zhimind Runtime CLI not found. Install it or set the CLI path in Settings."
+                        .into(),
                 device_url: None,
                 device_code: None,
                 profile: None,
@@ -1768,8 +1771,8 @@ pub async fn account_login(method: &str, manual_cli: Option<&str>) -> LoginResul
             ok: false,
             method: method.into(),
             message: format!(
-                "Sign-in timed out after {secs}s — the Grok auth endpoint could not be reached. \
-If the browser showed a code to paste into Grok Build, start sign-in again and paste it promptly \
+                "Sign-in timed out after {secs}s — the official auth endpoint could not be reached. \
+If the browser showed a code to paste into Zhimind Runtime, start sign-in again and paste it promptly \
 (or use Device code login)."
             ),
             device_url: None,

@@ -51,7 +51,7 @@ export const deProject = {
   "project.continueCwdOk": "„{title}“ fortgesetzt",
   "project.continueCwdFailed": "Letzter Agent konnte nicht fortgesetzt werden",
   "project.continueCwdNoProject": "Wähle zuerst ein Projekt aus.",
-  "project.continueCwdNoCli": "Grok Build CLI nicht gefunden — installiere sie oder setze den CLI-Pfad und versuche Fortsetzen erneut.",
+  "project.continueCwdNoCli": "Zhimind Runtime nicht gefunden — installiere sie oder setze den CLI-Pfad und versuche Fortsetzen erneut.",
   "project.continueCwdUntrusted": "Vertraue diesem Projekt zuerst, dann den letzten Agenten fortsetzen.",
   "project.continueCwdHostOnly": "Letzten Agenten fortsetzen benötigt das Desktop-App-Fenster.",
   "project.continueCwdImportFailed": "Agentensitzung gefunden, konnte aber nicht in die App importiert werden.",

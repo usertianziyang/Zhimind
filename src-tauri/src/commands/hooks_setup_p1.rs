@@ -370,7 +370,7 @@ pub async fn permission_rules_set(
     .await
     .map_err(|e| e.to_string())??;
 
-    // Grok Build reads rules at session start — soft-respawn so the next turn
+    // Zhimind Runtime reads rules at session start — soft-respawn so the next turn
     // reloads config without a full disconnect toast.
     mgr.soft_respawn(&app).await;
     Ok(result)
@@ -483,7 +483,7 @@ fn run_mcp_doctor(name: Option<&str>) -> Result<crate::extensions::McpDoctorRepo
     let settings = store::load_settings();
     let probe = cli_probe::probe_cli(settings.manual_cli_path.as_deref());
     let Some(cli_path) = probe.path.filter(|_| probe.found) else {
-        return Err("Grok Build CLI not found".into());
+        return Err("Zhimind Runtime CLI not found".into());
     };
     // Sync user-scoped HTTP MCP into agent-home before doctor (independent mode).
     let mirrored =

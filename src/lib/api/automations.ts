@@ -95,7 +95,7 @@ export async function schedulesLaunchAgentStatus(): Promise<SchedulesLaunchAgent
       enabled: false,
       installed: false,
       honesty:
-        "Not a headless daemon. The LaunchAgent only starts the full Grok App.",
+        "Not a headless daemon. The LaunchAgent only starts the full Zhimind app.",
     };
   }
   return invoke<SchedulesLaunchAgentStatusDto>("schedules_launch_agent_status");
@@ -266,4 +266,3 @@ export async function automationDelete(id: string): Promise<void> {
   }
   return invoke<void>("automation_delete", { id });
 }
-

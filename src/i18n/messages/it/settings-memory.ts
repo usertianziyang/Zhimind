@@ -1,7 +1,7 @@
 /** it messages — domain: settings-memory */
 export const itSettingsMemory = {
   "settings.memoryBrowser": "File di memoria dell’area di lavoro",
-  "settings.memoryBrowserDesc": "Sfoglia e cerca la memoria Grok Build su disco per il progetto attuale ({GROK_HOME}/memory). La ricerca nel contenuto è limitata; anteprime e snippet oscurano le chiavi API probabili. Apri o mostra i file nel sistema. Non modifica la cronologia della chat nell’app.",
+  "settings.memoryBrowserDesc": "Sfoglia e cerca la memoria Zhimind Runtime su disco per il progetto attuale ({GROK_HOME}/memory). La ricerca nel contenuto è limitata; anteprime e snippet oscurano le chiavi API probabili. Apri o mostra i file nel sistema. Non modifica la cronologia della chat nell’app.",
   "settings.memoryBrowser.off": "La memoria è disattivata. Attiva Memoria tra sessioni sopra per sfogliare i file.",
   "settings.memoryBrowser.loading": "Caricamento file di memoria…",
   "settings.memoryBrowser.empty": "Nessun file di memoria trovato per questo progetto.",
@@ -31,7 +31,7 @@ export const itSettingsMemory = {
   "settings.memoryBrowser.delete": "Elimina",
   "settings.memoryBrowser.deleting": "Eliminazione…",
   "settings.memoryBrowser.deleteConfirmTitle": "Eliminare il file di memoria?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Eliminare «{name}» dallo store di memoria Grok Build? L’operazione non si può annullare.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Eliminare «{name}» dallo store di memoria Zhimind Runtime? L’operazione non si può annullare.",
   "settings.memoryBrowser.noProject": "Apri un progetto per allineare la memoria con ambito area di lavoro. Il MEMORY.md globale compare comunque se presente.",
   "settings.memoryBrowser.root": "Root della memoria: {path}",
   "settings.memoryBrowser.kind.all": "Tutti",

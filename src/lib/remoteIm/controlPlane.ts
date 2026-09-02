@@ -264,7 +264,7 @@ export function applyControlCommand(
       effects.push({ kind: "bind_project", projectId: p.id, mode: "new" });
       effects.push({
         kind: "reply",
-        text: `Project bound: ${p.name}. Next message starts a new Grok session.`,
+        text: `Project bound: ${p.name}. Next message starts a new Zhimind session.`,
       });
       break;
     }
@@ -338,7 +338,7 @@ export function applyControlCommand(
       effects.push({ kind: "clear_session", keepProject: true });
       effects.push({
         kind: "reply",
-        text: "Session cleared. Next message starts a new Grok session.",
+        text: "Session cleared. Next message starts a new Zhimind session.",
       });
       break;
     }

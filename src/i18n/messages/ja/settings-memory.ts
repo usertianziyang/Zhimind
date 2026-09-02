@@ -1,7 +1,7 @@
 /** ja messages — domain: settings-memory */
 export const jaSettingsMemory = {
   "settings.memoryBrowser": "ワークスペースメモリファイル",
-  "settings.memoryBrowserDesc": "現在のプロジェクトのディスク上 Grok Build メモリ（{GROK_HOME}/memory）を閲覧・検索します。本文検索は上限付き。プレビューとスニペットは API キーらしいものを伏せます。システムでファイルを開くか表示します。アプリのチャット履歴は変えません。",
+  "settings.memoryBrowserDesc": "現在のプロジェクトのディスク上 Zhimind Runtime メモリ（{GROK_HOME}/memory）を閲覧・検索します。本文検索は上限付き。プレビューとスニペットは API キーらしいものを伏せます。システムでファイルを開くか表示します。アプリのチャット履歴は変えません。",
   "settings.memoryBrowser.off": "メモリはオフです。ファイルを見るには上のクロスセッションメモリをオンにしてください。",
   "settings.memoryBrowser.loading": "メモリファイルを読み込み中…",
   "settings.memoryBrowser.empty": "このプロジェクトのメモリファイルが見つかりません。",
@@ -31,7 +31,7 @@ export const jaSettingsMemory = {
   "settings.memoryBrowser.delete": "削除",
   "settings.memoryBrowser.deleting": "削除中…",
   "settings.memoryBrowser.deleteConfirmTitle": "メモリファイルを削除しますか？",
-  "settings.memoryBrowser.deleteConfirmMsg": "Grok Build メモリストアから「{name}」を削除しますか？元に戻せません。",
+  "settings.memoryBrowser.deleteConfirmMsg": "Zhimind Runtime メモリストアから「{name}」を削除しますか？元に戻せません。",
   "settings.memoryBrowser.noProject": "ワークスペース範囲のメモリを合わせるにはプロジェクトを開いてください。あるときはグローバル MEMORY.md はまだ表示されます。",
   "settings.memoryBrowser.root": "メモリルート: {path}",
   "settings.memoryBrowser.kind.all": "すべて",

@@ -20,8 +20,8 @@ describe("tauri dev identifier overlay", () => {
       productName?: string;
     };
     expect(base.identifier).toBe("com.grokapp.desktop");
-    expect(dev.identifier).toBe("com.grokapp.desktop.dev");
-    expect(dev.productName).toBe("Grok Dev");
+    expect(dev.identifier).toBe("com.zhimind.desktop.dev");
+    expect(dev.productName).toBe("Zhimind Dev");
   });
 
   it("wires pnpm dev to merge the overlay", () => {

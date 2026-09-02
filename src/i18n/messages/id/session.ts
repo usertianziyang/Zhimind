@@ -272,7 +272,7 @@ export const idSession = {
   "session.exportTraceFail": "Ekspor jejak gagal",
   "session.exportTraceUploadFail": "Unggah jejak gagal",
   "session.exportTraceNoAgent": "Belum ada sesi agen tertaut. Mulai percakapan terlebih dahulu, lalu ekspor jejak.",
-  "session.exportTraceNoCli": "Grok Build CLI tidak ditemukan. Pasang atau atur jalur CLI di Pengaturan, lalu coba lagi.",
+  "session.exportTraceNoCli": "Zhimind Runtime tidak ditemukan. Pasang atau atur jalur CLI di Pengaturan, lalu coba lagi.",
   "session.exportTraceTimeout": "Waktu habis menunggu grok trace. Coba lagi, atau gunakan Ekspor lokal untuk jalur hanya-arsip yang lebih cepat.",
   "session.traces": "Jejak",
   "session.tracesTitle": "Jejak terbaru",

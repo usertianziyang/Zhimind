@@ -272,7 +272,7 @@ export const enSession = {
   "session.exportTraceFail": "Trace export failed",
   "session.exportTraceUploadFail": "Trace upload failed",
   "session.exportTraceNoAgent": "No agent session linked yet. Start a conversation first, then export the trace.",
-  "session.exportTraceNoCli": "Grok Build CLI not found. Install or set the CLI path in Settings, then retry.",
+  "session.exportTraceNoCli": "Zhimind Runtime not found. Install or set the CLI path in Settings, then retry.",
   "session.exportTraceTimeout": "Timed out waiting for grok trace. Try again, or use Export local for a faster archive-only path.",
   "session.traces": "Traces",
   "session.tracesTitle": "Recent traces",

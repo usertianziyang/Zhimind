@@ -272,7 +272,7 @@ export const koSession = {
   "session.exportTraceFail": "트레이스 내보내기 실패",
   "session.exportTraceUploadFail": "트레이스 업로드 실패",
   "session.exportTraceNoAgent": "아직 연결된 에이전트 세션이 없습니다. 먼저 대화를 시작한 뒤 트레이스를 내보내세요.",
-  "session.exportTraceNoCli": "Grok Build CLI를 찾을 수 없습니다. CLI를 설치하거나 설정에서 경로를 지정한 뒤 다시 시도하세요.",
+  "session.exportTraceNoCli": "Zhimind Runtime를 찾을 수 없습니다. CLI를 설치하거나 설정에서 경로를 지정한 뒤 다시 시도하세요.",
   "session.exportTraceTimeout": "grok trace 대기 시간이 초과되었습니다. 다시 시도하거나, 더 빠른 아카이브 전용 경로로 로컬 내보내기를 사용하세요.",
   "session.traces": "트레이스",
   "session.tracesTitle": "최근 트레이스",

@@ -1,7 +1,7 @@
 /** English messages — domain: settings-memory */
 export const enSettingsMemory = {
   "settings.memoryBrowser": "Workspace memory files",
-  "settings.memoryBrowserDesc": "Browse and search on-disk Grok Build memory for the current project ({GROK_HOME}/memory). Content search is capped; previews and snippets redact likely API keys. Open or reveal files in the system. Does not change chat history in the app.",
+  "settings.memoryBrowserDesc": "Browse and search on-disk Zhimind Runtime memory for the current project ({GROK_HOME}/memory). Content search is capped; previews and snippets redact likely API keys. Open or reveal files in the system. Does not change chat history in the app.",
   "settings.memoryBrowser.off": "Memory is off. Turn on Cross-session memory above to browse files.",
   "settings.memoryBrowser.loading": "Loading memory files…",
   "settings.memoryBrowser.empty": "No memory files found for this project.",
@@ -31,7 +31,7 @@ export const enSettingsMemory = {
   "settings.memoryBrowser.delete": "Delete",
   "settings.memoryBrowser.deleting": "Deleting…",
   "settings.memoryBrowser.deleteConfirmTitle": "Delete memory file?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Delete “{name}” from the Grok Build memory store? This cannot be undone.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Delete “{name}” from the Zhimind Runtime memory store? This cannot be undone.",
   "settings.memoryBrowser.noProject": "Open a project to match workspace-scoped memory. Global MEMORY.md still appears when present.",
   "settings.memoryBrowser.root": "Memory root: {path}",
   "settings.memoryBrowser.kind.all": "All",

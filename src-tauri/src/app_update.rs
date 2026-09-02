@@ -1,17 +1,15 @@
-//! Check for newer App releases on GitHub (manual fallback path).
+//! Check for newer desktop releases from GitHub Releases.
 //!
 //! Prefer the Tauri updater plugin (`updater` module) when the binary was built
 //! with `GROK_UPDATER_*` secrets — that path downloads, verifies, installs, and
 //! relaunches. This module remains for:
 //! - Local / unsigned builds (plugin not registered)
 //! - Linux `.deb` / `.rpm` installs (in-place update unsupported)
-//! - Settings → About "open release page" fallback
+//! - Settings → About manual download fallback
 //!
 //! Strategy:
-//! 1. GitHub REST `GET /repos/.../releases/latest` (rich payload: body, assets).
-//! 2. On API failure (rate limit 403/429, network, etc.) fall back to following
-//!    `https://github.com/.../releases/latest` redirect and parsing the tag
-//!    from the final URL — no API quota, works on shared IPs.
+//! 1. Query the current repository's public `releases/latest` API.
+//! 2. If the API is unavailable, follow the public HTML redirect and parse its tag.
 
 use std::time::Duration;
 
@@ -19,9 +17,9 @@ use serde::Serialize;
 use serde_json::Value;
 
 const DEFAULT_RELEASES_API_URL: &str =
-    "https://api.github.com/repos/RongleCat/grok-app/releases/latest";
-const DEFAULT_RELEASES_HTML_URL: &str = "https://github.com/RongleCat/grok-app/releases/latest";
-const DEFAULT_RELEASES_PAGE: &str = "https://github.com/RongleCat/grok-app/releases";
+    "https://api.github.com/repos/usertianziyang/Zhimind/releases/latest";
+const DEFAULT_RELEASES_HTML_URL: &str = "https://github.com/usertianziyang/Zhimind/releases/latest";
+const DEFAULT_RELEASES_PAGE: &str = "https://github.com/usertianziyang/Zhimind/releases";
 
 const CONNECT_TIMEOUT: Duration = Duration::from_secs(12);
 const REQUEST_TIMEOUT: Duration = Duration::from_secs(20);
@@ -94,7 +92,10 @@ fn is_skipped_release_asset(lower_name: &str) -> bool {
 }
 
 fn is_stable_installer_name(lower_name: &str) -> bool {
-    lower_name.starts_with("grok_mac_")
+    lower_name.starts_with("zhimind_mac_")
+        || lower_name.starts_with("zhimind_windows_")
+        || lower_name.starts_with("zhimind_linux_")
+        || lower_name.starts_with("grok_mac_")
         || lower_name.starts_with("grok_windows_")
         || lower_name.starts_with("grok_linux_")
 }
@@ -270,10 +271,15 @@ fn build_check_from_tag(current_version: &str, tag: &str, html_url: &str) -> App
     }
 }
 
-fn is_allowed_update_url(url: &str) -> bool {
-    url.starts_with("https://")
-        || url.starts_with("http://127.0.0.1")
-        || url.starts_with("http://localhost")
+fn is_allowed_update_url(raw: &str) -> bool {
+    let Ok(url) = url::Url::parse(raw) else {
+        return false;
+    };
+    match (url.scheme(), url.host_str()) {
+        ("https", Some(_)) => true,
+        ("http", Some("127.0.0.1" | "localhost")) => true,
+        _ => false,
+    }
 }
 
 fn format_http_error(status: u16, body: &str) -> String {
@@ -364,7 +370,7 @@ async fn fetch_via_html_redirect(
     current_version: &str,
 ) -> Result<AppUpdateCheck, String> {
     let ua = format!(
-        "GrokApp/{current_version} (desktop; check-update; +https://github.com/RongleCat/grok-app)"
+        "Zhimind/{current_version} (desktop; check-update; +https://github.com/usertianziyang/Zhimind)"
     );
 
     // 1) Prefer Location header without downloading the HTML body.
@@ -404,7 +410,8 @@ async fn fetch_via_html_redirect(
                 } else {
                     format!("v{tag}")
                 };
-                let html = format!("https://github.com/RongleCat/grok-app/releases/tag/{tag_path}");
+                let html =
+                    format!("https://github.com/usertianziyang/Zhimind/releases/tag/{tag_path}");
                 return Ok(build_check_from_tag(current_version, &tag, &html));
             }
         }
@@ -427,7 +434,7 @@ async fn fetch_via_html_redirect(
     ))
 }
 
-/// Query GitHub for the latest release and compare to this build.
+/// Query GitHub Releases and compare the latest version to this build.
 pub async fn check_app_update() -> Result<AppUpdateCheck, String> {
     let current = env!("CARGO_PKG_VERSION");
     let api_url =
@@ -443,10 +450,9 @@ pub async fn check_app_update() -> Result<AppUpdateCheck, String> {
     }
 
     let ua = format!(
-        "GrokApp/{current} (desktop; check-update; +https://github.com/RongleCat/grok-app)"
+        "Zhimind/{current} (desktop; check-update; +https://github.com/usertianziyang/Zhimind)"
     );
     let client = http_client(&ua)?;
-
     match fetch_via_api(&client, &api_url).await {
         Ok(v) => parse_github_release(current, &v),
         Err(api_err) => {

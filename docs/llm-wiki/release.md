@@ -180,16 +180,24 @@ git push origin vX.Y.Z
 | 工作流 | 触发 | 作用 |
 |--------|------|------|
 | `.github/workflows/ci.yml` | push/PR → main | typecheck、test、`build:ui`、mac/win `cargo test` |
-| `.github/workflows/release.yml` | tag `v*` 或手动 | 矩阵：mac×2 + win（setup+portable）+ linux（AppImage/deb/rpm）→ 同一 Release |
+| `.github/workflows/release.yml` | tag `v*` | 正式 Release：矩阵打包并刷新 updater、校验和和官网稳定别名 |
+| `.github/workflows/release.yml` | 手动选择 `dev` 等分支 | 独立 `dev-*` Prerelease：矩阵打包，不触碰正式 updater、Latest 或官网别名 |
+
+手动打包 `dev`：Actions → **桌面端打包与发布 / Release** → **Run workflow**
+→ 分支选择 `dev`。CLI 等价命令：
+
+```bash
+gh workflow run release.yml --ref dev
+```
 
 带版本号的安装包文件名跟随 `src-tauri/tauri.conf.json` 的 `productName`（当前为 `Zhimind`）；官网稳定下载别名仍保留历史 `Grok_*` 命名，发布脚本同时兼容新旧前缀，避免重命名导致旧链接失效。
 
 Release job 关键：
 
-1. 从 tag 名或 `package.json` 解析版本  
-2. `python3 scripts/changelog-for-release.py "$VER"` → `RELEASE_BODY`  
-3. `tauri-apps/tauri-action` 构建并挂资产  
-4. checksums job 再挂 **官网稳定别名** + `downloads.json`（见下节）
+1. `v*` Tag 使用正式版本；手动分支构建生成唯一 `dev-<branch>-<run>-<sha>` Tag
+2. 正式版从 CHANGELOG 生成正文；分支包写入中英测试包提示
+3. `tauri-apps/tauri-action` 构建并挂载多平台资产
+4. 只有正式 Tag 才刷新 updater、**官网稳定别名**、`downloads.json` 与校验和
 
 ### 仓库权限（人类一次性配置）
 

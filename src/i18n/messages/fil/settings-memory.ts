@@ -1,7 +1,7 @@
 /** fil messages — domain: settings-memory */
 export const filSettingsMemory = {
   "settings.memoryBrowser": "Mga file ng memorya ng workspace",
-  "settings.memoryBrowserDesc": "Mag-browse at maghanap ng on-disk na Grok Build memory para sa kasalukuyang proyekto ({GROK_HOME}/memory). Naka-cap ang paghahanap sa nilalaman; nire-redact ng mga preview at snippet ang malamang na API key. Buksan o ipakita ang mga file sa system. Hindi binabago ang kasaysayan ng chat sa app.",
+  "settings.memoryBrowserDesc": "Mag-browse at maghanap ng on-disk na Zhimind Runtime memory para sa kasalukuyang proyekto ({GROK_HOME}/memory). Naka-cap ang paghahanap sa nilalaman; nire-redact ng mga preview at snippet ang malamang na API key. Buksan o ipakita ang mga file sa system. Hindi binabago ang kasaysayan ng chat sa app.",
   "settings.memoryBrowser.off": "Naka-off ang memorya. I-on ang Cross-session memory sa itaas para mag-browse ng file.",
   "settings.memoryBrowser.loading": "Nilo-load ang mga file ng memorya…",
   "settings.memoryBrowser.empty": "Walang nakitang file ng memorya para sa proyektong ito.",
@@ -31,7 +31,7 @@ export const filSettingsMemory = {
   "settings.memoryBrowser.delete": "Burahin",
   "settings.memoryBrowser.deleting": "Binubura…",
   "settings.memoryBrowser.deleteConfirmTitle": "Burahin ang file ng memorya?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Burahin ang “{name}” mula sa memory store ng Grok Build? Hindi ito mababawi.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Burahin ang “{name}” mula sa memory store ng Zhimind Runtime? Hindi ito mababawi.",
   "settings.memoryBrowser.noProject": "Magbukas ng proyekto para itugma ang workspace-scoped na memorya. Lalabas pa rin ang global MEMORY.md kapag meron.",
   "settings.memoryBrowser.root": "Root ng memorya: {path}",
   "settings.memoryBrowser.kind.all": "Lahat",

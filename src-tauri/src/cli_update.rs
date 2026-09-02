@@ -27,7 +27,7 @@ use crate::process_util;
 const CHECK_TIMEOUT: Duration = Duration::from_secs(45);
 const UPDATE_TIMEOUT: Duration = Duration::from_secs(600);
 
-/// Known Grok Build CLI release channels from `grok update --check --json`.
+/// Known Zhimind Runtime CLI release channels from `grok update --check --json`.
 /// Do **not** invent extra channels — only map what the CLI documents.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum CliReleaseChannel {
@@ -294,7 +294,7 @@ fn normalize_ver(s: &str) -> String {
 pub fn check_cli_update(manual_path: Option<&str>) -> Result<CliUpdateCheck, String> {
     let probe = cli_probe::probe_cli(manual_path);
     let path = probe.path.filter(|_| probe.found).ok_or_else(|| {
-        "Grok Build CLI not found — install or set the path under Runtime".to_string()
+        "Zhimind Runtime CLI not found — install or set the path under Runtime".to_string()
     })?;
 
     let output = run_cli_with_timeout(
@@ -315,7 +315,7 @@ pub fn check_cli_update(manual_path: Option<&str>) -> Result<CliUpdateCheck, Str
 
 fn strip_grok_prefix(v: &str) -> String {
     let t = v.trim();
-    // e.g. "grok 0.2.111" / "Grok Build 0.2.111"
+    // e.g. "grok 0.2.111" / "Zhimind Runtime 0.2.111"
     let lower = t.to_ascii_lowercase();
     for prefix in ["grok build ", "grok "] {
         if lower.starts_with(prefix) {
@@ -399,7 +399,7 @@ pub async fn install_cli_update(
             }
         }
     } else if specialized {
-        return Err("Grok Build CLI not found — install or set the path under Runtime".into());
+        return Err("Zhimind Runtime CLI not found — install or set the path under Runtime".into());
     }
 
     info!("cli_update_install: using cli_install trust-chain");

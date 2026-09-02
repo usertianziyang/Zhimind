@@ -272,7 +272,7 @@ export const jaSession = {
   "session.exportTraceFail": "トレースの書き出しに失敗しました",
   "session.exportTraceUploadFail": "トレースのアップロードに失敗しました",
   "session.exportTraceNoAgent": "エージェントセッションはまだリンクされていません。先に会話を始めてからトレースを書き出してください。",
-  "session.exportTraceNoCli": "Grok Build CLI が見つかりません。インストールするか設定で CLI パスを指定してから再試行してください。",
+  "session.exportTraceNoCli": "Zhimind Runtime が見つかりません。インストールするか設定で CLI パスを指定してから再試行してください。",
   "session.exportTraceTimeout": "grok trace の待機がタイムアウトしました。再試行するか、より速いアーカイブのみの方法として「ローカル書き出し」を使ってください。",
   "session.traces": "トレース",
   "session.tracesTitle": "最近のトレース",

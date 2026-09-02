@@ -56,10 +56,24 @@ export function tierLabel(
   billing: BillingSnapshot,
   channel: string,
 ): string {
-  if (billing.subscriptionTier?.trim()) {
-    return billing.subscriptionTier.trim();
+  const raw = billing.subscriptionTier?.trim();
+  if (raw) {
+    const normalized = raw.toLowerCase().replace(/[\s_-]+/g, "");
+    if (
+      normalized.includes("heavy") ||
+      normalized === "supergrokpro"
+    ) {
+      return "Zhimind Heavy";
+    }
+    if (normalized === "grokbuild" || normalized === "grok") {
+      return "Zhimind Runtime";
+    }
+    if (normalized.includes("grok") || normalized.includes("supergrok")) {
+      return "Zhimind";
+    }
+    return raw;
   }
-  if (channel === "official_oauth") return "Grok Build";
+  if (channel === "official_oauth") return "Zhimind Runtime";
   if (channel === "official_key") return "API Key";
   if (channel === "relay") return "Relay";
   return "—";

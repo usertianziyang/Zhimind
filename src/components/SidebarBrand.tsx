@@ -1,5 +1,5 @@
 /**
- * Sidebar top-left brand row: default Grok mark, or the active custom
+ * Sidebar top-left brand row: default Zhimind mark, or the active custom
  * provider brand when Appearance → “Replace brand logo” is on.
  *
  * Wordmark brands (DeepSeek, OpenCode) carry their own name — no extra label.
@@ -18,12 +18,12 @@ import type { ProviderBrandId } from "@/lib/providerPresets";
 import { SIDEBAR_BRAND_LOGO_HEIGHT } from "@/lib/replaceProviderBrandLogoPref";
 
 export type SidebarBrandProps = {
-  /** When true and `brandId` is set, swap Grok for the provider mark. */
+  /** When true and `brandId` is set, swap Zhimind for the provider mark. */
   replaceLogo?: boolean;
   /** Resolved brand for the active custom route (null = no known logo). */
   brandId?: ProviderBrandId | null;
   /**
-   * Text beside icon-only marks (Volcengine / Amux), and the default “Grok”
+   * Text beside icon-only marks (Volcengine / Amux), and the default “Zhimind”
    * label when not replacing.
    */
   label?: string;
@@ -40,7 +40,7 @@ export function isSidebarBrandWordmark(brand: ProviderBrandId): boolean {
 export const SidebarBrand = memo(function SidebarBrand({
   replaceLogo = false,
   brandId = null,
-  label = "Grok",
+  label = "Zhimind",
 }: SidebarBrandProps) {
   if (replaceLogo && brandId) {
     if (brandId === "deepseek") {
@@ -74,12 +74,12 @@ export const SidebarBrand = memo(function SidebarBrand({
     );
   }
 
-  // Preference off / no known brand: always Grok mark + "Grok" (never the
+  // Preference off / no known brand: always Zhimind mark + "Zhimind" (never the
   // active provider name — that would look like a partial swap).
   return (
     <>
       <GrokLogo size={20} />
-      <span className="sidebar-brand-row__label">Grok</span>
+      <span className="sidebar-brand-row__label">Zhimind</span>
     </>
   );
 });

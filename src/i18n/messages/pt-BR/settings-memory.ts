@@ -1,7 +1,7 @@
 /** pt-BR messages — domain: settings-memory */
 export const ptBRSettingsMemory = {
   "settings.memoryBrowser": "Arquivos de memória do espaço de trabalho",
-  "settings.memoryBrowserDesc": "Navegue e busque a memória do Grok Build no disco do projeto atual ({GROK_HOME}/memory). A busca de conteúdo tem teto; prévias e trechos redigem chaves de API prováveis. Abra ou mostre arquivos no sistema. Não muda o histórico do chat no app.",
+  "settings.memoryBrowserDesc": "Navegue e busque a memória do Zhimind Runtime no disco do projeto atual ({GROK_HOME}/memory). A busca de conteúdo tem teto; prévias e trechos redigem chaves de API prováveis. Abra ou mostre arquivos no sistema. Não muda o histórico do chat no app.",
   "settings.memoryBrowser.off": "A memória está desligada. Ative Memória entre sessões acima para navegar os arquivos.",
   "settings.memoryBrowser.loading": "Carregando arquivos de memória…",
   "settings.memoryBrowser.empty": "Nenhum arquivo de memória encontrado para este projeto.",
@@ -31,7 +31,7 @@ export const ptBRSettingsMemory = {
   "settings.memoryBrowser.delete": "Excluir",
   "settings.memoryBrowser.deleting": "Excluindo…",
   "settings.memoryBrowser.deleteConfirmTitle": "Excluir o arquivo de memória?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Excluir “{name}” do armazenamento de memória do Grok Build? Isso não pode ser desfeito.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Excluir “{name}” do armazenamento de memória do Zhimind Runtime? Isso não pode ser desfeito.",
   "settings.memoryBrowser.noProject": "Abra um projeto para corresponder à memória com escopo de espaço de trabalho. O MEMORY.md global ainda aparece quando presente.",
   "settings.memoryBrowser.root": "Raiz da memória: {path}",
   "settings.memoryBrowser.kind.all": "Todos",

@@ -272,7 +272,7 @@ export const frSession = {
   "session.exportTraceFail": "Échec de l’export de trace",
   "session.exportTraceUploadFail": "Échec de l’envoi de trace",
   "session.exportTraceNoAgent": "Aucune session d’agent liée pour l’instant. Démarrez d’abord une conversation, puis exportez la trace.",
-  "session.exportTraceNoCli": "Grok Build CLI introuvable. Installez ou définissez le chemin CLI dans Réglages, puis réessayez.",
+  "session.exportTraceNoCli": "Zhimind Runtime introuvable. Installez ou définissez le chemin CLI dans Réglages, puis réessayez.",
   "session.exportTraceTimeout": "Délai d’attente de grok trace dépassé. Réessayez, ou utilisez Exporter en local pour un chemin archive uniquement plus rapide.",
   "session.traces": "Traces",
   "session.tracesTitle": "Traces récentes",

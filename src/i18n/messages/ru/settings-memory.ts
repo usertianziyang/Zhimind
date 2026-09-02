@@ -1,7 +1,7 @@
 /** ru messages — domain: settings-memory */
 export const ruSettingsMemory = {
   "settings.memoryBrowser": "Файлы памяти проекта",
-  "settings.memoryBrowserDesc": "Просмотр и поиск на диске памяти Grok Build текущего проекта ({GROK_HOME}/memory). Поиск содержимого ограничен; предпросмотр и фрагменты скрывают вероятные API-ключи. Открывайте или показывайте файлы в системе. История чатов приложения не меняется.",
+  "settings.memoryBrowserDesc": "Просмотр и поиск на диске памяти Zhimind Runtime текущего проекта ({GROK_HOME}/memory). Поиск содержимого ограничен; предпросмотр и фрагменты скрывают вероятные API-ключи. Открывайте или показывайте файлы в системе. История чатов приложения не меняется.",
   "settings.memoryBrowser.off": "Память выкл. Включите «Память между сессиями» выше, чтобы просматривать файлы.",
   "settings.memoryBrowser.loading": "Загрузка файлов памяти…",
   "settings.memoryBrowser.empty": "Файлы памяти для этого проекта не найдены.",
@@ -31,7 +31,7 @@ export const ruSettingsMemory = {
   "settings.memoryBrowser.delete": "Удалить",
   "settings.memoryBrowser.deleting": "Удаление…",
   "settings.memoryBrowser.deleteConfirmTitle": "Удалить файл памяти?",
-  "settings.memoryBrowser.deleteConfirmMsg": "Удалить «{name}» из хранилища памяти Grok Build? Это действие нельзя отменить.",
+  "settings.memoryBrowser.deleteConfirmMsg": "Удалить «{name}» из хранилища памяти Zhimind Runtime? Это действие нельзя отменить.",
   "settings.memoryBrowser.noProject": "Откройте проект, чтобы сопоставить память рабочей области. Глобальный MEMORY.md всё равно появляется, если есть.",
   "settings.memoryBrowser.root": "Корень памяти: {path}",
   "settings.memoryBrowser.kind.all": "Все",

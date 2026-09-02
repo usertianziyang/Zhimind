@@ -272,7 +272,7 @@ export const ptBRSession = {
   "session.exportTraceFail": "A exportação do trace falhou",
   "session.exportTraceUploadFail": "O envio do trace falhou",
   "session.exportTraceNoAgent": "Ainda não há sessão de agente vinculada. Comece uma conversa primeiro e depois exporte o trace.",
-  "session.exportTraceNoCli": "Grok Build CLI não encontrada. Instale ou defina o caminho da CLI em Configurações e tente de novo.",
+  "session.exportTraceNoCli": "Zhimind Runtime não encontrada. Instale ou defina o caminho da CLI em Configurações e tente de novo.",
   "session.exportTraceTimeout": "Tempo esgotado aguardando grok trace. Tente de novo, ou use Exportar local para um caminho mais rápido só de arquivo.",
   "session.traces": "Traces",
   "session.tracesTitle": "Traces recentes",

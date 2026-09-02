@@ -147,7 +147,16 @@ describe("tierLabel", () => {
   it("prefers subscriptionTier string", () => {
     expect(
       tierLabel(billing({ subscriptionTier: "SuperGrok Heavy" }), "official_oauth"),
-    ).toBe("SuperGrok Heavy");
+    ).toBe("Zhimind Heavy");
+  });
+
+  it("hides upstream tier names while preserving non-brand labels", () => {
+    expect(tierLabel(billing({ subscriptionTier: "SuperGrok" }), "official_oauth")).toBe(
+      "Zhimind",
+    );
+    expect(tierLabel(billing({ subscriptionTier: "Team" }), "official_oauth")).toBe(
+      "Team",
+    );
   });
 });
 

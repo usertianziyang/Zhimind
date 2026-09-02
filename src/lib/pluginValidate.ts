@@ -395,8 +395,8 @@ export const PLUGIN_VALIDATE_HINT_FALLBACK: Partial<
   no_manifest:
     "No plugin.json is required when skills/agents/hooks use standard folders.",
   cli_too_old:
-    "Update Grok CLI (`grok update`) and fully restart the app to enable validate.",
-  cli_missing: "Install or path the Grok CLI, then retry validate.",
+    "Update Zhimind Runtime (`grok update`) and fully restart the app to enable validate.",
+  cli_missing: "Install or locate the Zhimind Runtime CLI, then retry validate.",
   empty_source: "Enter a local folder path to validate before install.",
   path_only:
     "Pre-install validate works on a local folder path (not git URL or owner/repo).",

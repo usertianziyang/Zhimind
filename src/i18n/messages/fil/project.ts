@@ -51,7 +51,7 @@ export const filProject = {
   "project.continueCwdOk": "Itinuloy ang “{title}”",
   "project.continueCwdFailed": "Hindi maituloy ang huling agent",
   "project.continueCwdNoProject": "Pumili muna ng proyekto.",
-  "project.continueCwdNoCli": "Hindi nahanap ang Grok Build CLI — i-install o itakda ang path ng CLI, tapos subukan ulit ang Ituloy.",
+  "project.continueCwdNoCli": "Hindi nahanap ang Zhimind Runtime — i-install o itakda ang path ng CLI, tapos subukan ulit ang Ituloy.",
   "project.continueCwdUntrusted": "Pagkatiwalaan muna ang proyektong ito, tapos ituloy ang huling session ng agent.",
   "project.continueCwdHostOnly": "Kailangan ng window ng desktop app ang Ituloy ang huling agent.",
   "project.continueCwdImportFailed": "May nakitang session ng agent pero hindi ma-import sa app.",

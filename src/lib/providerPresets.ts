@@ -201,20 +201,20 @@ export const OPENROUTER_MODELS: ProviderModelEntry[] = [
 
 /** Amux OpenAI-compatible relay (official Grok catalog ids). */
 export const AMUX_MODELS: ProviderModelEntry[] = [
-  { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-  { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+  { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+  { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
 ];
 
 /** Yun API (云驿 yunyi) OpenAI-compatible relay. */
 export const YUN_API_MODELS: ProviderModelEntry[] = [
-  { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-  { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+  { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+  { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
 ];
 
 /** AI98PRO OpenAI-compatible Grok relay. */
 export const AI98PRO_MODELS: ProviderModelEntry[] = [
-  { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-  { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+  { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+  { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
 ];
 
 /**

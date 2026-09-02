@@ -272,7 +272,7 @@ export const esSession = {
   "session.exportTraceFail": "Falló la exportación de la traza",
   "session.exportTraceUploadFail": "Falló la subida de la traza",
   "session.exportTraceNoAgent": "Aún no hay sesión de agente vinculada. Inicia una conversación y luego exporta la traza.",
-  "session.exportTraceNoCli": "No se encontró Grok Build CLI. Instálala o define la ruta de la CLI en Ajustes y reintenta.",
+  "session.exportTraceNoCli": "No se encontró Zhimind Runtime. Instálala o define la ruta de la CLI en Ajustes y reintenta.",
   "session.exportTraceTimeout": "Se agotó el tiempo esperando grok trace. Inténtalo de nuevo, o usa Exportar local para una vía más rápida solo de archivo.",
   "session.traces": "Trazas",
   "session.tracesTitle": "Trazas recientes",

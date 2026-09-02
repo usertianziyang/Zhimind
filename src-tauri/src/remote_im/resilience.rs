@@ -293,16 +293,16 @@ pub fn agent_error_user_message(lang: &str, kind: RimErrorKind, raw: &str) -> St
     match kind {
         RimErrorKind::RateLimit => {
             if lang == "en" {
-                "Grok quota / rate limit reached. Wait and retry, or check Account / provider credits. (Honest: the model API refused this turn.)".into()
+                "Zhimind quota / rate limit reached. Wait and retry, or check Account / provider credits. (Honest: the model API refused this turn.)".into()
             } else {
-                "已触及 Grok 配额或速率限制。请稍后再试，或检查账号 / 中转额度。（诚实说明：模型 API 拒绝了本回合）".into()
+                "已触及 Zhimind 配额或速率限制。请稍后再试，或检查账号 / 中转额度。（诚实说明：模型 API 拒绝了本回合）".into()
             }
         }
         RimErrorKind::Auth => {
             if lang == "en" {
-                "Authentication failed for Grok Build. Check login / API key in Settings → Account or Providers.".into()
+                "Authentication failed for Zhimind Runtime. Check login / API key in Settings → Account or Providers.".into()
             } else {
-                "Grok Build 鉴权失败。请在 设置 → 账号 或 中转 中检查登录 / API 密钥。".into()
+                "Zhimind Runtime 鉴权失败。请在 设置 → 账号 或 中转 中检查登录 / API 密钥。".into()
             }
         }
         _ => {

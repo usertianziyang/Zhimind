@@ -96,7 +96,7 @@ export const GROK_4_6_EFFORTS: EffortOption[] = [
 export const GROK_BUILD_MODELS: ModelOption[] = [
   {
     id: "grok-4.6",
-    label: "Grok 4.6",
+    label: "Zhimind 4.6",
     isDefault: true,
     source: "official",
     reasoningEfforts: GROK_4_6_EFFORTS,
@@ -104,7 +104,7 @@ export const GROK_BUILD_MODELS: ModelOption[] = [
   },
   {
     id: "grok-4.5",
-    label: "Grok 4.5",
+    label: "Zhimind 4.5",
     source: "official",
     reasoningEfforts: GROK_BUILD_EFFORTS,
     contextWindow: 500000,

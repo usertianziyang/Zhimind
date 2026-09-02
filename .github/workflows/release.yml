@@ -1,8 +1,11 @@
-# Build & publish desktop installers:
+# 构建并发布桌面安装包 / Build & publish desktop installers:
 #   macOS ARM / Intel (.dmg)
 #   Windows x64 NSIS setup + portable zip (绿色版)
 #   Linux x64 AppImage / .deb / .rpm (Ubuntu/Debian + Fedora/RHEL family)
-# Trigger: push tag v*  (e.g. v0.1.1)  or manual workflow_dispatch.
+# 触发方式 / Triggers:
+#   - 推送 v* Tag：正式 Release，并刷新自动更新与官网下载资产。
+#   - 手动运行：在 Run workflow 中选择 dev 等分支，发布独立 Prerelease；
+#     不刷新正式自动更新、SHA256SUMS 或官网下载别名。
 #
 # Prerequisites (repo Settings → Actions → General → Workflow permissions):
 #   - Read and write permissions (so the job can create/update Releases)
@@ -23,23 +26,19 @@
 #            WINDOWS_CERTIFICATE            base64-encoded .pfx
 #            WINDOWS_CERTIFICATE_PASSWORD   export password for the .pfx
 # Auto-update (optional — without these, installers still publish; in-app
-# update stays on the GitHub "open release page" path):
+# update falls back to the GitHub Releases download path):
 #   - GROK_UPDATER_PUBLIC_KEY          minisign public key (embedded in app)
 #   - TAURI_SIGNING_PRIVATE_KEY        minisign private key (sign archives)
 #   - TAURI_SIGNING_PRIVATE_KEY_PASSWORD  (empty string OK)
 # See docs/desktop-auto-update.md and docs/BUILD.md (Windows Authenticode).
-name: release
+name: 桌面端打包与发布 / Release
 
 on:
   push:
     tags:
       - "v*"
+  # 手动运行时，直接使用 GitHub 的分支选择器选择 dev；无需额外 ref 输入。
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "Existing tag to rebuild (e.g. v0.1.0). Leave empty to use package version draft."
-        required: false
-        default: ""
 
 concurrency:
   group: release-${{ github.ref }}
@@ -68,25 +67,25 @@ jobs:
             name: Linux-x64
 
     runs-on: ${{ matrix.platform }}
-    name: Build ${{ matrix.name }}
+    name: 构建 / Build ${{ matrix.name }}
 
     steps:
-      - name: Checkout
+      - name: 检出源代码 / Checkout
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
+      - name: 配置 pnpm / Setup pnpm
         # Do not hardcode version — package.json packageManager (pnpm@9.15.9)
         # is the single source. Dual version input fails with:
         # "Multiple versions of pnpm specified".
         uses: pnpm/action-setup@v4
 
-      - name: Setup Node.js
+      - name: 配置 Node.js / Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: pnpm
 
-      - name: Install Linux system deps (WebKit / GTK / RPM)
+      - name: 安装 Linux 系统依赖 / Install Linux dependencies
         if: startsWith(matrix.platform, 'ubuntu')
         run: |
           # Use Ayatana only — libappindicator3-dev conflicts with libayatana-appindicator3-dev.
@@ -101,21 +100,21 @@ jobs:
             rpm \
             file
 
-      - name: Install Rust stable
+      - name: 安装 Rust stable / Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
-      - name: Rust cache
+      - name: 缓存 Rust 构建 / Rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: "./src-tauri -> target"
           shared-key: ${{ matrix.name }}
 
-      - name: Install frontend dependencies
+      - name: 安装前端依赖 / Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
-      - name: Read Tauri product name
+      - name: 读取产品名称 / Read Tauri product name
         id: product
         shell: bash
         run: |
@@ -124,9 +123,30 @@ jobs:
           [[ -n "$PRODUCT_NAME" ]]
           echo "name=$PRODUCT_NAME" >> "$GITHUB_OUTPUT"
 
+      # Tag 构建沿用正式版本号；分支构建使用唯一 dev Tag，避免覆盖正式 Release。
+      - name: 确定发布类型与目标 Tag / Resolve release target
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == v* ]]; then
+            [[ "${{ github.ref_name }}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+([+-].*)?$ ]]
+            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+            echo "label=v__VERSION__" >> "$GITHUB_OUTPUT"
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          else
+            SAFE_REF="$(printf '%s' "${{ github.ref_name }}" | tr -cs 'A-Za-z0-9._-' '-')"
+            SHORT_SHA="${GITHUB_SHA:0:7}"
+            DEV_TAG="dev-${SAFE_REF}-${GITHUB_RUN_NUMBER}-${SHORT_SHA}"
+            [[ "$DEV_TAG" == dev-* ]]
+            echo "tag=$DEV_TAG" >> "$GITHUB_OUTPUT"
+            echo "label=Dev ${{ github.ref_name }} (${SHORT_SHA})" >> "$GITHUB_OUTPUT"
+            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+          fi
+
       # Release description = CHANGELOG.md section for this version (bilingual body).
       # Fails the job if `## [X.Y.Z]` is missing — write changelog before tagging.
-      - name: Prepare release notes from CHANGELOG
+      - name: 准备发布说明 / Prepare release notes
         id: changelog
         shell: bash
         env:
@@ -135,12 +155,15 @@ jobs:
           PYTHONUTF8: "1"
         run: |
           set -euo pipefail
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            VER="${{ github.ref_name }}"
+          if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == v* ]]; then
+            python3 scripts/changelog-for-release.py "${{ github.ref_name }}" | tee release-notes.md
           else
-            VER="v$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')"
+            {
+              echo "Development build from \`${{ github.ref_name }}\` at \`${GITHUB_SHA:0:7}\`."
+              echo
+              echo "开发分支测试包，不进入正式自动更新通道。"
+            } | tee release-notes.md
           fi
-          python3 scripts/changelog-for-release.py "$VER" | tee release-notes.md
           # Multiline body for tauri-action `releaseBody` (no releaseBodyFile input).
           {
             echo "RELEASE_BODY<<GROKAPP_EOF"
@@ -151,8 +174,9 @@ jobs:
       # Detect updater secrets without failing unsigned community builds.
       # Half-config (only one of pubkey/privkey) is a maintainer error — hard-fail
       # so we never ship "looks signed" installers without in-app update enabled.
-      - name: Detect updater secrets
+      - name: 检查自动更新签名 / Detect updater secrets
         id: updater
+        if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
         shell: bash
         env:
           GROK_UPDATER_PUBLIC_KEY: ${{ secrets.GROK_UPDATER_PUBLIC_KEY }}
@@ -174,7 +198,7 @@ jobs:
             exit 1
           fi
 
-      - name: Write release config (updater)
+      - name: 写入自动更新配置 / Write updater config
         if: steps.updater.outputs.enabled == 'true'
         shell: bash
         env:
@@ -186,7 +210,7 @@ jobs:
       # (SmartScreen "Unknown publisher" is expected). When present, import the
       # .pfx and write a merge config with certificateThumbprint for tauri-bundler.
       # Do NOT pass empty WINDOWS_* secrets — omit them entirely.
-      - name: Import Windows code signing certificate
+      - name: 导入 Windows 代码签名证书 / Import certificate
         id: win_sign
         if: matrix.platform == 'windows-latest'
         shell: pwsh
@@ -245,7 +269,7 @@ jobs:
       #   "failed to import keychain certificate"
       # TAURI_SIGNING_* are only set when updater is enabled (non-empty).
       # WINDOWS_CERTIFICATE* are only used on windows-latest when present.
-      - name: Export Apple signing env
+      - name: 配置 Apple 签名环境 / Export signing environment
         if: startsWith(matrix.platform, 'macos')
         env:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
@@ -291,23 +315,22 @@ jobs:
             echo "Apple certificate present but no APPLE_API_KEY_P8 — will sign without notarizing"
           fi
 
-      - name: Build Tauri app & attach to GitHub Release
+      - name: 构建并上传 GitHub Release / Build and publish
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GROK_UPDATER_PUBLIC_KEY: ${{ secrets.GROK_UPDATER_PUBLIC_KEY }}
-          GROK_UPDATER_ENDPOINT: https://github.com/${{ github.repository }}/releases/download/grok-desktop-latest/latest.json
-          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          GROK_UPDATER_PUBLIC_KEY: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.GROK_UPDATER_PUBLIC_KEY || '' }}
+          GROK_UPDATER_ENDPOINT: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && format('https://github.com/{0}/releases/download/grok-desktop-latest/latest.json', github.repository) || '' }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
         with:
           # Root package.json + src-tauri/ layout (create-tauri-app style)
           projectPath: .
-          # Prefer the pushed git tag; fallback replaces __VERSION__ from tauri.conf.json
-          tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v__VERSION__' }}
-          releaseName: "${{ steps.product.outputs.name }} v__VERSION__"
+          tagName: ${{ steps.release.outputs.tag }}
+          releaseName: "${{ steps.product.outputs.name }} ${{ steps.release.outputs.label }}"
           releaseBody: ${{ env.RELEASE_BODY }}
           releaseDraft: false
-          prerelease: false
+          prerelease: ${{ steps.release.outputs.prerelease }}
           # --config injects pubkey/endpoint + createUpdaterArtifacts and/or Windows thumbprint.
           # GROK_UPDATER_* env (above) enables build.rs registration cfg.
           args: >-
@@ -319,7 +342,7 @@ jobs:
 
       # macOS: tauri-action often uploads only the .dmg. Silent update needs the
       # signed .app.tar.gz (+ .sig) with arch in the filename for assemble-updater.
-      - name: Upload macOS updater archives
+      - name: 上传 macOS 自动更新归档 / Upload updater archives
         if: startsWith(matrix.platform, 'macos') && steps.updater.outputs.enabled == 'true'
         shell: bash
         env:
@@ -327,11 +350,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            TAG="${{ github.ref_name }}"
-          else
-            TAG="v$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')"
-          fi
+          TAG="${{ steps.release.outputs.tag }}"
           VER="${TAG#v}"
           if [[ "${{ matrix.args }}" == *aarch64* ]]; then
             ARCH=aarch64
@@ -365,7 +384,7 @@ jobs:
           gh release upload "$TAG" "$OUT_TAR" "$OUT_SIG" --clobber
 
       # 绿色版：免安装 zip（单文件 exe + 说明）。WebView2 仍由系统提供。
-      - name: Windows portable zip (绿色版)
+      - name: 打包 Windows 绿色版 / Package portable zip
         if: matrix.platform == 'windows-latest'
         shell: bash
         env:
@@ -373,24 +392,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            TAG="${{ github.ref_name }}"
-          else
-            TAG="v$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')"
-          fi
-          bash scripts/package-windows-portable.sh "$TAG"
+          bash scripts/package-windows-portable.sh "${{ steps.release.outputs.tag }}"
 
   # After all platform builds: merge .sig + archives into rolling latest.json.
   # Skips cleanly when updater secrets were never used (no .sig on the release).
   assemble-updater:
     needs: publish
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     runs-on: ubuntu-22.04
-    name: Assemble updater latest.json
+    name: 生成自动更新清单 / Assemble updater
     steps:
-      - name: Checkout
+      - name: 检出源代码 / Checkout
         uses: actions/checkout@v4
 
-      - name: Assemble rolling grok-desktop-latest
+      - name: 生成滚动更新 Release / Assemble rolling release
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -402,11 +417,7 @@ jobs:
             echo "Updater secrets not configured — skip assemble-updater-manifest"
             exit 0
           fi
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            TAG="${{ github.ref_name }}"
-          else
-            TAG="v$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')"
-          fi
+          TAG="${{ github.ref_name }}"
           # Hard-fail when secrets are present but rolling manifest cannot be built —
           # otherwise clients stay stuck on the GitHub manual-download path.
           TAG="$TAG" REPO="$GITHUB_REPOSITORY" bash scripts/assemble-updater-manifest.sh
@@ -415,23 +426,20 @@ jobs:
   # users can verify downloads. Runs after all platform builds have uploaded.
   checksums:
     needs: [publish, assemble-updater]
+    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
     runs-on: ubuntu-22.04
-    name: Publish SHA256SUMS + website downloads
+    name: 发布校验和与官网下载资产 / Checksums
     steps:
-      - name: Checkout
+      - name: 检出源代码 / Checkout
         uses: actions/checkout@v4
 
-      - name: Compute and upload SHA256SUMS + website download contract
+      - name: 生成并上传校验和与稳定别名 / Publish checksums
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -euo pipefail
-          if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            TAG="${{ github.ref_name }}"
-          else
-            TAG="v$(python3 -c 'import json; print(json.load(open("package.json"))["version"])')"
-          fi
+          TAG="${{ github.ref_name }}"
           mkdir -p /tmp/release-assets
           cd /tmp/release-assets
           # Download everything except a stale checksum file from a rebuild.

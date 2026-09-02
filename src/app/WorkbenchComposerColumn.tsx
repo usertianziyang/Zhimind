@@ -26,6 +26,7 @@ import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ComposerModelMenu } from "@/components/ComposerModelMenu";
 import { WorkbenchComposerShell } from "@/app/WorkbenchComposerShell";
+import { tierLabel } from "@/lib/accountUi";
 
 export type WorkbenchComposerColumnProps = {
   [key: string]: any;
@@ -105,6 +106,9 @@ export function WorkbenchComposerColumn(p: WorkbenchComposerColumnProps) {
   const askUserLiveRef = useRef(askUser);
   askUserLiveRef.current = askUser;
   const previewText = displayPermissionPreview(perm?.preview);
+  const welcomeTier = account?.billing
+    ? tierLabel(account.billing, account.channel ?? "")
+    : null;
   useEffect(() => {
     setPermBusy(false);
     setPermError(null);
@@ -150,11 +154,12 @@ export function WorkbenchComposerColumn(p: WorkbenchComposerColumnProps) {
                       kind={welcomeBrandKind}
                       title={
                         customRouteActive
-                          ? "SuperGrok"
-                          : account?.billing?.subscriptionTier?.trim() ||
-                            (welcomeBrandKind === "heavy"
-                              ? "SuperGrok Heavy"
-                              : "SuperGrok")
+                          ? "Zhimind"
+                          : welcomeTier && welcomeTier !== "—"
+                            ? welcomeTier
+                            : welcomeBrandKind === "heavy"
+                              ? "Zhimind Heavy"
+                              : "Zhimind"
                       }
                     />
                   )}

@@ -31,7 +31,7 @@ pub async fn providers_list() -> Result<crate::providers::ProvidersListResult, S
     .map_err(|e| e.to_string())?
 }
 
-/// Activate official Grok Build or a custom provider; returns updated list.
+/// Activate official Zhimind Runtime or a custom provider; returns updated list.
 ///
 /// Recycles warm agents so the next send spawns with rebound auth / config
 /// (no full app restart).
@@ -602,10 +602,10 @@ mod project_inspect_tests {
         let out = build_project_inspect_summary(
             None,
             Some("/tmp/p"),
-            Some("Grok Build CLI not found".into()),
+            Some("Zhimind Runtime CLI not found".into()),
             vec![],
         );
         assert_eq!(out["skills"]["total"], 0);
-        assert_eq!(out["error"], "Grok Build CLI not found");
+        assert_eq!(out["error"], "Zhimind Runtime CLI not found");
     }
 }

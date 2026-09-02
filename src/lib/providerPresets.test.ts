@@ -49,8 +49,8 @@ describe("providerPresets", () => {
     expect(amux!.baseUrl).toBe("https://api.amux.ai/v1");
     expect(amux!.apiBackend).toBe("responses");
     expect(AMUX_MODELS).toEqual([
-      { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-      { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+      { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+      { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
     ]);
     expect(amux!.models).toEqual(AMUX_MODELS);
     expect(amux!.efforts.map((e) => e.id)).toEqual([
@@ -83,8 +83,8 @@ describe("providerPresets", () => {
     expect(yun).toBeDefined();
     expect(yun!.baseUrl).toBe("https://api.yunyi.ai/v1");
     expect(YUN_API_MODELS).toEqual([
-      { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-      { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+      { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+      { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
     ]);
     expect(yun!.apiKeyUrl).toBe(
       "https://api.yunyi.ai/register/?aff_code=W0iw",
@@ -178,8 +178,8 @@ describe("providerPresets", () => {
     expect(p!.supportsVision).toBe(true);
     expect(p!.brandId).toBeUndefined();
     expect(AI98PRO_MODELS).toEqual([
-      { id: "grok-4.6", name: "Grok 4.6", supportsVision: true },
-      { id: "grok-4.5", name: "Grok 4.5", supportsVision: true },
+      { id: "grok-4.6", name: "Zhimind 4.6", supportsVision: true },
+      { id: "grok-4.5", name: "Zhimind 4.5", supportsVision: true },
     ]);
     expect(p!.models).toEqual(AI98PRO_MODELS);
     expect(p!.efforts.map((e) => e.id)).toEqual(

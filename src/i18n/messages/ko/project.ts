@@ -51,7 +51,7 @@ export const koProject = {
   "project.continueCwdOk": "“{title}”을(를) 이어갔습니다",
   "project.continueCwdFailed": "마지막 에이전트를 이어갈 수 없습니다",
   "project.continueCwdNoProject": "먼저 프로젝트를 선택하세요.",
-  "project.continueCwdNoCli": "Grok Build CLI를 찾을 수 없습니다 — 설치하거나 CLI 경로를 설정한 뒤 다시 이어가세요.",
+  "project.continueCwdNoCli": "Zhimind Runtime를 찾을 수 없습니다 — 설치하거나 CLI 경로를 설정한 뒤 다시 이어가세요.",
   "project.continueCwdUntrusted": "먼저 이 프로젝트를 신뢰한 다음, 마지막 에이전트 세션을 이어가세요.",
   "project.continueCwdHostOnly": "마지막 에이전트 이어가기는 데스크톱 앱 창이 필요합니다.",
   "project.continueCwdImportFailed": "에이전트 세션을 찾았지만 앱으로 가져오지 못했습니다.",

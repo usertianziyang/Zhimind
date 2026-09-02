@@ -1,7 +1,7 @@
 /** de messages — domain: settings-memory */
 export const deSettingsMemory = {
   "settings.memoryBrowser": "Workspace-Memory-Dateien",
-  "settings.memoryBrowserDesc": "On-Disk-Grok-Build-Memory des aktuellen Projekts durchsuchen ({GROK_HOME}/memory). Inhaltssuche ist begrenzt; Vorschauen und Snippets redigieren wahrscheinliche API-Schlüssel. Dateien im System öffnen oder zeigen. Ändert den Chatverlauf in der App nicht.",
+  "settings.memoryBrowserDesc": "On-Disk-Zhimind-Build-Memory des aktuellen Projekts durchsuchen ({GROK_HOME}/memory). Inhaltssuche ist begrenzt; Vorschauen und Snippets redigieren wahrscheinliche API-Schlüssel. Dateien im System öffnen oder zeigen. Ändert den Chatverlauf in der App nicht.",
   "settings.memoryBrowser.off": "Memory ist aus. Oben Cross-Session-Memory einschalten, um Dateien zu durchsuchen.",
   "settings.memoryBrowser.loading": "Memory-Dateien werden geladen…",
   "settings.memoryBrowser.empty": "Keine Memory-Dateien für dieses Projekt gefunden.",
@@ -31,7 +31,7 @@ export const deSettingsMemory = {
   "settings.memoryBrowser.delete": "Löschen",
   "settings.memoryBrowser.deleting": "Löschen…",
   "settings.memoryBrowser.deleteConfirmTitle": "Memory-Datei löschen?",
-  "settings.memoryBrowser.deleteConfirmMsg": "„{name}“ aus dem Grok-Build-Memory-Store löschen? Das lässt sich nicht rückgängig machen.",
+  "settings.memoryBrowser.deleteConfirmMsg": "„{name}“ aus dem Zhimind-Build-Memory-Store löschen? Das lässt sich nicht rückgängig machen.",
   "settings.memoryBrowser.noProject": "Projekt öffnen, um workspace-bezogenes Memory zu treffen. Globales MEMORY.md erscheint weiterhin, wenn vorhanden.",
   "settings.memoryBrowser.root": "Memory-Root: {path}",
   "settings.memoryBrowser.kind.all": "Alle",

@@ -51,7 +51,7 @@ export const enProject = {
   "project.continueCwdOk": "Continued “{title}”",
   "project.continueCwdFailed": "Could not continue last agent",
   "project.continueCwdNoProject": "Select a project first.",
-  "project.continueCwdNoCli": "Grok Build CLI not found — install or set the CLI path, then try Continue again.",
+  "project.continueCwdNoCli": "Zhimind Runtime not found — install or set the CLI path, then try Continue again.",
   "project.continueCwdUntrusted": "Trust this project first, then continue the last agent session.",
   "project.continueCwdHostOnly": "Continue last agent requires the desktop app window.",
   "project.continueCwdImportFailed": "Found an agent session but could not import it into the app.",

@@ -786,7 +786,7 @@ pub fn classify_cli_transport_error(err: &str, session_id: &str) -> (TurnStatus,
             TurnStatus::AppNotRunning,
             2,
             format!(
-                "Grok App is not running ({err}). Start the app (or leave it in the tray), then retry."
+                "Zhimind is not running ({err}). Start the app (or leave it in the tray), then retry."
             ),
         )
     } else {
@@ -1133,7 +1133,7 @@ pub fn session_api_status(app: AppHandle) -> SessionApiStatus {
 pub async fn session_api_reveal_token_file() -> Result<String, String> {
     let path = endpoint_path();
     if !path.is_file() {
-        return Err("session API is not listening — start Grok App first".into());
+        return Err("session API is not listening — start Zhimind first".into());
     }
     let shown = path.display().to_string();
     let pb = path.clone();
@@ -1218,7 +1218,7 @@ pub fn run_cli() -> i32 {
                 let mut out = TurnResult::fail(
                     TurnStatus::AppNotRunning,
                     session_id,
-                    "Grok App is not running. Start the app (or leave it in the tray), then retry.",
+                    "Zhimind is not running. Start the app (or leave it in the tray), then retry.",
                 );
                 out.idempotency_key = idempotency_key;
                 print_turn(&out);

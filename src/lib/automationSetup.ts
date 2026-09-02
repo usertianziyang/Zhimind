@@ -9,7 +9,7 @@ import { computeNextRunAt } from "@/lib/automations";
 export const AUTOMATION_FENCE_LANG = "grok-automation";
 
 /** Visible composer seed — natural language only. */
-export function aiCreateSeedPrompt(_productName = "Grok"): string {
+export function aiCreateSeedPrompt(_productName = "Zhimind"): string {
   return "用一两句话说：要定期做什么、多久跑一次（例如「每天早上 9 点查 @cgnot996 的最新动态」或「3 分钟后做一次…」）。";
 }
 

@@ -968,7 +968,7 @@ pub fn ensure_pet_window(app: &AppHandle) -> Result<tauri::WebviewWindow, String
         PET_WINDOW_LABEL,
         WebviewUrl::App("index.html#/pet".into()),
     )
-    .title("Grok Pet")
+    .title("Zhimind Pet")
     .inner_size(side_w, side_h)
     .min_inner_size(96.0, 96.0)
     .resizable(false)

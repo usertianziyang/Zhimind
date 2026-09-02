@@ -272,7 +272,7 @@ export const zhTWSession = {
   "session.exportTraceFail": "trace 匯出失敗",
   "session.exportTraceUploadFail": "trace 上傳失敗",
   "session.exportTraceNoAgent": "尚未關聯 agent 對話。請先發起對話，再匯出 trace。",
-  "session.exportTraceNoCli": "找不到 Grok Build CLI。請先安裝或在設定中設定 CLI 路徑後再試。",
+  "session.exportTraceNoCli": "找不到 Zhimind Runtime。請先安裝或在設定中設定 CLI 路徑後再試。",
   "session.exportTraceTimeout": "等待 grok trace 逾時。可重試，或改用「僅本機匯出」以更快產生封存。",
   "session.traces": "Traces",
   "session.tracesTitle": "最近的 trace",

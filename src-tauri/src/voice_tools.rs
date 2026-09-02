@@ -10,7 +10,7 @@ pub fn tool_definitions() -> Vec<Value> {
     vec![
         function_tool(
             "list_sessions",
-            "List recent Grok Build agent sessions for the current project (id, title, busy).",
+            "List recent Zhimind Runtime agent sessions for the current project (id, title, busy).",
             json!({
                 "type": "object",
                 "properties": {
@@ -20,7 +20,7 @@ pub fn tool_definitions() -> Vec<Value> {
         ),
         function_tool(
             "create_agent_session",
-            "Create a new Grok Build agent session in the active project to do coding work. Prefer this for multi-step implementation tasks.",
+            "Create a new Zhimind Runtime agent session in the active project to do coding work. Prefer this for multi-step implementation tasks.",
             json!({
                 "type": "object",
                 "properties": {
@@ -83,7 +83,7 @@ pub fn live_voice_instructions(project_path: Option<&str>, project_name: Option<
         .or(project_path)
         .unwrap_or("the current workspace");
     format!(
-        r#"You are Grok Live Voice in the Grok desktop coding workbench.
+        r#"You are Zhimind Live Voice in the Zhimind desktop coding workbench.
 You speak briefly and clearly. You can listen and talk while coding agents work.
 
 Project: {project}
@@ -425,7 +425,7 @@ mod tests {
     fn classifies_cli_missing_as_soft() {
         assert_eq!(
             classify_tool_error(
-                "Grok Build CLI not found. Install Grok Build or set path in Settings."
+                "Zhimind Runtime CLI not found. Install Zhimind Runtime or set path in Settings."
             ),
             "cli_missing"
         );

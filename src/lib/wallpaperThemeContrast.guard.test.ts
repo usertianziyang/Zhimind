@@ -327,7 +327,7 @@ describe("wallpaper theme contrast CSS", () => {
       /html\[data-font-shadow="1"\][\s\S]*\.aside \.rp-chrome,[\s\S]*\.aside \.rp__empty-state[\s\S]*text-shadow:/s,
     );
     expect(css).toMatch(
-      /html\[data-theme="light"\]\[data-wallpaper="1"\]\s+\.sidebar\s+\.user-avatar--logo\s+\.grok-logo\s+svg\s*\{[^}]*color:\s*var\(--text-inverse\)[^}]*filter:\s*none/s,
+      /html\[data-theme="light"\]\[data-wallpaper="1"\]\s+\.sidebar\s+\.user-avatar--logo\s+\.grok-logo\s+\.grok-logo__asset\s*\{[^}]*color:\s*var\(--text-inverse\)[^}]*filter:\s*none/s,
     );
     expect(css).toMatch(
       /html\[data-theme="light"\]\[data-wallpaper="1"\]\s+\.sidebar\s+\.user-avatar--logo\s+\.provider-brand-icon\s*\{[^}]*filter:\s*none/s,
