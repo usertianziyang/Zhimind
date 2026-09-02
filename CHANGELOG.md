@@ -45,6 +45,14 @@ See `docs/llm-wiki/release.md`.
 - 后台 git / worktree 更省。状态、diff、Review 与 worktree 操作不再堵其它 Host 命令（#988、#990–#993）。
 - 打开带媒体的会话少扫 DOM。仍靠加载事件揭开，兜底轮询更慢（#989）。
 
+## [0.2.30] - 2026-09-02
+
+### Fixed
+- Windows shortcuts now use the current Zhimind icon from the rebuilt installer.
+
+**中文 · 修复**
+- Windows 快捷方式现在使用重新构建安装包中的 Zhimind 图标。
+
 ## [0.2.29] - 2026-08-31
 
 > **Highlight:** One-click CLI install, complete translations, and smoother long chats.

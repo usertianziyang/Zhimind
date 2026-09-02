@@ -1,8 +1,8 @@
 # Sync origin/main, build a side-by-side Windows NSIS, install to
-# %LOCALAPPDATA%\grok-app-latest.
+# %LOCALAPPDATA%\Zhimind-latest.
 #
-# Overlay productName + identifier so the single-instance mutex is
-# com.grokapp.desktop.latest-sim (not the official com.grokapp.desktop-sim).
+# Overlay productName + identifier so the side-by-side test build has its own
+# display name and single-instance mutex.
 # App settings/sessions stay on the shared %APPDATA%\grokapp\grok-app root —
 # do not run this build and official Grok as writers at the same time.
 #
@@ -10,7 +10,7 @@
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
-$ProductName = "grok-app-latest"
+$ProductName = "Zhimind-latest"
 $InstallDir = Join-Path $env:LOCALAPPDATA $ProductName
 $Triple = "x86_64-pc-windows-msvc"
 $Root = Split-Path -Parent $PSScriptRoot
