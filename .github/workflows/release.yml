@@ -469,3 +469,17 @@ jobs:
             done < .website-upload.txt
           fi
           gh release upload "$TAG" SHA256SUMS "${extra[@]}" --repo "$GITHUB_REPOSITORY" --clobber
+
+          # Verify the remote aliases after upload; a stale alias would keep
+          # serving an older installer even when SHA256SUMS is current.
+          verify_dir="$(mktemp -d)"
+          for name in "${extra[@]}"; do
+            [[ "$name" == "downloads.json" ]] && continue
+            expected="$(awk -v name="$name" '$2 == name { print $1; exit }' SHA256SUMS)"
+            [[ -n "$expected" ]]
+            gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
+              --pattern "$name" --dir "$verify_dir" --clobber
+            actual="$(sha256sum "$verify_dir/$name" | awk '{ print $1 }')"
+            [[ "$actual" == "$expected" ]]
+            echo "Verified remote alias $name"
+          done
