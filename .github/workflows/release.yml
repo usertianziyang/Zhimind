@@ -2,6 +2,7 @@
 #   macOS ARM / Intel (.dmg)
 #   Windows x64 NSIS setup + portable zip (绿色版)
 #   Linux x64 AppImage / .deb / .rpm (Ubuntu/Debian + Fedora/RHEL family)
+# Keep this workflow on the default branch so GitHub can discover it after repository detachment.
 # Trigger: push tag v*  (e.g. v0.1.1)  or manual workflow_dispatch.
 #
 # Prerequisites (repo Settings → Actions → General → Workflow permissions):
