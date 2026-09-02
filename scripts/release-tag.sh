@@ -121,7 +121,11 @@ for p in core_files + legacy:
     if not p.is_file():
         continue
     t = p.read_text()
-    t2, n = re.subn(r"(Grok v)[0-9]+\.[0-9]+\.[0-9]+", rf"\g<1>{ver}", t)
+    t2, n = re.subn(
+        r'("app\.versionFooter"\s*:\s*"[^"\n]*?\bv)[0-9]+\.[0-9]+\.[0-9]+',
+        rf"\g<1>{ver}",
+        t,
+    )
     if n:
         p.write_text(t2)
         print(f"{p} versionFooter ->", ver)
