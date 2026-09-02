@@ -49,8 +49,6 @@ mod automation_runner;
 
 mod batch_agents;
 
-mod cc_switch_import;
-
 mod cli_install;
 
 mod cli_probe;
@@ -1584,10 +1582,6 @@ pub fn run() {
             commands::providers_test_model,
 
             commands::providers_balance,
-
-            commands::providers_cc_switch_scan,
-
-            commands::providers_cc_switch_import,
 
             commands::models_aux_get,
 

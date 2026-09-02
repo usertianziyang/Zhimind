@@ -79,7 +79,7 @@ tower = "0.5"
 tower-http = { version = "0.6", features = ["fs", "trace"] }
 rand = "0.8"
 tracing-appender = "0.2"
-# Read-only import from CC Switch (`~/.cc-switch/cc-switch.db`).
+# SQLite-backed evidence store (x_evidence.rs).
 rusqlite = { version = "0.32", features = ["bundled"] }
 tauri-plugin-autostart = "2"
 portable-pty = "0.9.0"

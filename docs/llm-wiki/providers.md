@@ -176,8 +176,6 @@ Host must rebind both sides on every switch and before each ACP spawn (`prepare_
 | `providers_list_models` | Fetch remote model ids |
 | `providers_test_model` | Per-model probe: one tiny non-streaming inference request to `{base}/chat/completions` (\| `/responses` \| `/v1/messages` by `api_backend`); success = HTTP 2xx |
 | `providers_balance` | Account balance / plan probe (Phase 1: **DeepSeek only**) |
-| `providers_cc_switch_scan` | Read-only scan of local **CC Switch** Grok Build providers |
-| `providers_cc_switch_import` | Import selected CC Switch rows into custom providers |
 | `editors_list` | Detected local IDEs |
 | `open_in_editor` | Open path in chosen editor |
 
@@ -211,41 +209,6 @@ Wire shape (confirmed):
 Future providers (Coding Plan quotas, etc.) add adapters under the same `providers_balance` command.
 
 **Live apply (#376):** Do **not** only park the live agent (`session_disconnect`) after provider edits — parked processes keep old OIDC/`config.toml` in memory. Host `recycle_all_agents(..., "provider_route")` after route-affecting writes. Settings UI always clears “Saving…” in `finally` and soft-fails apply errors with a toast (config is already on disk).
-
-## Import from CC Switch (#167)
-
-Settings → Account → Custom providers → **Import from CC Switch**.
-
-| Step | Behavior |
-|------|----------|
-| Detect | Resolve `cc-switch.db` (see paths below); open SQLite **read-only** |
-| Scope | `providers` where `app_type = 'grokbuild'` |
-| Preview | Multi-select list (no full API keys; status badges) |
-| Import | Map TOML → current agent-home `config.toml`; **same id overwrites** (no UI toggle); does not auto-activate route |
-| Native capability | An explicit `app_provider_mode` is honored. Otherwise a Responses provider is promoted to `grok_build_proxy` only when its selected real model advertises `supports_backend_search = true` in the live `/models` response |
-| Apply | Any successful import recycles warm ACP children so the next send cannot reuse stale provider semantics |
-
-### CC Switch data paths (cross-platform)
-
-| Priority | Location |
-|----------|----------|
-| 1 | `GROK_APP_CC_SWITCH_DIR` or `CC_SWITCH_HOME` env (if set and contains db) |
-| 2 | Tauri Store override: `app_config_dir_override` in `app_paths.json` under `com.ccswitch.desktop` |
-| 3 | **Default:** `{user_home}/.cc-switch/cc-switch.db` (macOS / Windows / Linux) |
-| 4 | Windows only: `{HOME}/.cc-switch/cc-switch.db` when Profile default is missing (v3.10.3 legacy) |
-
-Store file locations:
-
-| OS | `app_paths.json` |
-|----|------------------|
-| macOS | `~/Library/Application Support/com.ccswitch.desktop/app_paths.json` |
-| Windows | `%APPDATA%\com.ccswitch.desktop\app_paths.json` |
-| Linux | `${XDG_DATA_HOME:-~/.local/share}/com.ccswitch.desktop/app_paths.json` |
-
-Official CC Switch rows are not imported as custom relays. Proxy-takeover placeholders (`PROXY_MANAGED`, `127.0.0.1:…`) are rejected.
-Capability detection never matches provider names or hosts. Explicit native mode
-fails closed when the live catalog cannot validate it; implicit probe failures
-preserve the previous generic import behavior.
 
 ## Security
 

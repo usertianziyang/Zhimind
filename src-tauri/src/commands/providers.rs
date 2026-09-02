@@ -1,33 +1,4 @@
 
-/// Scan CC Switch Grok Build providers (read-only SQLite).
-#[tauri::command]
-pub async fn providers_cc_switch_scan(
-) -> Result<crate::cc_switch_import::CcSwitchScanResult, String> {
-    tauri::async_runtime::spawn_blocking(
-        crate::cc_switch_import::scan_cc_switch_providers,
-    )
-    .await
-    .map_err(|e| e.to_string())
-}
-
-/// Import selected CC Switch Grok Build providers into App custom providers.
-#[tauri::command]
-pub async fn providers_cc_switch_import(
-    app: tauri::AppHandle,
-    mgr: State<'_, Arc<SessionManager>>,
-    body: crate::cc_switch_import::CcSwitchImportRequest,
-) -> Result<crate::cc_switch_import::CcSwitchImportResult, String> {
-    let result = tauri::async_runtime::spawn_blocking(move || {
-        crate::cc_switch_import::import_cc_switch_providers(body)
-    })
-    .await
-    .map_err(|e| e.to_string())??;
-    if result.imported > 0 {
-        mgr.recycle_all_agents(&app, "provider_route").await;
-    }
-    Ok(result)
-}
-
 #[tauri::command]
 pub async fn providers_list() -> Result<crate::providers::ProvidersListResult, String> {
     // Blocking file I/O off the async runtime (migrations / repairs / list).
