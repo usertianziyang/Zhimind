@@ -59,6 +59,10 @@ import {
   resolveMatchedProviderPreset,
   resolveProviderApiKeyUrl,
   resolveProviderBrandId,
+  ZHIMIND_PROVIDER_BASE_URL,
+  ZHIMIND_PROVIDER_BACKEND,
+  ZHIMIND_PROVIDER_ID,
+  ZHIMIND_PROVIDER_NAME,
   type ProviderPreset,
 } from "@/lib/providerPresets";
 import {
@@ -192,7 +196,7 @@ const emptyForm = (): FormState => ({
   providerMode: "generic",
   appendPrompt: "",
   supportsVision: false,
-  models: [],
+  models: [{ id: "default", name: "default" }],
   efforts: defaultCustomChannelEfforts().map((e) => ({
     id: e.id,
     name: e.name || e.id,
@@ -456,29 +460,45 @@ export function ProvidersPanel({
   }, [reload]);
 
   const providers = list?.providers ?? [];
+  const visibleProviders = providers.filter(
+    (p) => p.baseUrl.replace(/\/$/, "").toLowerCase() === ZHIMIND_PROVIDER_BASE_URL,
+  );
   const activeSource = list?.activeSource ?? "official";
   const activeProviderId = list?.activeProviderId ?? null;
   const officialActive = activeSource === "official";
   /** Show official row even without OAuth so users can paste an API key for speech. */
-  const showOfficialRow = true;
+  const showOfficialRow = false;
+  const zhimindLocked = true;
 
   /** Open preset gallery (or skip to blank form when no presets). */
   const openCreate = () => {
     setSelection(null);
     setEditingId(null);
-    setForm(emptyForm());
+    setForm({
+      ...emptyForm(),
+      id: ZHIMIND_PROVIDER_ID,
+      name: ZHIMIND_PROVIDER_NAME,
+      baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+      apiBackend: ZHIMIND_PROVIDER_BACKEND,
+    });
     setDraftModelId("");
     setDraftModelName("");
     setRemoteModels([]);
     setHint(null);
     setShowKey(false);
-    setRightMode(PROVIDER_PRESETS.length > 0 ? "pick" : "create");
+    setRightMode("create");
   };
 
   const openCustomCreate = () => {
     setSelection(null);
     setEditingId(null);
-    setForm(emptyForm());
+    setForm({
+      ...emptyForm(),
+      id: ZHIMIND_PROVIDER_ID,
+      name: ZHIMIND_PROVIDER_NAME,
+      baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+      apiBackend: ZHIMIND_PROVIDER_BACKEND,
+    });
     setDraftModelId("");
     setDraftModelName("");
     setRemoteModels([]);
@@ -677,12 +697,12 @@ export function ProvidersPanel({
     setSelection(p.id);
     setEditingId(p.id);
     setForm({
-      id: p.id,
-      name: p.name,
-      baseUrl: p.baseUrl,
+      id: ZHIMIND_PROVIDER_ID,
+      name: ZHIMIND_PROVIDER_NAME,
+      baseUrl: ZHIMIND_PROVIDER_BASE_URL,
       baseUrlFullPath: !!p.baseUrlFullPath,
       apiKey: "",
-      apiBackend: p.apiBackend || "responses",
+      apiBackend: ZHIMIND_PROVIDER_BACKEND,
       providerMode:
         p.providerMode === "grok_build_proxy"
           ? "grok_build_proxy"
@@ -809,10 +829,7 @@ export function ProvidersPanel({
     setHint(tr("prov.saving"));
     setHintTone("muted");
     const isCreate = rightMode === "create" || !editingId;
-    const id =
-      editingId ??
-      (slugifyProviderId(form.id || form.name || form.baseUrl) ||
-        `provider-${Date.now().toString(36)}`);
+    const id = editingId ?? ZHIMIND_PROVIDER_ID;
     // Create flow: always use the form catalog (first model). Never reuse a
     // ghost list entry's active model after delete+re-add with the same id.
     const existing = list?.providers.find((p) => p.id === id);
@@ -826,11 +843,11 @@ export function ProvidersPanel({
       provider: {
         id,
         model: preferred,
-        baseUrl: form.baseUrl.trim(),
-        name: form.name.trim() || id,
+        baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+        name: ZHIMIND_PROVIDER_NAME,
         hasApiKey: true,
-        apiBackend: form.apiBackend,
-        providerMode: form.providerMode,
+        apiBackend: ZHIMIND_PROVIDER_BACKEND,
+        providerMode: "generic",
         isDefault: false,
         models,
         efforts: fallbackEfforts,
@@ -843,12 +860,12 @@ export function ProvidersPanel({
     const payload = {
       id,
       model: preferred,
-      baseUrl: form.baseUrl.trim(),
-      name: form.name.trim() || id,
+      baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+      name: ZHIMIND_PROVIDER_NAME,
       apiKey: form.apiKey.trim() || undefined,
-      apiBackend: form.apiBackend,
-      providerMode: form.providerMode,
-      setAsDefault: false as boolean,
+      apiBackend: ZHIMIND_PROVIDER_BACKEND,
+      providerMode: "generic",
+      setAsDefault: true as boolean,
       models,
       efforts: applied.efforts ?? fallbackEfforts,
       baseUrlFullPath: form.baseUrlFullPath,
@@ -1224,16 +1241,16 @@ export function ProvidersPanel({
 
   const emptyState = resolveProvidersEmptyState({
     isTauri: api.isTauri(),
-    customCount: providers.length,
+    customCount: visibleProviders.length,
     loadError: error,
   });
   const listEmpty =
     emptyState.kind === "no_custom" &&
     !showOfficialRow &&
-    providers.length === 0;
+    visibleProviders.length === 0;
 
   return (
-    <div className="prov-panel" data-testid="providers-panel">
+    <div className="prov-panel prov-panel--zhimind" data-testid="providers-panel">
       {error && (
         <div className="prov-alert" role="alert">
           <span>{error}</span>
@@ -1269,16 +1286,6 @@ export function ProvidersPanel({
             >
               <IconPlus size={16} />
               {tr("prov.new")}
-            </button>
-            <button
-              type="button"
-              className="btn btn--ghost prov-cc-import-btn"
-              onClick={openCcImport}
-              disabled={busy || !api.isTauri()}
-              data-testid="prov-cc-switch-import"
-              title={tr("prov.ccSwitch.importBtnHint")}
-            >
-              {tr("prov.ccSwitch.importBtn")}
             </button>
           </div>
 
@@ -1337,7 +1344,7 @@ export function ProvidersPanel({
               </div>
             )}
 
-            {providers.map((p) => {
+            {visibleProviders.map((p) => {
               const active =
                 activeSource === "custom" && activeProviderId === p.id;
               const selected = selection === p.id;
@@ -1612,6 +1619,8 @@ export function ProvidersPanel({
               </div>
 
               <div className="prov-form__grid">
+                {!zhimindLocked && (
+                  <>
                 {/* Row: display name | config id */}
                 <label className="prov-field">
                   <FieldHelp
@@ -1654,8 +1663,12 @@ export function ProvidersPanel({
                     readOnly={!!editingId}
                   />
                 </label>
+                  </>
+                )}
 
                 {/* Base URL full — typically long; optional full-path (no auto /v1) */}
+                {!zhimindLocked && (
+                  <>
                 <div className="prov-field prov-field--full">
                   {(() => {
                     const epPreset = resolveMatchedProviderPreset({
@@ -1747,6 +1760,8 @@ export function ProvidersPanel({
                     aria-label={tr("prov.baseUrl")}
                   />
                 </div>
+                  </>
+                )}
 
                 <div className="prov-field prov-field--full">
                   <span className="prov-field__label-row">
@@ -1791,7 +1806,7 @@ export function ProvidersPanel({
                   </div>
                 </div>
 
-                <div className="prov-field prov-field--full">
+                {!zhimindLocked && <div className="prov-field prov-field--full">
                   <span className="prov-field__label">{tr("prov.protocol")}</span>
                   <Select
                     value={form.apiBackend}
@@ -1802,9 +1817,9 @@ export function ProvidersPanel({
                     aria-label={tr("prov.protocol")}
                     className="prov-field__select"
                   />
-                </div>
+                </div>}
 
-                {showBalanceAction ? (
+                {!zhimindLocked && showBalanceAction ? (
                   <div className="prov-field prov-field--full">
                     <span className="prov-field__label-row">
                       <span className="prov-field__label">
@@ -2162,7 +2177,7 @@ export function ProvidersPanel({
                   </div>
                 </div>
 
-                <div
+                {!zhimindLocked && <div
                   className="prov-field prov-field--full"
                   id="settings-anchor-prov-extra-headers"
                 >
@@ -2250,9 +2265,9 @@ export function ProvidersPanel({
                       </button>
                     </div>
                   </div>
-                </div>
+                </div>}
 
-                <div className="prov-field prov-field--full">
+                {!zhimindLocked && <div className="prov-field prov-field--full">
                   <FieldHelp
                     label={tr("prov.appendPrompt")}
                     tip={tr("prov.appendPromptHint")}
@@ -2267,9 +2282,9 @@ export function ProvidersPanel({
                     placeholder={tr("prov.appendPromptPh")}
                     aria-label={tr("prov.appendPrompt")}
                   />
-                </div>
+                </div>}
 
-                <div
+                {!zhimindLocked && <div
                   className="prov-field prov-field--full"
                   id="settings-anchor-provider-mode"
                 >
@@ -2308,7 +2323,7 @@ export function ProvidersPanel({
                       })}
                     </span>
                   ) : null}
-                </div>
+                </div>}
               </div>
 
               {hint && (
@@ -2328,7 +2343,7 @@ export function ProvidersPanel({
               )}
 
               <div className="prov-form__actions">
-                {editingId && (
+                {editingId && !zhimindLocked && (
                   <button
                     type="button"
                     className="btn btn--danger"

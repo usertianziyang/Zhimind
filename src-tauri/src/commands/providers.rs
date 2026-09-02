@@ -45,7 +45,16 @@ pub async fn providers_list() -> Result<crate::providers::ProvidersListResult, S
         let _ = crate::providers::repair_custom_base_urls();
         // OpenCode Zen Go SSE trailers → loopback sanitize proxy base_url rewrite.
         let _ = crate::relay_stream_proxy::repair_sanitize_proxy_bases();
-        crate::providers::list_custom_providers()
+        let mut result = crate::providers::list_custom_providers()?;
+        result.providers.retain(|p| {
+            crate::providers::normalize_openai_base_url(
+                &p.base_url,
+                crate::providers::ZHIMIND_PROVIDER_BACKEND,
+                false,
+            )
+            .eq_ignore_ascii_case(crate::providers::ZHIMIND_PROVIDER_BASE_URL)
+        });
+        Ok(result)
     })
     .await
     .map_err(|e| e.to_string())?
@@ -134,6 +143,29 @@ pub async fn providers_upsert(
     supports_vision: Option<bool>,
     extra_headers: Option<Vec<crate::providers::ProviderHeaderEntry>>,
 ) -> Result<crate::providers::ProvidersListResult, String> {
+    if id.trim() != crate::providers::ZHIMIND_PROVIDER_ID {
+        return Err(format!(
+            "Zhimind only supports provider `{}`",
+            crate::providers::ZHIMIND_PROVIDER_ID
+        ));
+    }
+    if !crate::providers::normalize_openai_base_url(
+        &base_url,
+        crate::providers::ZHIMIND_PROVIDER_BACKEND,
+        false,
+    )
+    .eq_ignore_ascii_case(crate::providers::ZHIMIND_PROVIDER_BASE_URL)
+    {
+        return Err(format!(
+            "Zhimind only supports {}",
+            crate::providers::ZHIMIND_PROVIDER_BASE_URL
+        ));
+    }
+    if crate::providers::normalize_backend(api_backend.as_deref())
+        != crate::providers::ZHIMIND_PROVIDER_BACKEND
+    {
+        return Err("Zhimind API requires the Responses protocol".into());
+    }
     let normalized_provider_mode = match provider_mode.as_deref() {
         Some(raw) => crate::providers::normalize_provider_mode(Some(raw)),
         None => crate::providers::provider_mode_for_id(&id),

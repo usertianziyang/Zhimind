@@ -1,12 +1,12 @@
 /** ja messages — domain: doctor */
 export const jaDoctor = {
-  "setup.title": "Grok へようこそ",
+  "setup.title": "Zhimind へようこそ",
   "setup.subtitle": "MIT · Grok Build 向けの非公式デスクトップワークベンチ",
   "setup.step.runtime": "ランタイム",
   "setup.step.account": "アカウント",
   "setup.step.ready": "準備完了",
   "setup.stepsAria": "セットアップのステップ",
-  "setup.detecting": "Grok Build を確認中…",
+  "setup.detecting": "Zhimind Build を確認中…",
   "setup.detectingSlow": "まだ確認中… いつもより時間がかかっています。",
   "setup.detectTimeout": "起動チェックがタイムアウトしました",
   "setup.detectTimeoutHint": "Grok Build の検査が時間内に終わりませんでした。再試行するか、セットアップを開いてインストール / ローカルバイナリを選んでください。",
@@ -352,7 +352,7 @@ export const jaDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "受信者向けの zip 内容のプレーンな一覧です。",
   "reliability.supportZip.emptyHostOnly": "サポート zip にはデスクトップアプリが必要です",
-  "reliability.supportZip.emptyHostOnlyHint": "書き出しは Tauri ホストでのみ実行されます — 秘匿済みサポート zip を作るにはデスクトップで Grok App を開いてください。",
+  "reliability.supportZip.emptyHostOnlyHint": "書き出しは Tauri ホストでのみ実行されます — 秘匿済みサポート zip を作るにはデスクトップで Zhimind を開いてください。",
   "reliability.supportZip.failHostOnly": "サポート zip にはデスクトップアプリが必要です（ブラウザでは利用できません）",
   "reliability.supportZip.failCancel": "サポート zip をキャンセルしました",
   "reliability.supportZip.failIo": "サポート zip を書き込めませんでした（ディスクまたは権限）",

@@ -1,12 +1,12 @@
 /** ru messages — domain: doctor */
 export const ruDoctor = {
-  "setup.title": "Добро пожаловать в Grok",
+  "setup.title": "Добро пожаловать в Zhimind",
   "setup.subtitle": "MIT · Неофициальная настольная рабочая среда для Grok Build",
   "setup.step.runtime": "Среда выполнения",
   "setup.step.account": "Аккаунт",
   "setup.step.ready": "Готово",
   "setup.stepsAria": "Шаги настройки",
-  "setup.detecting": "Проверка Grok Build…",
+  "setup.detecting": "Проверка Zhimind Build…",
   "setup.detectingSlow": "Проверка всё ещё идёт… это занимает больше времени, чем обычно.",
   "setup.detectTimeout": "Проверка при запуске превысила время ожидания",
   "setup.detectTimeoutHint": "Проверка Grok Build не завершилась вовремя. Повторите попытку или откройте настройку, чтобы установить/выбрать локальный бинарный файл.",
@@ -352,7 +352,7 @@ export const ruDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Простой список содержимого zip для получателя.",
   "reliability.supportZip.emptyHostOnly": "Zip поддержки нужен в настольном приложении",
-  "reliability.supportZip.emptyHostOnlyHint": "Экспорт выполняется только на Tauri Host — откройте Grok App на компьютере, чтобы собрать zip поддержки без секретов.",
+  "reliability.supportZip.emptyHostOnlyHint": "Экспорт выполняется только на Tauri Host — откройте Zhimind на компьютере, чтобы собрать zip поддержки без секретов.",
   "reliability.supportZip.failHostOnly": "Zip поддержки нужен в настольном приложении (в браузере недоступен)",
   "reliability.supportZip.failCancel": "Экспорт zip поддержки отменён",
   "reliability.supportZip.failIo": "Не удалось записать zip поддержки (диск или права)",

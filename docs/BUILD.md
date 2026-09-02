@@ -163,8 +163,8 @@ pnpm build:mac-arm
 成功后脚本会列出产物，典型路径：
 
 ```
-src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Grok_*.dmg
-src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Grok.app
+src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/Zhimind_*.dmg
+src-tauri/target/aarch64-apple-darwin/release/bundle/macos/Zhimind.app
 ```
 
 双击 `.dmg` 安装，或直接运行 `.app`。  
@@ -180,12 +180,12 @@ pnpm exec tauri build --runner cargo-xwin --target x86_64-pc-windows-msvc
 
 ```
 src-tauri/target/<triple>/release/bundle/
-  macos/     # .app / .dmg  （产品名 Grok）
+  macos/     # .app / .dmg  （产品名 Zhimind）
   nsis/      # Windows 安装版（*-setup.exe）
   deb/       # Debian/Ubuntu .deb
   rpm/       # Fedora/RHEL .rpm
   appimage/  # 通用 Linux AppImage
-src-tauri/target/<triple>/release/Grok.exe   # Windows 裸二进制 → CI 打成绿色版 zip
+src-tauri/target/<triple>/release/grok-app.exe # Windows 裸二进制 → CI 按 productName 打成绿色版 zip
 ```
 
 拷贝测试建议：
@@ -195,7 +195,7 @@ mkdir -p dist-installers
 cp src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg dist-installers/
 cp src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg dist-installers/
 cp src-tauri/target/x86_64-pc-windows-msvc/release/bundle/nsis/*-setup.exe dist-installers/
-# 绿色版：zip release/Grok.exe
+# 绿色版 zip 内：Zhimind.exe
 cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/* dist-installers/ 2>/dev/null || true
 cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/* dist-installers/ 2>/dev/null || true
 cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/rpm/* dist-installers/ 2>/dev/null || true
@@ -300,5 +300,5 @@ Tag 格式：`v0.1.1`（前缀 `v` + semver）。
 | Windows 交叉缺 makensis / clang-cl | `brew install makensis llvm`；`export PATH="$(brew --prefix llvm)/bin:$PATH"` |
 | cargo-xwin 首次很慢 | 正常：在拉 CRT/SDK；缓存目录 `~/.cache/cargo-xwin` |
 | Windows 本机无法交叉 | 用 `pnpm build:win`（cargo-xwin）或 CI |
-| macOS 下载后打不开 | 未签名：系统设置 → 隐私与安全性 → 仍要打开；或 `xattr -cr /path/to/Grok.app` |
+| macOS 下载后打不开 | 未签名：系统设置 → 隐私与安全性 → 仍要打开；或 `xattr -cr /path/to/Zhimind.app` |
 | Windows 找不到 grok CLI | 安装 Grok Build 并确保 `%USERPROFILE%\.grok\bin` 或 PATH 上有 `grok.exe` |

@@ -1,7 +1,7 @@
 /**
  * Right resource pane — Codex-inspired workbench:
  * multi-tabs · breadcrumb toolbar · preview | file tree · open-with menu.
- * Original implementation for Grok App (Tauri + React).
+ * Original implementation for Zhimind (Tauri + React).
  */
 
 import {

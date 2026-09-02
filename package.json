@@ -1,8 +1,8 @@
 {
-  "name": "grok-app",
+  "name": "zhimind",
   "private": true,
   "version": "0.2.29",
-  "description": "Desktop workbench for Grok Build CLI (English-first)",
+  "description": "Zhimind desktop workbench",
   "author": "RongleCat",
   "license": "MIT",
   "repository": {

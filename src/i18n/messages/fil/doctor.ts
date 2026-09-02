@@ -1,12 +1,12 @@
 /** fil messages — domain: doctor */
 export const filDoctor = {
-  "setup.title": "Maligayang pagdating sa Grok",
+  "setup.title": "Maligayang pagdating sa Zhimind",
   "setup.subtitle": "MIT · Hindi opisyal na desktop workbench para sa Grok Build",
   "setup.step.runtime": "Runtime",
   "setup.step.account": "Account",
   "setup.step.ready": "Handa na",
   "setup.stepsAria": "Mga hakbang sa setup",
-  "setup.detecting": "Sini-check ang Grok Build…",
+  "setup.detecting": "Sini-check ang Zhimind Build…",
   "setup.detectingSlow": "Sini-check pa… mas matagal ito kaysa karaniwan.",
   "setup.detectTimeout": "Nag-timeout ang startup check",
   "setup.detectTimeoutHint": "Hindi natapos sa oras ang Grok Build probe. Subukan ulit, o buksan ang Setup para mag-install / pumili ng lokal na binary.",
@@ -352,7 +352,7 @@ export const filDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Simpleng inventory ng nilalaman ng zip para sa tatanggap.",
   "reliability.supportZip.emptyHostOnly": "Kailangan ng desktop app ang support zip",
-  "reliability.supportZip.emptyHostOnlyHint": "Tumatakbo lang ang pag-export sa Tauri host — buksan ang Grok App sa desktop para bumuo ng naka-redact na support zip.",
+  "reliability.supportZip.emptyHostOnlyHint": "Tumatakbo lang ang pag-export sa Tauri host — buksan ang Zhimind sa desktop para bumuo ng naka-redact na support zip.",
   "reliability.supportZip.failHostOnly": "Kailangan ng desktop app ang support zip (hindi available sa browser)",
   "reliability.supportZip.failCancel": "Nakansela ang support zip",
   "reliability.supportZip.failIo": "Hindi masulat ang support zip (disk o pahintulot)",

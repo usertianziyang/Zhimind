@@ -8,7 +8,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { GrokLogo } from "@/components/GrokLogo";
-import { Select } from "@/components/Select";
 import { Spinner } from "@/components/ui/spinner";
 import {
   tauriDragRegion,
@@ -36,6 +35,12 @@ import {
   resolveCliTrustBanner,
   type ChecksumTrustGrade,
 } from "@/lib/cliTrustSupplyChain";
+import {
+  ZHIMIND_PROVIDER_BASE_URL,
+  ZHIMIND_PROVIDER_BACKEND,
+  ZHIMIND_PROVIDER_ID,
+  ZHIMIND_PROVIDER_NAME,
+} from "@/lib/providerPresets";
 
 type Tr = ReturnType<typeof createT>;
 
@@ -82,17 +87,15 @@ export function SetupWizard({
     null,
   );
   const [copied, setCopied] = useState(false);
-  const [accountPanel, setAccountPanel] = useState<AccountPanel>("menu");
+  const [accountPanel, setAccountPanel] = useState<AccountPanel>("relay");
   const [accountBusy, setAccountBusy] = useState(false);
   const [authOk, setAuthOk] = useState(
     () => initialCli.cliAuthPresent,
   );
   const [authDeferred, setAuthDeferred] = useState(false);
   const [officialKey, setOfficialKey] = useState("");
-  const [relayBase, setRelayBase] = useState("");
   const [relayKey, setRelayKey] = useState("");
-  /** Default: OpenAI Responses — preferred for modern gateways. */
-  const [relayBackend, setRelayBackend] = useState("responses");
+  const zhimindOnly = true;
 
   const reportError = useCallback((err: unknown) => {
     const view = resolveSetupGateError(err);
@@ -109,18 +112,6 @@ export function SetupWizard({
   const clearError = useCallback(() => {
     setErrorView(null);
   }, []);
-
-  const protocolOptions = useMemo(
-    () => [
-      { value: "responses", label: tr("prov.protocol.responses") },
-      {
-        value: "chat_completions",
-        label: tr("prov.protocol.chatCompletions"),
-      },
-      { value: "messages", label: tr("prov.protocol.messages") },
-    ],
-    [tr],
-  );
 
   useEffect(() => {
     void api.cliInstallCommands().then(setInstallCmds).catch(() => null);
@@ -332,9 +323,8 @@ export function SetupWizard({
   }, [clearError, officialKey, reportError, tr]);
 
   const saveRelay = useCallback(async () => {
-    const base = relayBase.trim();
     const key = relayKey.trim();
-    if (!base || !key) return;
+    if (!key) return;
     setAccountBusy(true);
     clearError();
     try {
@@ -342,21 +332,27 @@ export function SetupWizard({
       // Host recycles warm agents on setAsDefault so the first workbench send
       // spawns with the relay (no full app restart — issue #376).
       await api.providersUpsert({
-        id: "relay",
+        id: ZHIMIND_PROVIDER_ID,
         model: "default",
-        baseUrl: base,
-        name: "Custom relay",
+        baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+        name: ZHIMIND_PROVIDER_NAME,
         apiKey: key,
-        apiBackend: relayBackend || "responses",
+        apiBackend: ZHIMIND_PROVIDER_BACKEND,
         setAsDefault: true,
       });
       try {
-        await api.secretsSet({ relayBaseUrl: base, relayApiKey: key });
+        await api.secretsSet({
+          relayBaseUrl: ZHIMIND_PROVIDER_BASE_URL,
+          relayApiKey: key,
+        });
       } catch {
         /* soft-fail: config.toml already holds the key */
       }
       try {
-        const ping = await api.providersPing({ baseUrl: base, apiKey: key });
+        const ping = await api.providersPing({
+          baseUrl: ZHIMIND_PROVIDER_BASE_URL,
+          apiKey: key,
+        });
         if (ping && (ping as { ok?: boolean }).ok === false) {
           setStatusMsg(
             String((ping as { message?: string }).message || "ping failed"),
@@ -376,7 +372,7 @@ export function SetupWizard({
     } finally {
       setAccountBusy(false);
     }
-  }, [clearError, relayBase, relayKey, relayBackend, reportError, tr]);
+  }, [clearError, relayKey, reportError, tr]);
 
   const runOauth = useCallback(async () => {
     setAccountBusy(true);
@@ -682,7 +678,7 @@ export function SetupWizard({
                 <p>{tr("setup.account.hint")}</p>
               </div>
 
-              {accountPanel === "menu" && (
+              {!zhimindOnly && accountPanel === "menu" && (
                 <div className="setup-entry-grid">
                   {cli.cliAuthPresent && (
                     <button
@@ -734,7 +730,7 @@ export function SetupWizard({
                 </div>
               )}
 
-              {accountPanel === "key" && (
+              {!zhimindOnly && accountPanel === "key" && (
                 <div className="setup-form">
                   <input
                     className="setup-input"
@@ -768,44 +764,25 @@ export function SetupWizard({
                 <div className="setup-form">
                   <input
                     className="setup-input"
-                    type="url"
-                    autoComplete="off"
-                    placeholder={tr("setup.account.basePh")}
-                    value={relayBase}
-                    onChange={(e) => setRelayBase(e.target.value)}
-                  />
-                  <input
-                    className="setup-input"
                     type="password"
                     autoComplete="off"
                     placeholder={tr("setup.account.relayKeyPh")}
                     value={relayKey}
                     onChange={(e) => setRelayKey(e.target.value)}
                   />
-                  <label className="setup-field">
-                    <span className="setup-field__label">
-                      {tr("setup.account.protocol")}
-                    </span>
-                    <Select
-                      value={relayBackend}
-                      onChange={setRelayBackend}
-                      options={protocolOptions}
-                      aria-label={tr("setup.account.protocol")}
-                    />
-                  </label>
                   <div className="setup-actions__row">
-                    <button
+                    {!zhimindOnly && <button
                       type="button"
                       className="btn btn--ghost"
                       onClick={() => setAccountPanel("menu")}
                     >
                       {tr("common.cancel")}
-                    </button>
+                    </button>}
                     <button
                       type="button"
                       className="btn btn--primary"
                       disabled={
-                        accountBusy || !relayBase.trim() || !relayKey.trim()
+                        accountBusy || !relayKey.trim()
                       }
                       onClick={() => void saveRelay()}
                     >
@@ -830,15 +807,15 @@ export function SetupWizard({
               )}
 
               <div className="setup-actions setup-actions--footer">
-                <button
+                {!zhimindOnly && <button
                   type="button"
                   className="btn btn--ghost"
                   disabled={accountBusy}
                   onClick={skipAccount}
                 >
                   {tr("setup.account.skip")}
-                </button>
-                {(authOk || accountPanel === "menu") && (
+                </button>}
+                {!zhimindOnly && (authOk || accountPanel === "menu") && (
                   <button
                     type="button"
                     className="btn btn--primary"

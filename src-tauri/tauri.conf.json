@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "Grok",
+  "productName": "Zhimind",
   "version": "0.2.29",
-  "identifier": "com.grokapp.desktop",
+  "identifier": "com.zhimind.desktop",
   "build": {
     "beforeDevCommand": "pnpm dev:ui",
     "devUrl": "http://localhost:1421",
@@ -13,7 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Grok",
+        "title": "Zhimind",
         "visible": false,
         "create": false,
         "width": 1200,

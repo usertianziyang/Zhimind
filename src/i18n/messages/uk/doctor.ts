@@ -1,12 +1,12 @@
 /** uk messages — domain: doctor */
 export const ukDoctor = {
-  "setup.title": "Ласкаво просимо до Grok",
+  "setup.title": "Ласкаво просимо до Zhimind",
   "setup.subtitle": "MIT · Неофіційна настільна робоча область для Grok Build",
   "setup.step.runtime": "Середовище",
   "setup.step.account": "Обліковий запис",
   "setup.step.ready": "Готово",
   "setup.stepsAria": "Кроки налаштування",
-  "setup.detecting": "Перевірка Grok Build…",
+  "setup.detecting": "Перевірка Zhimind Build…",
   "setup.detectingSlow": "Усе ще перевіряємо… це триває довше, ніж зазвичай.",
   "setup.detectTimeout": "Час очікування перевірки запуску вичерпано",
   "setup.detectTimeoutHint": "Зонд Grok Build не встиг завершити. Повторіть або відкрийте «Налаштування», щоб установити / вибрати локальний бінарник.",
@@ -352,7 +352,7 @@ export const ukDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Простий інвентар вмісту архіву для отримувача.",
   "reliability.supportZip.emptyHostOnly": "Архів підтримки потребує настільного застосунку",
-  "reliability.supportZip.emptyHostOnlyHint": "Експорт виконується лише на Host Tauri — відкрийте Grok App на робочому столі, щоб зібрати відредагований архів підтримки.",
+  "reliability.supportZip.emptyHostOnlyHint": "Експорт виконується лише на Host Tauri — відкрийте Zhimind на робочому столі, щоб зібрати відредагований архів підтримки.",
   "reliability.supportZip.failHostOnly": "Архів підтримки потребує настільного застосунку (недоступно в браузері)",
   "reliability.supportZip.failCancel": "Архів підтримки скасовано",
   "reliability.supportZip.failIo": "Не вдалося записати архів підтримки (диск або дозвіл)",

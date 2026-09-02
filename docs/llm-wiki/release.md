@@ -182,6 +182,8 @@ git push origin vX.Y.Z
 | `.github/workflows/ci.yml` | push/PR → main | typecheck、test、`build:ui`、mac/win `cargo test` |
 | `.github/workflows/release.yml` | tag `v*` 或手动 | 矩阵：mac×2 + win（setup+portable）+ linux（AppImage/deb/rpm）→ 同一 Release |
 
+带版本号的安装包文件名跟随 `src-tauri/tauri.conf.json` 的 `productName`（当前为 `Zhimind`）；官网稳定下载别名仍保留历史 `Grok_*` 命名，发布脚本同时兼容新旧前缀，避免重命名导致旧链接失效。
+
 Release job 关键：
 
 1. 从 tag 名或 `package.json` 解析版本  

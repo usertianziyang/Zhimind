@@ -5,6 +5,11 @@
 
 import type { ProviderEffortEntry, ProviderModelEntry } from "@/lib/api";
 
+export const ZHIMIND_PROVIDER_ID = "zhimind-api";
+export const ZHIMIND_PROVIDER_NAME = "Zhimind API";
+export const ZHIMIND_PROVIDER_BASE_URL = "http://ai.berrytick.com/v1";
+export const ZHIMIND_PROVIDER_BACKEND = "responses";
+
 /** Known brand marks with dedicated logos (see ProviderBrandIcon). */
 export type ProviderBrandId =
   | "deepseek"

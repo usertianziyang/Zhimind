@@ -1,12 +1,12 @@
 /** ko messages — domain: doctor */
 export const koDoctor = {
-  "setup.title": "Grok에 오신 것을 환영합니다",
+  "setup.title": "Zhimind에 오신 것을 환영합니다",
   "setup.subtitle": "MIT · Grok Build용 비공식 데스크톱 작업대",
   "setup.step.runtime": "런타임",
   "setup.step.account": "계정",
   "setup.step.ready": "준비됨",
   "setup.stepsAria": "설정 단계",
-  "setup.detecting": "Grok Build 확인 중…",
+  "setup.detecting": "Zhimind Build 확인 중…",
   "setup.detectingSlow": "아직 확인 중… 평소보다 오래 걸리고 있습니다.",
   "setup.detectTimeout": "시작 확인 시간 초과",
   "setup.detectTimeoutHint": "Grok Build 프로브가 제시간에 끝나지 않았습니다. 다시 시도하거나 설치로 이동해 로컬 바이너리를 설치/선택하세요.",
@@ -352,7 +352,7 @@ export const koDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "수신자를 위한 zip 내용의 일반 인벤토리.",
   "reliability.supportZip.emptyHostOnly": "지원 zip은 데스크톱 앱이 필요합니다",
-  "reliability.supportZip.emptyHostOnlyHint": "내보내기는 Tauri 호스트에서만 실행됩니다 — 마스킹된 지원 zip을 만들려면 데스크톱에서 Grok App을 여세요.",
+  "reliability.supportZip.emptyHostOnlyHint": "내보내기는 Tauri 호스트에서만 실행됩니다 — 마스킹된 지원 zip을 만들려면 데스크톱에서 Zhimind을 여세요.",
   "reliability.supportZip.failHostOnly": "지원 zip은 데스크톱 앱이 필요합니다(브라우저에서는 사용할 수 없음)",
   "reliability.supportZip.failCancel": "지원 zip이 취소되었습니다",
   "reliability.supportZip.failIo": "지원 zip을 쓰지 못했습니다(디스크 또는 권한)",

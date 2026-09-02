@@ -1,12 +1,12 @@
 /** de messages — domain: doctor */
 export const deDoctor = {
-  "setup.title": "Willkommen bei Grok",
+  "setup.title": "Willkommen bei Zhimind",
   "setup.subtitle": "MIT · Inoffizielle Desktop-Workbench für Grok Build",
   "setup.step.runtime": "Runtime",
   "setup.step.account": "Konto",
   "setup.step.ready": "Bereit",
   "setup.stepsAria": "Einrichtungsschritte",
-  "setup.detecting": "Grok Build wird geprüft…",
+  "setup.detecting": "Zhimind Build wird geprüft…",
   "setup.detectingSlow": "Prüft weiter… das dauert länger als üblich.",
   "setup.detectTimeout": "Startprüfung zeitüberschritten",
   "setup.detectTimeoutHint": "Grok-Build-Probe wurde nicht rechtzeitig fertig. Erneut versuchen oder Setup öffnen, um zu installieren / lokale Binärdatei zu wählen.",
@@ -352,7 +352,7 @@ export const deDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Klartext-Inventar der Zip-Inhalte für den Empfänger.",
   "reliability.supportZip.emptyHostOnly": "Support-Zip braucht die Desktop-App",
-  "reliability.supportZip.emptyHostOnlyHint": "Export läuft nur auf dem Tauri-Host — Grok App Desktop öffnen, um ein redigiertes Support-Zip zu bauen.",
+  "reliability.supportZip.emptyHostOnlyHint": "Export läuft nur auf dem Tauri-Host — Zhimind Desktop öffnen, um ein redigiertes Support-Zip zu bauen.",
   "reliability.supportZip.failHostOnly": "Support-Zip braucht die Desktop-App (nicht im Browser verfügbar)",
   "reliability.supportZip.failCancel": "Support-Zip abgebrochen",
   "reliability.supportZip.failIo": "Support-Zip konnte nicht geschrieben werden (Festplatte oder Berechtigung)",

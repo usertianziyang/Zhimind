@@ -1258,6 +1258,11 @@ textarea::-webkit-scrollbar-thumb:active,
   min-height: 360px;
 }
 
+.prov-panel--zhimind {
+  --accent: var(--zhimind-brand, #22c7a7);
+  --accent-hover: color-mix(in srgb, var(--accent) 82%, white);
+}
+
 .settings-page__main--pane-fill > .prov-panel {
   min-height: 0;
   overflow: hidden;

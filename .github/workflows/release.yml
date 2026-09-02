@@ -115,6 +115,15 @@ jobs:
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Read Tauri product name
+        id: product
+        shell: bash
+        run: |
+          set -euo pipefail
+          PRODUCT_NAME="$(python3 -c 'import json; print(json.load(open("src-tauri/tauri.conf.json"))["productName"])')"
+          [[ -n "$PRODUCT_NAME" ]]
+          echo "name=$PRODUCT_NAME" >> "$GITHUB_OUTPUT"
+
       # Release description = CHANGELOG.md section for this version (bilingual body).
       # Fails the job if `## [X.Y.Z]` is missing — write changelog before tagging.
       - name: Prepare release notes from CHANGELOG
@@ -295,7 +304,7 @@ jobs:
           projectPath: .
           # Prefer the pushed git tag; fallback replaces __VERSION__ from tauri.conf.json
           tagName: ${{ github.ref_type == 'tag' && github.ref_name || 'v__VERSION__' }}
-          releaseName: "Grok App v__VERSION__"
+          releaseName: "${{ steps.product.outputs.name }} v__VERSION__"
           releaseBody: ${{ env.RELEASE_BODY }}
           releaseDraft: false
           prerelease: false
@@ -347,6 +356,7 @@ jobs:
             echo "::error::missing signature for $SRC_TAR"
             exit 1
           fi
+          # Keep the historical Grok name for the rolling updater URL.
           OUT_TAR="Grok_${VER}_${ARCH}.app.tar.gz"
           OUT_SIG="${OUT_TAR}.sig"
           cp "$SRC_TAR" "$OUT_TAR"
@@ -427,7 +437,7 @@ jobs:
           # Download everything except a stale checksum file from a rebuild.
           gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern '*' || true
           rm -f SHA256SUMS
-          # Stable aliases (Grok_mac_x64.dmg, Grok_windows_x64-setup.exe, …)
+          # Stable aliases keep the historical Grok_* download URLs.
           # + downloads.json for grok-app.com. Files stay on GitHub Releases.
           python3 "${GITHUB_WORKSPACE}/scripts/publish-website-downloads.py" \
             --dir /tmp/release-assets \

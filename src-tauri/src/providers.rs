@@ -195,6 +195,22 @@ pub const OFFICIAL_CATALOG_MODEL: &str = "grok-4.6";
 /// Previous official catalog id — still a valid official aux / spawn target.
 pub const OFFICIAL_CATALOG_MODEL_LEGACY: &str = "grok-4.5";
 
+/// Zhimind product route. Other custom providers remain on disk for
+/// non-destructive migration, but this is the only route the product may use.
+pub const ZHIMIND_PROVIDER_ID: &str = "zhimind-api";
+pub const ZHIMIND_PROVIDER_NAME: &str = "Zhimind API";
+pub const ZHIMIND_PROVIDER_BASE_URL: &str = "http://ai.berrytick.com/v1";
+pub const ZHIMIND_PROVIDER_BACKEND: &str = "responses";
+
+fn is_zhimind_base_url(raw: &str) -> bool {
+    normalize_openai_base_url(raw, ZHIMIND_PROVIDER_BACKEND, false)
+        .eq_ignore_ascii_case(ZHIMIND_PROVIDER_BASE_URL)
+}
+
+fn is_zhimind_provider(provider: &CustomProvider) -> bool {
+    is_zhimind_base_url(&provider.base_url)
+}
+
 pub fn is_official_catalog_model(id: &str) -> bool {
     let t = id.trim();
     t == OFFICIAL_CATALOG_MODEL || t == OFFICIAL_CATALOG_MODEL_LEGACY
@@ -1162,7 +1178,10 @@ fn set_models_u32_field(text: &str, key: &str, value: u32) -> String {
 
 fn route_from_default(def: Option<&str>, providers: &[CustomProvider]) -> (String, Option<String>) {
     if let Some(d) = def {
-        if providers.iter().any(|p| p.id == d) {
+        if providers
+            .iter()
+            .any(|p| p.id == d && is_zhimind_provider(p))
+        {
             return ("custom".into(), Some(d.to_string()));
         }
     }
@@ -1282,7 +1301,21 @@ pub fn list_custom_providers() -> Result<ProvidersListResult, String> {
     let _ = ensure_model_integer_fields();
     // Existing App-only effort choices need the native Grok Build capability gate.
     let _ = ensure_reasoning_effort_support_fields();
-    let text = read_text(&path);
+    let mut text = read_text(&path);
+    // One-time route migration: an existing install may still point at
+    // official/legacy providers. Keep those tables untouched, but make the
+    // product-owned BerryTick route the active CLI default when present.
+    let def = get_models_default(&text);
+    let has_zhimind = parse_model_sections(&text).iter().any(|s| {
+        s.fields
+            .get("base_url")
+            .map(|v| is_zhimind_base_url(v))
+            .unwrap_or(false)
+    });
+    if has_zhimind && def.as_deref() != Some(ZHIMIND_PROVIDER_ID) {
+        text = set_models_default(&text, ZHIMIND_PROVIDER_ID);
+        let _ = write_text(&path, &text);
+    }
     Ok(build_list_result(home, path, &text))
 }
 
@@ -1306,7 +1339,11 @@ pub fn is_custom_provider_id(id: &str) -> bool {
         return false;
     }
     list_custom_providers()
-        .map(|list| list.providers.iter().any(|p| p.id == id))
+        .map(|list| {
+            list.providers
+                .iter()
+                .any(|p| p.id == id && is_zhimind_provider(p))
+        })
         .unwrap_or(false)
 }
 
@@ -1487,28 +1524,22 @@ pub fn activate_provider(
 ) -> Result<ProvidersListResult, String> {
     let source = source.trim().to_ascii_lowercase();
     match source.as_str() {
-        "official" => {
-            let result = set_default_model_id(OFFICIAL_DEFAULT_MODEL)?;
-            // Restore official OAuth into agent-home; drop relay display fields.
-            if let Err(e) = crate::account::sync_cli_auth_to_agent_home() {
-                tracing::warn!(target: "providers", "activate official: auth sync: {e}");
-            }
-            let mut secrets = crate::store::load_secrets();
-            secrets.relay_base_url = None;
-            // Prefer catalog id for composer, not the synthetic "grok" default key.
-            secrets.default_model = Some(OFFICIAL_CATALOG_MODEL.into());
-            let _ = crate::store::save_secrets(&secrets);
-            Ok(result)
-        }
+        "official" => Err(format!(
+            "{ZHIMIND_PROVIDER_NAME} is the only available provider"
+        )),
         "custom" => {
             let id = provider_id
                 .map(str::trim)
                 .filter(|s| !s.is_empty())
                 .ok_or_else(|| "providerId is required for custom source".to_string())?;
             let list = list_custom_providers()?;
-            if !list.providers.iter().any(|p| p.id == id) {
+            let Some(_provider) = list
+                .providers
+                .iter()
+                .find(|p| p.id == id && is_zhimind_provider(p))
+            else {
                 return Err(format!("unknown provider `{id}`"));
-            }
+            };
             let mut result = set_default_model_id(id)?;
             // Critical: remove OIDC so Grok Build uses [model.<id>].api_key.
             crate::account::clear_agent_home_auth();

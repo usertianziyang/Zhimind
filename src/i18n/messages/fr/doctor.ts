@@ -1,12 +1,12 @@
 /** fr messages — domain: doctor */
 export const frDoctor = {
-  "setup.title": "Bienvenue dans Grok",
+  "setup.title": "Bienvenue dans Zhimind",
   "setup.subtitle": "MIT · Bureau non officiel pour Grok Build",
   "setup.step.runtime": "Exécution",
   "setup.step.account": "Compte",
   "setup.step.ready": "Prêt",
   "setup.stepsAria": "Étapes de configuration",
-  "setup.detecting": "Vérification de Grok Build…",
+  "setup.detecting": "Vérification de Zhimind Build…",
   "setup.detectingSlow": "Toujours en cours… cela prend plus de temps que d’habitude.",
   "setup.detectTimeout": "Délai de la vérification de démarrage dépassé",
   "setup.detectTimeoutHint": "Le sondage Grok Build n’a pas abouti à temps. Réessayez, ou ouvrez la configuration pour installer / choisir un binaire local.",
@@ -352,7 +352,7 @@ export const frDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Inventaire en clair du contenu du zip pour le destinataire.",
   "reliability.supportZip.emptyHostOnly": "Le zip de support nécessite l’application de bureau",
-  "reliability.supportZip.emptyHostOnlyHint": "L’export s’exécute uniquement sur l’hôte Tauri — ouvrez Grok App bureau pour construire un zip de support masqué.",
+  "reliability.supportZip.emptyHostOnlyHint": "L’export s’exécute uniquement sur l’hôte Tauri — ouvrez Zhimind bureau pour construire un zip de support masqué.",
   "reliability.supportZip.failHostOnly": "Le zip de support nécessite l’application de bureau (indisponible dans le navigateur)",
   "reliability.supportZip.failCancel": "Zip de support annulé",
   "reliability.supportZip.failIo": "Impossible d’écrire le zip de support (disque ou autorisation)",

@@ -87,7 +87,7 @@ export const enCore = {
   "common.confirm": "Confirm",
   "common.save": "Save",
   "common.dismiss": "Dismiss",
-  "onboarding.welcome": "Welcome to Grok",
+  "onboarding.welcome": "Welcome to Zhimind",
   "onboarding.body": "MIT · Unofficial. Pick an account path, or skip into the shell.",
   "onboarding.official": "Official login / Official key",
   "onboarding.officialHint": "Browser OAuth or paste key (never logged)",

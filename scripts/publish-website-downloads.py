@@ -31,6 +31,34 @@ PRODUCT = "Grok App"
 OFFICIAL_SITE = "https://grok-app.com"
 DOWNLOADS_JSON_NAME = "downloads.json"
 
+# Versioned Tauri assets follow the current product name. Keep the historical
+# Grok prefix as a fallback, while stable aliases below preserve old URLs.
+TAURI_CONFIG = Path(__file__).resolve().parents[1] / "src-tauri" / "tauri.conf.json"
+LEGACY_PRODUCT_NAME = "Grok"
+
+
+def load_product_name() -> str:
+    try:
+        config = json.loads(TAURI_CONFIG.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        raise RuntimeError(f"failed to read Tauri product name from {TAURI_CONFIG}") from exc
+    name = config.get("productName")
+    if not isinstance(name, str) or not name.strip():
+        raise RuntimeError(f"missing productName in {TAURI_CONFIG}")
+    return name.strip()
+
+
+PRODUCT_NAME = load_product_name()
+SOURCE_PREFIXES = tuple(dict.fromkeys((PRODUCT_NAME, LEGACY_PRODUCT_NAME)))
+
+
+def prefixed_sources(*patterns: str) -> tuple[str, ...]:
+    return tuple(
+        pattern.replace("{product}", prefix)
+        for prefix in SOURCE_PREFIXES
+        for pattern in patterns
+    )
+
 # Website buttons that must exist or the job fails.
 REQUIRED_IDS = ("mac-x64", "windows-x64")
 
@@ -43,7 +71,7 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "dmg",
         "label": "macOS Apple Silicon",
         "stable": "Grok_mac_aarch64.dmg",
-        "sources": ("Grok_{ver}_aarch64.dmg",),
+        "sources": prefixed_sources("{product}_{ver}_aarch64.dmg"),
     },
     {
         "id": "mac-x64",
@@ -52,7 +80,7 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "dmg",
         "label": "macOS Intel",
         "stable": "Grok_mac_x64.dmg",
-        "sources": ("Grok_{ver}_x64.dmg",),
+        "sources": prefixed_sources("{product}_{ver}_x64.dmg"),
     },
     {
         "id": "windows-x64",
@@ -61,7 +89,7 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "nsis",
         "label": "Windows x64",
         "stable": "Grok_windows_x64-setup.exe",
-        "sources": ("Grok_{ver}_x64-setup.exe",),
+        "sources": prefixed_sources("{product}_{ver}_x64-setup.exe"),
     },
     {
         "id": "windows-x64-portable",
@@ -70,7 +98,7 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "portable-zip",
         "label": "Windows x64 portable",
         "stable": "Grok_windows_x64-portable.zip",
-        "sources": ("Grok_{ver}_x64-portable.zip",),
+        "sources": prefixed_sources("{product}_{ver}_x64-portable.zip"),
     },
     {
         "id": "linux-x64-appimage",
@@ -79,7 +107,10 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "appimage",
         "label": "Linux x64 AppImage",
         "stable": "Grok_linux_x64.AppImage",
-        "sources": ("Grok_{ver}_amd64.AppImage", "Grok_{ver}_x86_64.AppImage"),
+        "sources": prefixed_sources(
+            "{product}_{ver}_amd64.AppImage",
+            "{product}_{ver}_x86_64.AppImage",
+        ),
     },
     {
         "id": "linux-x64-deb",
@@ -88,7 +119,10 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "deb",
         "label": "Linux x64 .deb",
         "stable": "Grok_linux_x64.deb",
-        "sources": ("Grok_{ver}_amd64.deb", "Grok_{ver}_x86_64.deb"),
+        "sources": prefixed_sources(
+            "{product}_{ver}_amd64.deb",
+            "{product}_{ver}_x86_64.deb",
+        ),
     },
     {
         "id": "linux-x64-rpm",
@@ -97,11 +131,11 @@ INSTALLER_SPEC: tuple[dict[str, Any], ...] = (
         "kind": "rpm",
         "label": "Linux x64 .rpm",
         "stable": "Grok_linux_x64.rpm",
-        "sources": (
-            "Grok-{ver}-1.x86_64.rpm",
-            "Grok-{ver}.x86_64.rpm",
-            "Grok_{ver}_x86_64.rpm",
-            "Grok_{ver}_amd64.rpm",
+        "sources": prefixed_sources(
+            "{product}-{ver}-1.x86_64.rpm",
+            "{product}-{ver}.x86_64.rpm",
+            "{product}_{ver}_x86_64.rpm",
+            "{product}_{ver}_amd64.rpm",
         ),
     },
 )
@@ -280,14 +314,14 @@ class WebsiteDownloadsTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
             samples = {
-                "Grok_0.2.20_aarch64.dmg": b"arm-dmg",
-                "Grok_0.2.20_x64.dmg": b"intel-dmg",
-                "Grok_0.2.20_x64-setup.exe": b"win-setup",
-                "Grok_0.2.20_x64-portable.zip": b"win-zip",
-                "Grok_0.2.20_amd64.AppImage": b"appimage",
-                "Grok_0.2.20_amd64.deb": b"deb",
-                "Grok-0.2.20-1.x86_64.rpm": b"rpm",
-                "Grok_0.2.20_x64.dmg.sig": b"ignore-me",
+                f"{PRODUCT_NAME}_0.2.20_aarch64.dmg": b"arm-dmg",
+                f"{PRODUCT_NAME}_0.2.20_x64.dmg": b"intel-dmg",
+                f"{PRODUCT_NAME}_0.2.20_x64-setup.exe": b"win-setup",
+                f"{PRODUCT_NAME}_0.2.20_x64-portable.zip": b"win-zip",
+                f"{PRODUCT_NAME}_0.2.20_amd64.AppImage": b"appimage",
+                f"{PRODUCT_NAME}_0.2.20_amd64.deb": b"deb",
+                f"{PRODUCT_NAME}-0.2.20-1.x86_64.rpm": b"rpm",
+                f"{PRODUCT_NAME}_0.2.20_x64.dmg.sig": b"ignore-me",
             }
             for name, body in samples.items():
                 (root / name).write_bytes(body)
@@ -309,13 +343,16 @@ class WebsiteDownloadsTests(unittest.TestCase):
             )
             self.assertEqual(
                 installers["mac-x64"]["versionedUrl"],
-                "https://github.com/RongleCat/grok-app/releases/download/v0.2.20/Grok_0.2.20_x64.dmg",
+                f"https://github.com/RongleCat/grok-app/releases/download/v0.2.20/{PRODUCT_NAME}_0.2.20_x64.dmg",
             )
             self.assertEqual(installers["mac-x64"]["sha256"], hashlib.sha256(b"intel-dmg").hexdigest())
             self.assertEqual((root / "Grok_mac_x64.dmg").read_bytes(), b"intel-dmg")
             self.assertEqual((root / "Grok_windows_x64-setup.exe").read_bytes(), b"win-setup")
             self.assertIn("linux-x64-rpm", installers)
-            self.assertEqual(installers["linux-x64-rpm"]["versionedFilename"], "Grok-0.2.20-1.x86_64.rpm")
+            self.assertEqual(
+                installers["linux-x64-rpm"]["versionedFilename"],
+                f"{PRODUCT_NAME}-0.2.20-1.x86_64.rpm",
+            )
             self.assertNotIn("sig", json.dumps(installers))
             self.assertEqual(payload["manifest"]["officialSite"], OFFICIAL_SITE)
             self.assertEqual(payload["manifest"]["schemaVersion"], SCHEMA_VERSION)
@@ -333,7 +370,7 @@ class WebsiteDownloadsTests(unittest.TestCase):
     def test_missing_required_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "Grok_0.2.20_aarch64.dmg").write_bytes(b"arm")
+            (root / f"{PRODUCT_NAME}_0.2.20_aarch64.dmg").write_bytes(b"arm")
             with self.assertRaises(SystemExit) as ctx:
                 build_manifest(
                     root,
@@ -343,6 +380,23 @@ class WebsiteDownloadsTests(unittest.TestCase):
                 )
             self.assertIn("mac-x64", str(ctx.exception))
             self.assertIn("windows-x64", str(ctx.exception))
+
+    def test_accepts_legacy_grok_sources(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "Grok_0.2.20_x64.dmg").write_bytes(b"intel-dmg")
+            (root / "Grok_0.2.20_x64-setup.exe").write_bytes(b"win-setup")
+            installers = build_manifest(
+                root,
+                tag="v0.2.20",
+                repo="RongleCat/grok-app",
+                write_aliases=False,
+            )["manifest"]["installers"]
+            self.assertEqual(installers["mac-x64"]["versionedFilename"], "Grok_0.2.20_x64.dmg")
+            self.assertEqual(
+                installers["windows-x64"]["versionedFilename"],
+                "Grok_0.2.20_x64-setup.exe",
+            )
 
 
 def _run_self_test() -> int:

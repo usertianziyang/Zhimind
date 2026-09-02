@@ -1,12 +1,12 @@
 /** id messages — domain: doctor */
 export const idDoctor = {
-  "setup.title": "Selamat datang di Grok",
+  "setup.title": "Selamat datang di Zhimind",
   "setup.subtitle": "MIT · Workbench desktop tidak resmi untuk Grok Build",
   "setup.step.runtime": "Runtime",
   "setup.step.account": "Akun",
   "setup.step.ready": "Siap",
   "setup.stepsAria": "Langkah penyiapan",
-  "setup.detecting": "Memeriksa Grok Build…",
+  "setup.detecting": "Memeriksa Zhimind Build…",
   "setup.detectingSlow": "Masih memeriksa… ini lebih lama dari biasanya.",
   "setup.detectTimeout": "Pemeriksaan mulai kehabisan waktu",
   "setup.detectTimeoutHint": "Probe Grok Build tidak selesai tepat waktu. Coba lagi, atau buka Setup untuk memasang / memilih biner lokal.",
@@ -352,7 +352,7 @@ export const idDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Inventaris polos isi zip untuk penerima.",
   "reliability.supportZip.emptyHostOnly": "Zip dukungan memerlukan aplikasi desktop",
-  "reliability.supportZip.emptyHostOnlyHint": "Ekspor berjalan hanya di host Tauri — buka Grok App di desktop untuk membuat zip dukungan yang disunting.",
+  "reliability.supportZip.emptyHostOnlyHint": "Ekspor berjalan hanya di host Tauri — buka Zhimind di desktop untuk membuat zip dukungan yang disunting.",
   "reliability.supportZip.failHostOnly": "Zip dukungan memerlukan aplikasi desktop (tidak tersedia di peramban)",
   "reliability.supportZip.failCancel": "Zip dukungan dibatalkan",
   "reliability.supportZip.failIo": "Zip dukungan tidak dapat ditulis (disk atau izin)",

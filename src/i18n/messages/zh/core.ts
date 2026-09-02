@@ -86,7 +86,7 @@ export const zhCore = {
   "common.confirm": "确认",
   "common.save": "保存",
   "common.dismiss": "关闭",
-  "onboarding.welcome": "欢迎使用 Grok",
+  "onboarding.welcome": "欢迎使用 Zhimind",
   "onboarding.body": "MIT · 非 xAI 官方。选择一种账户方式，或跳过先进壳。",
   "onboarding.official": "登录官方 / Official key",
   "onboarding.officialHint": "浏览器 OAuth 或粘贴 key（永不写入日志）",

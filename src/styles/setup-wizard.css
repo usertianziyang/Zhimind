@@ -102,6 +102,10 @@
   flex-shrink: 0;
 }
 
+.setup-logo .grok-logo {
+  color: var(--zhimind-brand, var(--accent));
+}
+
 .setup-logo--pulse {
   animation: setup-logo-pulse 2.4s ease-in-out infinite;
 }

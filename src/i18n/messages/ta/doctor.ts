@@ -1,12 +1,12 @@
 /** ta messages — domain: doctor */
 export const taDoctor = {
-  "setup.title": "Grok க்கு வரவேற்கிறோம்",
+  "setup.title": "Zhimind க்கு வரவேற்கிறோம்",
   "setup.subtitle": "MIT · Grok Buildக்கான அதிகாரப்பூர்வமற்ற டெஸ்க்டாப் வொர்க்பெஞ்ச்",
   "setup.step.runtime": "இயக்கநேரம்",
   "setup.step.account": "கணக்கு",
   "setup.step.ready": "தயார்",
   "setup.stepsAria": "அமைவு படிகள்",
-  "setup.detecting": "Grok Build ஐச் சரிபார்க்கிறது…",
+  "setup.detecting": "Zhimind Build ஐச் சரிபார்க்கிறது…",
   "setup.detectingSlow": "இன்னும் சரிபார்க்கிறது… இதற்கு வழக்கத்தை விட அதிக நேரம் எடுக்கிறது.",
   "setup.detectTimeout": "தொடக்கச் சரிபார்ப்பு நேரம் முடிந்தது",
   "setup.detectTimeoutHint": "Grok Build ஆய்வு சரியான நேரத்தில் முடிவடையவில்லை. உள்ளூர் பைனரியை நிறுவ / தேர்வு செய்ய மீண்டும் முயற்சிக்கவும் அல்லது அமைப்பைத் திறக்கவும்.",

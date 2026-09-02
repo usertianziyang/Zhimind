@@ -1,12 +1,12 @@
 /** it messages — domain: doctor */
 export const itDoctor = {
-  "setup.title": "Benvenuto in Grok",
+  "setup.title": "Benvenuto in Zhimind",
   "setup.subtitle": "MIT · Workbench desktop non ufficiale per Grok Build",
   "setup.step.runtime": "Runtime",
   "setup.step.account": "Account",
   "setup.step.ready": "Pronto",
   "setup.stepsAria": "Fasi di configurazione",
-  "setup.detecting": "Verifica di Grok Build…",
+  "setup.detecting": "Verifica di Zhimind Build…",
   "setup.detectingSlow": "Ancora in verifica… sta impiegando più del solito.",
   "setup.detectTimeout": "Timeout del controllo di avvio",
   "setup.detectTimeoutHint": "Il probe di Grok Build non è finito in tempo. Riprova, oppure apri Setup per installare / scegliere un binario locale.",
@@ -352,7 +352,7 @@ export const itDoctor = {
   "reliability.supportZip.section.readme": "README.txt",
   "reliability.supportZip.section.readmeHint": "Inventario in testo semplice dei contenuti dello zip per il destinatario.",
   "reliability.supportZip.emptyHostOnly": "Lo zip di supporto richiede l’app desktop",
-  "reliability.supportZip.emptyHostOnlyHint": "L’esportazione gira solo sull’host Tauri — apri Grok App sul desktop per creare uno zip di supporto oscurato.",
+  "reliability.supportZip.emptyHostOnlyHint": "L’esportazione gira solo sull’host Tauri — apri Zhimind sul desktop per creare uno zip di supporto oscurato.",
   "reliability.supportZip.failHostOnly": "Lo zip di supporto richiede l’app desktop (non disponibile nel browser)",
   "reliability.supportZip.failCancel": "Zip di supporto annullato",
   "reliability.supportZip.failIo": "Impossibile scrivere lo zip di supporto (disco o permesso)",
