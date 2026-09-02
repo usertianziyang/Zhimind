@@ -2,7 +2,7 @@
 export const esCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · No oficial · Proyecto hermano grok-go",
-  "app.versionFooter": "Zhimind v0.2.29 · MIT · No oficial · Proyecto hermano grok-go",
+  "app.versionFooter": "Zhimind v0.2.30 · MIT · No oficial · Proyecto hermano grok-go",
   "window.minimize": "Minimizar",
   "window.maximize": "Maximizar",
   "window.restore": "Restaurar",

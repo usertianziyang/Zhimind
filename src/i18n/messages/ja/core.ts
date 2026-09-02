@@ -2,7 +2,7 @@
 export const jaCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · 非公式 · 姉妹プロジェクト grok-go",
-  "app.versionFooter": "Zhimind v0.2.29 · MIT · 非公式 · 姉妹プロジェクト grok-go",
+  "app.versionFooter": "Zhimind v0.2.30 · MIT · 非公式 · 姉妹プロジェクト grok-go",
   "window.minimize": "最小化",
   "window.maximize": "最大化",
   "window.restore": "元のサイズに戻す",

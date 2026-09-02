@@ -2,7 +2,7 @@
 export const ptBRCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · Não oficial · Projeto irmão grok-go",
-  "app.versionFooter": "Zhimind v0.2.29 · MIT · Não oficial · Projeto irmão grok-go",
+  "app.versionFooter": "Zhimind v0.2.30 · MIT · Não oficial · Projeto irmão grok-go",
   "window.minimize": "Minimizar",
   "window.maximize": "Maximizar",
   "window.restore": "Restaurar",

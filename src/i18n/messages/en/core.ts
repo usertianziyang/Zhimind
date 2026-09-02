@@ -2,7 +2,7 @@
 export const enCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · Unofficial · Sister project grok-go",
-  "app.versionFooter": "Zhimind v0.2.29 · MIT · Unofficial · Sister project grok-go",
+  "app.versionFooter": "Zhimind v0.2.30 · MIT · Unofficial · Sister project grok-go",
   "window.minimize": "Minimize",
   "window.maximize": "Maximize",
   "window.restore": "Restore",

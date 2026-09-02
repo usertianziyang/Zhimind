@@ -2,7 +2,7 @@
 export const deCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · Inoffiziell · Schwesterprojekt grok-go",
-  "app.versionFooter": "Zhimind v0.2.29 · MIT · Inoffiziell · Schwesterprojekt grok-go",
+  "app.versionFooter": "Zhimind v0.2.30 · MIT · Inoffiziell · Schwesterprojekt grok-go",
   "window.minimize": "Minimieren",
   "window.maximize": "Maximieren",
   "window.restore": "Wiederherstellen",
