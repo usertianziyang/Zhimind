@@ -218,7 +218,18 @@ cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/rpm/* dist-installer
    # 或直接推送：
    ./scripts/release-tag.sh 0.1.1 --push
    ```
-2. **Actions → release → Run workflow**（手动）
+2. **Actions → release → Run workflow**（手动正式版）
+   - 分支选择 `main`
+   - `version` 填写待发布版本号，例如 `0.2.31`
+   - 工作流会校验版本号是否与代码清单、所有 locale 版本尾注及 `CHANGELOG.md` 一致；其它分支会直接失败
+
+   CLI 等价命令：
+
+   ```bash
+   gh workflow run release.yml --ref main -f version=0.2.31
+   ```
+
+   手动运行通过校验后与 `vX.Y.Z` tag 一样创建正式 Release，并刷新自动更新清单、校验和、官网稳定下载别名。
 
 `release-tag.sh` 会：
 

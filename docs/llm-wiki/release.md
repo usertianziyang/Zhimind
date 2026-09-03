@@ -181,23 +181,25 @@ git push origin vX.Y.Z
 |--------|------|------|
 | `.github/workflows/ci.yml` | push/PR → main | typecheck、test、`build:ui`、mac/win `cargo test` |
 | `.github/workflows/release.yml` | tag `v*` | 正式 Release：矩阵打包并刷新 updater、校验和和官网稳定别名 |
-| `.github/workflows/release.yml` | 手动选择 `dev` 等分支 | 独立 `dev-*` Prerelease：矩阵打包，不触碰正式 updater、Latest 或官网别名 |
+| `.github/workflows/release.yml` | 手动选择 `main` + 输入版本号 | 正式 Release：矩阵打包并刷新 updater、校验和和官网稳定别名 |
 
-手动打包 `dev`：Actions → **桌面端打包与发布 / Release** → **Run workflow**
-→ 分支选择 `dev`。CLI 等价命令：
+手动正式打包 `main`：Actions → **桌面端打包与发布 / Release** → **Run workflow**
+→ 分支选择 `main` → 填写版本号（例如 `0.2.31`）。CLI 等价命令：
 
 ```bash
-gh workflow run release.yml --ref dev
+gh workflow run release.yml --ref main -f version=0.2.31
 ```
+
+手动运行会校验：当前 ref 必须是 `main`；输入版本号必须与 `package.json`、Tauri、Cargo、所有 locale 的 `versionFooter` 以及 `CHANGELOG.md` 对齐。校验通过后使用正式 `vX.Y.Z` Release，非 `main` 的手动运行直接失败，不再生成 `dev-*` Prerelease。
 
 带版本号的安装包文件名跟随 `src-tauri/tauri.conf.json` 的 `productName`（当前为 `Zhimind`）；官网稳定下载别名仍保留历史 `Grok_*` 命名，发布脚本同时兼容新旧前缀，避免重命名导致旧链接失效。
 
 Release job 关键：
 
-1. `v*` Tag 使用正式版本；手动分支构建生成唯一 `dev-<branch>-<run>-<sha>` Tag
-2. 正式版从 CHANGELOG 生成正文；分支包写入中英测试包提示
+1. `v*` Tag 和 `main` 手动运行都使用正式版本；手动版本号来自 Run workflow 的 `version` 输入
+2. 正式版从 CHANGELOG 生成正文；手动运行必须通过版本与分支校验
 3. `tauri-apps/tauri-action` 构建并挂载多平台资产
-4. 只有正式 Tag 才刷新 updater、**官网稳定别名**、`downloads.json` 与校验和
+4. 正式 Tag 和 `main` 手动 Release 都刷新 updater、**官网稳定别名**、`downloads.json` 与校验和
 
 ### 仓库权限（人类一次性配置）
 

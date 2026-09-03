@@ -5,8 +5,7 @@
 # Keep this workflow on the default branch so GitHub can discover it after repository detachment.
 # 触发方式 / Triggers:
 #   - 推送 v* Tag：正式 Release，并刷新自动更新与官网下载资产。
-#   - 手动运行：在 Run workflow 中选择 dev 等分支，发布独立 Prerelease；
-#     不刷新正式自动更新、SHA256SUMS 或官网下载别名。
+#   - 手动运行：必须选择 main，并输入正式版本号；行为与 v* Tag Release 相同。
 #
 # Prerequisites (repo Settings → Actions → General → Workflow permissions):
 #   - Read and write permissions (so the job can create/update Releases)
@@ -38,8 +37,12 @@ on:
   push:
     tags:
       - "v*"
-  # 手动运行时，直接使用 GitHub 的分支选择器选择 dev；无需额外 ref 输入。
   workflow_dispatch:
+    inputs:
+      version:
+        description: "正式版本号（例如 0.2.31；必须与代码版本和 CHANGELOG 一致）"
+        required: true
+        type: string
 
 concurrency:
   group: release-${{ github.ref }}
@@ -49,7 +52,59 @@ permissions:
   contents: write
 
 jobs:
+  validate:
+    runs-on: ubuntu-22.04
+    name: 校验正式发布输入 / Validate release input
+    steps:
+      - name: 检出手动发布源代码 / Checkout manual release source
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v5
+
+      - name: 校验手动发布必须来自 main / Require main for manual release
+        if: github.event_name == 'workflow_dispatch'
+        shell: bash
+        env:
+          RELEASE_VERSION_INPUT: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          if [[ "$GITHUB_REF" != "refs/heads/main" ]]; then
+            echo "::error::手动正式发布只能从 main 执行，当前 ref 为 $GITHUB_REF"
+            exit 1
+          fi
+
+          VERSION="${RELEASE_VERSION_INPUT#v}"
+          VERSION="${VERSION#V}"
+          [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]] || {
+            echo "::error::版本号必须是 semver，例如 0.2.31"
+            exit 1
+          }
+
+          PACKAGE_VERSION="$(node -p 'require("./package.json").version')"
+          TAURI_VERSION="$(node -p 'require("./src-tauri/tauri.conf.json").version')"
+          PRODUCT_NAME="$(node -p 'require("./src-tauri/tauri.conf.json").productName')"
+          CARGO_VERSION="$(awk -F'"' '/^version = "/ { print $2; exit }' src-tauri/Cargo.toml)"
+          if [[ "$PACKAGE_VERSION" != "$VERSION" || "$TAURI_VERSION" != "$VERSION" || "$CARGO_VERSION" != "$VERSION" ]]; then
+            echo "::error::版本不一致：package.json=$PACKAGE_VERSION tauri=$TAURI_VERSION Cargo=$CARGO_VERSION input=$VERSION"
+            exit 1
+          fi
+
+          locale_count=0
+          for file in src/i18n/messages/*/core.ts; do
+            if ! rg -Fq "\"app.versionFooter\": \"${PRODUCT_NAME} v${VERSION}" "$file"; then
+              echo "::error::${file} 的 app.versionFooter 不是 ${PRODUCT_NAME} v${VERSION}"
+              exit 1
+            fi
+            ((locale_count += 1))
+          done
+          [[ "$locale_count" -ge 15 ]] || {
+            echo "::error::expected at least 15 locale core catalogs, found $locale_count"
+            exit 1
+          }
+
+          python3 scripts/changelog-for-release.py "$VERSION" >/dev/null
+
   publish:
+    needs: validate
     strategy:
       fail-fast: false
       matrix:
@@ -124,10 +179,12 @@ jobs:
           [[ -n "$PRODUCT_NAME" ]]
           echo "name=$PRODUCT_NAME" >> "$GITHUB_OUTPUT"
 
-      # Tag 构建沿用正式版本号；分支构建使用唯一 dev Tag，避免覆盖正式 Release。
+      # Tag 和 main 手动构建都使用正式版本；其它手动 ref 已在 validate 中拒绝。
       - name: 确定发布类型与目标 Tag / Resolve release target
         id: release
         shell: bash
+        env:
+          RELEASE_VERSION_INPUT: ${{ inputs.version }}
         run: |
           set -euo pipefail
           if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == v* ]]; then
@@ -135,14 +192,15 @@ jobs:
             echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
             echo "label=v__VERSION__" >> "$GITHUB_OUTPUT"
             echo "prerelease=false" >> "$GITHUB_OUTPUT"
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ github.ref }}" == "refs/heads/main" ]]; then
+            VERSION="${RELEASE_VERSION_INPUT#v}"
+            VERSION="${VERSION#V}"
+            echo "tag=v${VERSION}" >> "$GITHUB_OUTPUT"
+            echo "label=v__VERSION__" >> "$GITHUB_OUTPUT"
+            echo "prerelease=false" >> "$GITHUB_OUTPUT"
           else
-            SAFE_REF="$(printf '%s' "${{ github.ref_name }}" | tr -cs 'A-Za-z0-9._-' '-')"
-            SHORT_SHA="${GITHUB_SHA:0:7}"
-            DEV_TAG="dev-${SAFE_REF}-${GITHUB_RUN_NUMBER}-${SHORT_SHA}"
-            [[ "$DEV_TAG" == dev-* ]]
-            echo "tag=$DEV_TAG" >> "$GITHUB_OUTPUT"
-            echo "label=Dev ${{ github.ref_name }} (${SHORT_SHA})" >> "$GITHUB_OUTPUT"
-            echo "prerelease=true" >> "$GITHUB_OUTPUT"
+            echo "::error::unsupported release ref: $GITHUB_REF"
+            exit 1
           fi
 
       # Release description = CHANGELOG.md section for this version (bilingual body).
@@ -154,17 +212,14 @@ jobs:
           # Windows runners default to cp1252; bilingual CHANGELOG needs UTF-8 stdout.
           PYTHONIOENCODING: utf-8
           PYTHONUTF8: "1"
+          RELEASE_VERSION_INPUT: ${{ inputs.version }}
         run: |
           set -euo pipefail
-          if [[ "${{ github.ref_type }}" == "tag" && "${{ github.ref_name }}" == v* ]]; then
-            python3 scripts/changelog-for-release.py "${{ github.ref_name }}" | tee release-notes.md
-          else
-            {
-              echo "Development build from \`${{ github.ref_name }}\` at \`${GITHUB_SHA:0:7}\`."
-              echo
-              echo "开发分支测试包，不进入正式自动更新通道。"
-            } | tee release-notes.md
+          RELEASE_VERSION="$GITHUB_REF_NAME"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            RELEASE_VERSION="$RELEASE_VERSION_INPUT"
           fi
+          python3 scripts/changelog-for-release.py "$RELEASE_VERSION" | tee release-notes.md
           # Multiline body for tauri-action `releaseBody` (no releaseBodyFile input).
           {
             echo "RELEASE_BODY<<GROKAPP_EOF"
@@ -177,7 +232,7 @@ jobs:
       # so we never ship "looks signed" installers without in-app update enabled.
       - name: 检查自动更新签名 / Detect updater secrets
         id: updater
-        if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+        if: (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
         shell: bash
         env:
           GROK_UPDATER_PUBLIC_KEY: ${{ secrets.GROK_UPDATER_PUBLIC_KEY }}
@@ -387,10 +442,10 @@ jobs:
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GROK_UPDATER_PUBLIC_KEY: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.GROK_UPDATER_PUBLIC_KEY || '' }}
-          GROK_UPDATER_ENDPOINT: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && format('https://github.com/{0}/releases/download/grok-desktop-latest/latest.json', github.repository) || '' }}
-          TAURI_SIGNING_PRIVATE_KEY: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
-          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ github.ref_type == 'tag' && startsWith(github.ref_name, 'v') && secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
+          GROK_UPDATER_PUBLIC_KEY: ${{ ((github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && secrets.GROK_UPDATER_PUBLIC_KEY || '' }}
+          GROK_UPDATER_ENDPOINT: ${{ ((github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && format('https://github.com/{0}/releases/download/grok-desktop-latest/latest.json', github.repository) || '' }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ ((github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && secrets.TAURI_SIGNING_PRIVATE_KEY || '' }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ ((github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')) && secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD || '' }}
         with:
           # Root package.json + src-tauri/ layout (create-tauri-app style)
           projectPath: .
@@ -469,7 +524,7 @@ jobs:
   # Skips cleanly when updater secrets were never used (no .sig on the release).
   assemble-updater:
     needs: publish
-    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    if: (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-22.04
     name: 生成自动更新清单 / Assemble updater
     steps:
@@ -482,6 +537,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GROK_UPDATER_PUBLIC_KEY: ${{ secrets.GROK_UPDATER_PUBLIC_KEY }}
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          RELEASE_VERSION_INPUT: ${{ inputs.version }}
         run: |
           set -euo pipefail
           if [[ -z "${GROK_UPDATER_PUBLIC_KEY:-}" || -z "${TAURI_SIGNING_PRIVATE_KEY:-}" ]]; then
@@ -489,6 +545,10 @@ jobs:
             exit 0
           fi
           TAG="${{ github.ref_name }}"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${RELEASE_VERSION_INPUT#v}"
+            TAG="v${VERSION#V}"
+          fi
           # Hard-fail when secrets are present but rolling manifest cannot be built —
           # otherwise clients stay stuck on the GitHub manual-download path.
           TAG="$TAG" REPO="$GITHUB_REPOSITORY" bash scripts/assemble-updater-manifest.sh
@@ -497,7 +557,7 @@ jobs:
   # users can verify downloads. Runs after all platform builds have uploaded.
   checksums:
     needs: [publish, assemble-updater]
-    if: github.ref_type == 'tag' && startsWith(github.ref_name, 'v')
+    if: (github.ref_type == 'tag' && startsWith(github.ref_name, 'v')) || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main')
     runs-on: ubuntu-22.04
     name: 发布校验和与官网下载资产 / Checksums
     steps:
@@ -508,9 +568,14 @@ jobs:
         shell: bash
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_VERSION_INPUT: ${{ inputs.version }}
         run: |
           set -euo pipefail
           TAG="${{ github.ref_name }}"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            VERSION="${RELEASE_VERSION_INPUT#v}"
+            TAG="v${VERSION#V}"
+          fi
           mkdir -p /tmp/release-assets
           cd /tmp/release-assets
           # Download everything except a stale checksum file from a rebuild.
