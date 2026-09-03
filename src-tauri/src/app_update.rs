@@ -275,11 +275,10 @@ fn is_allowed_update_url(raw: &str) -> bool {
     let Ok(url) = url::Url::parse(raw) else {
         return false;
     };
-    match (url.scheme(), url.host_str()) {
-        ("https", Some(_)) => true,
-        ("http", Some("127.0.0.1" | "localhost")) => true,
-        _ => false,
-    }
+    matches!(
+        (url.scheme(), url.host_str()),
+        ("https", Some(_)) | ("http", Some("127.0.0.1" | "localhost"))
+    )
 }
 
 fn format_http_error(status: u16, body: &str) -> String {
