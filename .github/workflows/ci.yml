@@ -15,10 +15,10 @@ jobs:
   frontend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       # package.json packageManager is the single source (no hardcode version).
       - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -53,7 +53,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     name: Rust ${{ matrix.name }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: dtolnay/rust-toolchain@stable
       - name: Install Linux WebKit deps
         if: matrix.os == 'ubuntu-latest'

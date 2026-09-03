@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - name: 检出源代码 / Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 配置 pnpm / Setup pnpm
         # Do not hardcode version — package.json packageManager (pnpm@9.15.9)
@@ -81,7 +81,7 @@ jobs:
         uses: pnpm/action-setup@v4
 
       - name: 配置 Node.js / Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
@@ -316,6 +316,73 @@ jobs:
             echo "Apple certificate present but no APPLE_API_KEY_P8 — will sign without notarizing"
           fi
 
+      # Resolve the release once per platform job with retries. This keeps a
+      # transient GitHub API connect timeout from failing after a successful
+      # native build, and lets tauri-action upload directly by release ID.
+      - name: 稳健准备 GitHub Release / Prepare release with retry
+        id: release_api
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_NAME: "${{ steps.product.outputs.name }} ${{ steps.release.outputs.label }}"
+          RELEASE_PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          API_PATH="repos/${GITHUB_REPOSITORY}/releases/tags/${RELEASE_TAG}"
+          RELEASE_ID=""
+
+          for attempt in 1 2 3 4 5; do
+            ERROR_FILE="$(mktemp)"
+            set +e
+            CANDIDATE="$(gh api "$API_PATH" --jq '.id' 2>"$ERROR_FILE")"
+            LOOKUP_STATUS=$?
+            set -e
+            LOOKUP_ERROR="$(<"$ERROR_FILE")"
+            rm -f "$ERROR_FILE"
+
+            if [[ $LOOKUP_STATUS -eq 0 && "$CANDIDATE" =~ ^[0-9]+$ ]]; then
+              RELEASE_ID="$CANDIDATE"
+              break
+            fi
+
+            if [[ $LOOKUP_STATUS -ne 0 && "$LOOKUP_ERROR" != *"HTTP 404"* ]]; then
+              echo "Release lookup attempt $attempt failed: $LOOKUP_ERROR"
+            else
+              echo "Release $RELEASE_TAG does not exist yet; attempting to create it"
+              ERROR_FILE="$(mktemp)"
+              set +e
+              CANDIDATE="$(gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" \
+                -f "tag_name=${RELEASE_TAG}" \
+                -f "name=${RELEASE_NAME}" \
+                -f "body=${RELEASE_BODY}" \
+                -f "target_commitish=${GITHUB_SHA}" \
+                -F 'draft=false' \
+                -F "prerelease=${RELEASE_PRERELEASE}" \
+                --jq '.id' 2>"$ERROR_FILE")"
+              CREATE_STATUS=$?
+              set -e
+              CREATE_ERROR="$(<"$ERROR_FILE")"
+              rm -f "$ERROR_FILE"
+              if [[ $CREATE_STATUS -eq 0 && "$CANDIDATE" =~ ^[0-9]+$ ]]; then
+                RELEASE_ID="$CANDIDATE"
+                break
+              fi
+              echo "Release creation attempt $attempt failed: $CREATE_ERROR"
+            fi
+
+            if [[ $attempt -lt 5 ]]; then
+              sleep $((attempt * 2))
+            fi
+          done
+
+          if [[ ! "$RELEASE_ID" =~ ^[0-9]+$ ]]; then
+            echo "::error::Unable to resolve GitHub Release $RELEASE_TAG after 5 attempts"
+            exit 1
+          fi
+          echo "Resolved GitHub Release $RELEASE_TAG id=$RELEASE_ID"
+          echo "release_id=$RELEASE_ID" >> "$GITHUB_OUTPUT"
+
       - name: 构建并上传 GitHub Release / Build and publish
         uses: tauri-apps/tauri-action@v0
         env:
@@ -327,6 +394,7 @@ jobs:
         with:
           # Root package.json + src-tauri/ layout (create-tauri-app style)
           projectPath: .
+          releaseId: ${{ steps.release_api.outputs.release_id }}
           tagName: ${{ steps.release.outputs.tag }}
           releaseName: "${{ steps.product.outputs.name }} ${{ steps.release.outputs.label }}"
           releaseBody: ${{ env.RELEASE_BODY }}
@@ -340,6 +408,8 @@ jobs:
             ${{ matrix.platform == 'windows-latest' && steps.win_sign.outputs.enabled == 'true' && ' --config src-tauri/tauri.windows.sign.conf.json' || '' }}
           # We assemble a multi-platform latest.json in assemble-updater-manifest.
           includeUpdaterJson: false
+          # Retry native builds and release asset uploads after transient failures.
+          retryAttempts: 3
 
       # macOS: tauri-action often uploads only the .dmg. Silent update needs the
       # signed .app.tar.gz (+ .sig) with arch in the filename for assemble-updater.
@@ -404,7 +474,7 @@ jobs:
     name: 生成自动更新清单 / Assemble updater
     steps:
       - name: 检出源代码 / Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 生成滚动更新 Release / Assemble rolling release
         shell: bash
@@ -432,7 +502,7 @@ jobs:
     name: 发布校验和与官网下载资产 / Checksums
     steps:
       - name: 检出源代码 / Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: 生成并上传校验和与稳定别名 / Publish checksums
         shell: bash
