@@ -90,7 +90,7 @@ jobs:
 
           locale_count=0
           for file in src/i18n/messages/*/core.ts; do
-            if ! rg -Fq "\"app.versionFooter\": \"${PRODUCT_NAME} v${VERSION}" "$file"; then
+            if ! grep -Fq "\"app.versionFooter\": \"${PRODUCT_NAME} v${VERSION}" "$file"; then
               echo "::error::${file} 的 app.versionFooter 不是 ${PRODUCT_NAME} v${VERSION}"
               exit 1
             fi
