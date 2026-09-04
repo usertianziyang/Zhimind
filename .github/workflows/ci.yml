@@ -127,8 +127,8 @@ jobs:
           # rust-cache restores target/ including Cargo fingerprints. Cleaning
           # only this package forces the unit-test harness to be rebuilt from
           # the checked-out source while preserving cached dependencies.
-          Write-Host "=== cargo clean -p grok-app ==="
-          cargo clean -p grok-app
+          Write-Host "=== cargo clean -p zhimind-app ==="
+          cargo clean -p zhimind-app
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
           Write-Host "=== cargo test --no-run ==="
@@ -170,7 +170,7 @@ jobs:
           $manifest = Join-Path (Get-Location) "windows-test-manifest.xml"
           if (-not (Test-Path -LiteralPath $manifest)) { throw "missing $manifest" }
 
-          $exes = @(Get-ChildItem -Path "target\debug\deps" -Filter "grok_app_lib-*.exe" -ErrorAction SilentlyContinue)
+          $exes = @(Get-ChildItem -Path "target\debug\deps" -Filter "zhimind_app_lib-*.exe" -ErrorAction SilentlyContinue)
           if (-not $exes.Count) {
             # Fallback: any freshly built test harness under deps
             $exes = @(Get-ChildItem -Path "target\debug\deps" -Filter "*-*.exe" -ErrorAction SilentlyContinue |
