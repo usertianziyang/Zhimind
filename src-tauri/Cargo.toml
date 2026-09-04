@@ -1,6 +1,6 @@
 [package]
 name = "zhimind-app"
-version = "0.2.30"
+version = "0.2.31"
 description = "Zhimind — AI-powered desktop workbench"
 authors = ["RongleCat"]
 edition = "2021"

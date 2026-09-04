@@ -2,7 +2,7 @@
 export const ruCore = {
   "app.name": "Zhimind",
   "app.tagline": "MIT · Неофициально · Сестринский проект grok-go",
-  "app.versionFooter": "Zhimind v0.2.30 · MIT · Неофициально · Сестринский проект grok-go",
+  "app.versionFooter": "Zhimind v0.2.31 · MIT · Неофициально · Сестринский проект grok-go",
   "window.minimize": "Свернуть",
   "window.maximize": "Развернуть",
   "window.restore": "Восстановить",

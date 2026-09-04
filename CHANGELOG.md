@@ -13,37 +13,43 @@ See `docs/llm-wiki/release.md`.
 
 ## [Unreleased]
 
+## [0.2.31] - 2026-09-04
+
+> **Highlight:** A calmer sidebar, safer project writes, and smoother agent output.
+>
+> **中文 · 亮点：** 侧栏更紧凑，项目写入恢复，Agent 输出更顺。
+
 ### Fixed
-- Sidebar header is now one row: logo, search, and pane toggle. Search sits next to the toggle on the right (#996).
-- Desktop composer now shows localized labels for all reasoning tiers. The top tier no longer shows a raw internal id (#994).
-- Project chats no longer inherit the default-workspace sandbox. Writes inside the selected project work again (#986).
-- Expanded tool steps no longer stack title and command on one line. The last row in a Worked-for list keeps its real height (#983).
-- Thinking no longer stays on screen as the final reply. The real answer paints in place; switching chats is not required (#968).
-- Settings search finds Chinese keywords for permission, telemetry, login, and more. Bilingual keywords stay locked by catalog test (#970).
-- Queue edit and other glass dialogs stay above the embedded browser. Native webviews hide while the modal is open (#976).
-- Doctor and the agent dashboard no longer use native dropdowns. They use the same app Select as settings (#981).
-- Screen-reader labels for the files pane and setup steps follow the UI language. They no longer stay English (#982).
+- Sidebar header now fits the logo, search, and pane toggle in one row. (#996)
+- Desktop composer labels every reasoning tier locally. (#994)
+- Project chats now honor the selected project's sandbox. (#986)
+- Expanded tool steps keep titles and commands on separate rows. (#983)
+- Thinking no longer replaces the final reply. (#968)
+- Settings search covers Chinese keywords for permission, telemetry, login, and more. (#970)
+- Glass dialogs stay above the embedded browser. (#976)
+- Doctor and the agent dashboard use the app's Select control. (#981)
+- Files pane and setup-step screen-reader labels follow the UI language. (#982)
 
 **中文 · 修复**
-- 桌面侧栏顶栏收成一行，搜索与侧栏按钮同在右侧。折叠时仍可在主栏左上角打开侧栏（#996）。
-- 桌面 Composer 推理强度最高档已与其它档位一样显示本地化名称。例如最高档显示「极高」（#994）。
-- 项目会话不再误用默认工作区的沙箱。在选中项目里写文件又能成功了（#986）。
-- 展开的工具步骤不再把标题和命令叠在同一行。工作列表最后一行会按真实高度排开（#983）。
-- 思考结束后不再把思考过程当成最终回复。正文会直接画出来，不用切走再切回来（#968）。
-- 设置搜索补上了中文关键词，权限、遥测、登录等能搜到了。目录测试会锁住双语关键词（#970）。
-- 打开内置浏览器时，队列编辑等毛玻璃弹窗不再被挡住。弹窗打开期间会暂时藏起原生页面（#976）。
-- Doctor 和智能体面板不再用系统原生下拉。跟设置一样走项目 Select（#981）。
-- 文件面板和设置向导的读屏标签跟界面语言走。不再固定英文（#982）。
+- 侧栏顶栏现在一行排下 logo、搜索和侧栏按钮。（#996）
+- 桌面 Composer 的推理档位都显示本地化名称。（#994）
+- 项目会话现在使用选中项目的沙箱设置。（#986）
+- 工具步骤展开后，标题和命令保持分行显示。（#983）
+- 思考过程不再替代最终回复。（#968）
+- 设置搜索支持权限、遥测、登录等中文关键词。（#970）
+- 毛玻璃弹窗会保持在内置浏览器上方。（#976）
+- Doctor 和智能体面板使用应用内 Select 控件。（#981）
+- 文件面板和设置向导的读屏标签跟随界面语言。（#982）
 
 ### Changed
-- More UI languages fill in strings that still matched English. Remaining locales including Japanese, Korean, Russian, Ukrainian, and Tamil follow the locale (#972–#975, #977–#980).
-- Background git and worktree Host work stays off the async runtime. Status, diffs, review loads, and worktree ops no longer stall other commands (#988, #990–#993).
-- Opening a chat with media settles with fewer polls. Reveal still waits on load events; the safety net is slower (#989).
+- More UI languages now show localized strings instead of English. Remaining locales include Japanese, Korean, Russian, Ukrainian, and Tamil (#972–#975, #977–#980).
+- Background git and worktree tasks no longer block other Host commands. (#988, #990–#993)
+- Opening media chats settles with fewer polls. (#989)
 
 **中文 · 变更**
-- 更多界面语言补上了原先还跟英文重复的可见文案。含日/韩/俄/乌/泰米尔等剩余语言跟语言走（#972–#975、#977–#980）。
-- 后台 git / worktree 更省。状态、diff、Review 与 worktree 操作不再堵其它 Host 命令（#988、#990–#993）。
-- 打开带媒体的会话少扫 DOM。仍靠加载事件揭开，兜底轮询更慢（#989）。
+- 更多界面语言现在显示本地化文案，不再跟随英文。日、韩、俄、乌、泰米尔等语言也已补齐（#972–#975、#977–#980）。
+- 后台 git 和 worktree 任务不再阻塞其它 Host 命令。（#988、#990–#993）
+- 打开带媒体的会话需要的轮询更少。（#989）
 
 ## [0.2.30] - 2026-09-02
 

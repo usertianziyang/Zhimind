@@ -7096,7 +7096,7 @@ dependencies = [
 
 [[package]]
 name = "zhimind-app"
-version = "0.2.30"
+version = "0.2.31"
 dependencies = [
  "arboard",
  "async-stream",
