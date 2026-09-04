@@ -61,6 +61,7 @@ import {
   resolveProviderBrandId,
   ZHIMIND_PROVIDER_BASE_URL,
   ZHIMIND_PROVIDER_BACKEND,
+  ZHIMIND_DEFAULT_MODEL,
   ZHIMIND_PROVIDER_ID,
   ZHIMIND_PROVIDER_NAME,
   type ProviderPreset,
@@ -196,7 +197,7 @@ const emptyForm = (): FormState => ({
   providerMode: "generic",
   appendPrompt: "",
   supportsVision: false,
-  models: [{ id: "default", name: "default" }],
+  models: [{ id: ZHIMIND_DEFAULT_MODEL, name: ZHIMIND_DEFAULT_MODEL }],
   efforts: defaultCustomChannelEfforts().map((e) => ({
     id: e.id,
     name: e.name || e.id,

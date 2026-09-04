@@ -72,7 +72,7 @@ fn pet_init_script(prefs: &PetPrefs) -> String {
     });
     let locale = crate::tray_i18n::Locale::parse(&crate::store::load_settings().locale);
     format!(
-        "{prefix}window.__GROK_PET_BOOT__={boot};window.__GROK_BOOT_LOCALE__={locale:?};window.__GROK_BOOT_OS_LANG__={os:?};var d=document.documentElement;if(d)d.setAttribute(\"lang\",{html:?});}}catch(e){{}}}})();",
+        "{prefix}window.__ZHIMIND_PET_BOOT__={boot};window.__ZHIMIND_BOOT_LOCALE__={locale:?};window.__ZHIMIND_BOOT_OS_LANG__={os:?};var d=document.documentElement;if(d)d.setAttribute(\"lang\",{html:?});}}catch(e){{}}}})();",
         prefix = PET_INIT_SCRIPT_PREFIX,
         boot = boot,
         locale = locale.as_tag(),
@@ -1498,8 +1498,8 @@ mod tests {
         assert!(script.contains("transparent"));
         assert!(script.contains("display:none"));
         assert!(script.contains("__GROK_PET_BOOT__"));
-        assert!(script.contains("__GROK_BOOT_LOCALE__"));
-        assert!(script.contains("__GROK_BOOT_OS_LANG__"));
+        assert!(script.contains("__ZHIMIND_BOOT_LOCALE__"));
+        assert!(script.contains("__ZHIMIND_BOOT_OS_LANG__"));
         assert!(script.contains("green"));
     }
 

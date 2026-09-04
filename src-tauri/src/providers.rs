@@ -201,6 +201,7 @@ pub const ZHIMIND_PROVIDER_ID: &str = "zhimind-api";
 pub const ZHIMIND_PROVIDER_NAME: &str = "Zhimind API";
 pub const ZHIMIND_PROVIDER_BASE_URL: &str = "http://ai.berrytick.com/v1";
 pub const ZHIMIND_PROVIDER_BACKEND: &str = "responses";
+pub const ZHIMIND_DEFAULT_MODEL: &str = "gpt-5.6";
 
 fn is_zhimind_base_url(raw: &str) -> bool {
     normalize_openai_base_url(raw, ZHIMIND_PROVIDER_BACKEND, false)
@@ -985,6 +986,74 @@ fn decode_app_models(
     )]
 }
 
+/// Persist the fixed Zhimind route's current request model before spawn.
+pub fn migrate_zhimind_model_default() -> Result<bool, String> {
+    let _ = ensure_agent_home()?;
+    let path = agent_config_toml();
+    if !path.exists() {
+        return Ok(false);
+    }
+    let text = read_text(&path);
+    let mut lines: Vec<String> = text.lines().map(str::to_string).collect();
+    let mut in_zhimind = false;
+    let mut changed = false;
+    for line in &mut lines {
+        let trimmed = line.trim();
+        if let Some(header) = parse_model_header_id(trimmed) {
+            in_zhimind = header == ZHIMIND_PROVIDER_ID;
+            continue;
+        }
+        if trimmed.starts_with('[') {
+            in_zhimind = false;
+            continue;
+        }
+        if !in_zhimind || trimmed.starts_with('#') || trimmed.is_empty() {
+            continue;
+        }
+        let Some(key) = assignment_key_exact(trimmed) else {
+            continue;
+        };
+        let Some(eq) = trimmed.find('=') else {
+            continue;
+        };
+        if key == "model" {
+            if unquote(trimmed[eq + 1..].trim()) != ZHIMIND_DEFAULT_MODEL {
+                let indent = &line[..line.len() - line.trim_start().len()];
+                *line = format!("{indent}model = {}", quote(ZHIMIND_DEFAULT_MODEL));
+                changed = true;
+            }
+        } else if key == APP_MODELS_KEY {
+            let raw = unquote(trimmed[eq + 1..].trim());
+            let Ok(parsed) = serde_json::from_str::<Vec<ProviderModelEntry>>(&raw) else {
+                continue;
+            };
+            let mut models = normalize_provider_models(&parsed);
+            if !models.iter().any(|m| m.id == ZHIMIND_DEFAULT_MODEL) {
+                models.insert(
+                    0,
+                    ProviderModelEntry::named(ZHIMIND_DEFAULT_MODEL, ZHIMIND_DEFAULT_MODEL),
+                );
+                let indent = &line[..line.len() - line.trim_start().len()];
+                *line = format!(
+                    "{indent}{APP_MODELS_KEY} = {}",
+                    quote(&encode_app_models(&models))
+                );
+                changed = true;
+            }
+        }
+    }
+    if !changed {
+        return Ok(false);
+    }
+    let mut out = lines.join("\n");
+    if text.ends_with('\n') {
+        out.push('\n');
+    }
+    write_text(&path, &out)?;
+    tracing::info!(target: "providers", "migrated Zhimind default model to {ZHIMIND_DEFAULT_MODEL}");
+    Ok(true)
+}
+
 /// Ensure `active_model` is in `models`; pick first when missing.
 fn resolve_active_model(models: &[ProviderModelEntry], preferred: &str) -> String {
     let pref = preferred.trim();
@@ -1301,6 +1370,7 @@ pub fn list_custom_providers() -> Result<ProvidersListResult, String> {
     let _ = ensure_model_integer_fields();
     // Existing App-only effort choices need the native Grok Build capability gate.
     let _ = ensure_reasoning_effort_support_fields();
+    let _ = migrate_zhimind_model_default();
     let mut text = read_text(&path);
     // One-time route migration: an existing install may still point at
     // official/legacy providers. Keep those tables untouched, but make the

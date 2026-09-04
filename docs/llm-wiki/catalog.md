@@ -9,7 +9,7 @@
 | 来源 | 说明 |
 |------|------|
 | `models_cache.json` | CLI 官方目录 |
-| 静态兜底 | `grok-4.6`（默认）+ `grok-4.5` |
+| 静态兜底 | 固定 Zhimind Responses 路由默认 `gpt-5.5`；支持 `gpt-5.6-sol` / `gpt-5.6-luna` / `gpt-5.6-terra` / `gpt-image-2`；官方缓存仍提供 `grok-4.6` / `grok-4.5` |
 
 探测：`scripts/probe-models.sh`。Host：`models_list_available`。
 

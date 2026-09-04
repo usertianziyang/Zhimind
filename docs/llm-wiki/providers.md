@@ -17,6 +17,10 @@ Desktop never reimplements tools/sampling. It is an ACP client + UI shell.
 
 ## Agent profile (`GROK_HOME`)
 
+Zhimind 固定路由默认请求模型为 `gpt-5.6`，消息格式为 OpenAI Responses；旧的
+`default`、`gpt-5.6-sol`、`gpt-5.6-luna` 和 `gpt-5.6-terra` 配置会在读取 Provider
+时迁移到该模型。BerryTick Responses 流经本地 loopback 兼容层补齐 CLI 要求的字段。
+
 | Session data mode | `GROK_HOME` for spawned agent |
 |-------------------|-------------------------------|
 | `shared` (default) | `~/.grok` (same home as terminal Grok Build CLI) |

@@ -1,12 +1,12 @@
 [package]
-name = "grok-app"
+name = "zhimind-app"
 version = "0.2.30"
-description = "Grok — desktop workbench for Grok Build CLI"
+description = "Zhimind — AI-powered desktop workbench"
 authors = ["RongleCat"]
 edition = "2021"
 
 [lib]
-name = "grok_app_lib"
+name = "zhimind_app_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]

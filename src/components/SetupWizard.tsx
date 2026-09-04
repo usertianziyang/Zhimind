@@ -38,6 +38,7 @@ import {
 import {
   ZHIMIND_PROVIDER_BASE_URL,
   ZHIMIND_PROVIDER_BACKEND,
+  ZHIMIND_DEFAULT_MODEL,
   ZHIMIND_PROVIDER_ID,
   ZHIMIND_PROVIDER_NAME,
 } from "@/lib/providerPresets";
@@ -333,7 +334,7 @@ export function SetupWizard({
       // spawns with the relay (no full app restart — issue #376).
       await api.providersUpsert({
         id: ZHIMIND_PROVIDER_ID,
-        model: "default",
+        model: ZHIMIND_DEFAULT_MODEL,
         baseUrl: ZHIMIND_PROVIDER_BASE_URL,
         name: ZHIMIND_PROVIDER_NAME,
         apiKey: key,

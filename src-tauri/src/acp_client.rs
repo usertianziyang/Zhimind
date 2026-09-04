@@ -5518,6 +5518,7 @@ fn classify_rpc_error(e: &str) -> AgentError {
         || lower.contains("stream closed")
         || lower.contains("before completion")
         || lower.contains("response.completed")
+        || (lower.contains("serialization error") && lower.contains("missing field"))
         || lower.contains("connection reset")
         || lower.contains("broken pipe")
         || lower.contains("econnreset")
@@ -5590,6 +5591,16 @@ mod classify_rpc_error_tests {
                 "API error (status 502 Bad Gateway): upstream_error: Upstream service temporarily unavailable"
             )
             .code,
+            AgentErrorCode::NetworkProvider
+        );
+    }
+
+    #[test]
+    fn responses_schema_error_is_provider_not_agent_crash() {
+        let msg =
+            "Internal error (code -32603, data: \\\"serialization error: missing field `annotations`\\\")";
+        assert_eq!(
+            classify_rpc_error(msg).code,
             AgentErrorCode::NetworkProvider
         );
     }

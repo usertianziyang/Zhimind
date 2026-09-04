@@ -9,6 +9,7 @@ export const ZHIMIND_PROVIDER_ID = "zhimind-api";
 export const ZHIMIND_PROVIDER_NAME = "Zhimind API";
 export const ZHIMIND_PROVIDER_BASE_URL = "http://ai.berrytick.com/v1";
 export const ZHIMIND_PROVIDER_BACKEND = "responses";
+export const ZHIMIND_DEFAULT_MODEL = "gpt-5.5";
 
 /** Known brand marks with dedicated logos (see ProviderBrandIcon). */
 export type ProviderBrandId =

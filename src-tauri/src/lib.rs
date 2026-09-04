@@ -576,7 +576,7 @@ pub fn run() {
             let boot_os_lang = tray_i18n::detect_os_lang_tag();
             let boot_html_lang = boot_locale.html_lang();
             let boot_theme_script = format!(
-                r#"(function(){{try{{Object.defineProperty(window,"__GROK_BOOT_THEME__",{{value:{theme:?},writable:false,configurable:false}});Object.defineProperty(window,"__GROK_BOOT_LOCALE__",{{value:{locale:?},writable:false,configurable:false}});Object.defineProperty(window,"__GROK_BOOT_OS_LANG__",{{value:{os_lang:?},writable:false,configurable:false}});var d=document.documentElement;if(d){{d.setAttribute("data-theme",{theme:?});d.setAttribute("lang",{html_lang:?});}}}}catch(e){{}}}})();"#,
+                r#"(function(){{try{{Object.defineProperty(window,"__ZHIMIND_BOOT_THEME__",{{value:{theme:?},writable:false,configurable:false}});Object.defineProperty(window,"__ZHIMIND_BOOT_LOCALE__",{{value:{locale:?},writable:false,configurable:false}});Object.defineProperty(window,"__ZHIMIND_BOOT_OS_LANG__",{{value:{os_lang:?},writable:false,configurable:false}});var d=document.documentElement;if(d){{d.setAttribute("data-theme",{theme:?});d.setAttribute("lang",{html_lang:?});}}}}catch(e){{}}}})();"#,
                 theme = boot_theme,
                 locale = boot_locale_tag,
                 os_lang = boot_os_lang,

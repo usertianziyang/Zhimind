@@ -158,10 +158,18 @@ describe("effortCatalogForRoute", () => {
 });
 
 describe("official catalog fallback", () => {
-  it("defaults to grok-4.6 and keeps grok-4.5 selectable", () => {
-    expect(DEFAULT_MODEL_ID).toBe("grok-4.6");
-    expect(GROK_BUILD_MODELS.map((m) => m.id)).toEqual(["grok-4.6", "grok-4.5"]);
-    expect(GROK_BUILD_MODELS.find((m) => m.isDefault)?.id).toBe("grok-4.6");
+  it("defaults to gpt-5.5 while keeping official fallback models selectable", () => {
+    expect(DEFAULT_MODEL_ID).toBe("gpt-5.5");
+    expect(GROK_BUILD_MODELS.map((m) => m.id)).toEqual([
+      "gpt-5.5",
+      "gpt-5.6-sol",
+      "gpt-5.6-luna",
+      "gpt-5.6-terra",
+      "gpt-image-2",
+      "grok-4.6",
+      "grok-4.5",
+    ]);
+    expect(GROK_BUILD_MODELS.find((m) => m.isDefault)?.id).toBe("gpt-5.5");
   });
 });
 

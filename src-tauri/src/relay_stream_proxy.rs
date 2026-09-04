@@ -41,7 +41,25 @@ fn start_lock() -> &'static Mutex<()> {
 /// Hosts that need SSE sanitizing before Grok Build sees them.
 pub fn host_needs_stream_sanitize(base_url: &str) -> bool {
     let u = base_url.trim().to_ascii_lowercase();
-    u.contains("opencode.ai") || u.contains("/zen/go")
+    u.contains("opencode.ai") || u.contains("/zen/go") || u.contains("ai.berrytick.com")
+}
+
+/// Add fields required by Grok CLI's strict Responses event decoder.
+/// BerryTick's `response.completed` currently omits `response.annotations`.
+pub fn normalize_sse_data_payload(payload: &str) -> String {
+    let raw = payload.trim();
+    let Ok(mut value) = serde_json::from_str::<serde_json::Value>(raw) else {
+        return payload.to_string();
+    };
+    if value.get("type").and_then(|v| v.as_str()) == Some("response.completed") {
+        if let Some(response) = value.get_mut("response").and_then(|v| v.as_object_mut()) {
+            response
+                .entry("annotations")
+                .or_insert_with(|| serde_json::Value::Array(Vec::new()));
+            return value.to_string();
+        }
+    }
+    payload.to_string()
 }
 
 /// Whether a single SSE `data:` payload should be dropped (CLI-unsafe).
@@ -155,7 +173,7 @@ pub fn filter_sse_event(event: &str) -> String {
     }
     for d in data_payloads {
         out.push_str("data: ");
-        out.push_str(&d);
+        out.push_str(&normalize_sse_data_payload(&d));
         out.push('\n');
     }
     out.push('\n');
@@ -609,6 +627,25 @@ mod tests {
     }
 
     #[test]
+    fn fills_missing_responses_annotations() {
+        let raw = r#"{"type":"response.completed","response":{"id":"r1","status":"completed"}}"#;
+        let normalized = normalize_sse_data_payload(raw);
+        let value: serde_json::Value = serde_json::from_str(&normalized).unwrap();
+        assert_eq!(
+            value.pointer("/response/annotations"),
+            Some(&serde_json::Value::Array(Vec::new()))
+        );
+    }
+
+    #[test]
+    fn filter_event_fills_missing_responses_annotations() {
+        let ev =
+            "data: {\"type\":\"response.completed\",\"response\":{\"status\":\"completed\"}}\n\n";
+        let out = filter_sse_event(ev);
+        assert!(out.contains("\"annotations\":[]"), "{out}");
+    }
+
+    #[test]
     fn filter_event_drops_cost() {
         let ev = "data: {\"choices\":[],\"x-opencode-type\":\"inference-cost\",\"cost\":\"1\"}\n\n";
         assert!(filter_sse_event(ev).is_empty());
@@ -640,6 +677,11 @@ mod tests {
     fn host_detects_opencode() {
         assert!(host_needs_stream_sanitize("https://opencode.ai/zen/go/v1"));
         assert!(!host_needs_stream_sanitize("https://api.deepseek.com/v1"));
+    }
+
+    #[test]
+    fn host_detects_zhimind_responses_route() {
+        assert!(host_needs_stream_sanitize("http://ai.berrytick.com/v1"));
     }
 
     #[test]

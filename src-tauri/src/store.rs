@@ -58,8 +58,7 @@ pub struct ComposerPrefs {
 impl Default for ComposerPrefs {
     fn default() -> Self {
         Self {
-            model_id: "grok-4.6".into(),
-            // Grok 4.6 product default (Extra High).
+            model_id: "gpt-5.6".into(),
             effort: "xhigh".into(),
             mode: "agent".into(),
             permission_policy: "ask".into(),
@@ -507,6 +506,9 @@ pub struct AppSettings {
     /// Missing field deserializes as false so existing installs migrate once.
     #[serde(default)]
     pub official_model_default_migrated: bool,
+    /// One-shot: fixed Zhimind route aliases → gpt-5.6.
+    #[serde(default)]
+    pub zhimind_model_default_migrated: bool,
     /// One-shot: official grok-4.6 product effort high → xhigh.
     #[serde(default)]
     pub official_effort_xhigh_migrated: bool,
@@ -749,7 +751,7 @@ impl Default for AppSettings {
             wsl_distro: None,
             wsl_cli_path: None,
             permission_policy: "ask".into(),
-            model_id: Some("grok-4.6".into()),
+            model_id: Some("gpt-5.6".into()),
             effort: Some("xhigh".into()),
             mode: "agent".into(),
             onboarding_done: false,
@@ -796,6 +798,7 @@ impl Default for AppSettings {
             // Fresh installs already use 1.0-aligned effort / workflows defaults.
             effort_default_migrated: true,
             official_model_default_migrated: true,
+            zhimind_model_default_migrated: true,
             official_effort_xhigh_migrated: true,
             official_effort_xhigh_rows_migrated: true,
             workflows_default_migrated: true,
@@ -1020,6 +1023,21 @@ pub fn load_settings() -> AppSettings {
             s.effort = Some(next);
         }
         s.effort_default_migrated = true;
+        let _ = write_json(&settings_file(), &s);
+    }
+    if !s.zhimind_model_default_migrated {
+        let legacy = matches!(
+            s.model_id.as_deref().map(str::trim),
+            None | Some("")
+                | Some("default")
+                | Some("gpt-5.6-sol")
+                | Some("gpt-5.6-luna")
+                | Some("gpt-5.6-terra")
+        );
+        if legacy {
+            s.model_id = Some(crate::providers::ZHIMIND_DEFAULT_MODEL.into());
+        }
+        s.zhimind_model_default_migrated = true;
         let _ = write_json(&settings_file(), &s);
     }
     // One-time: official catalog default grok-4.5 → grok-4.6. Unset / empty /
@@ -2888,7 +2906,7 @@ fn global_prefs(settings: &AppSettings) -> (String, String, String, String) {
             .model_id
             .clone()
             .filter(|s| !s.trim().is_empty())
-            .unwrap_or_else(|| "grok-4.6".into()),
+            .unwrap_or_else(|| crate::providers::ZHIMIND_DEFAULT_MODEL.into()),
         settings
             .effort
             .clone()
@@ -3387,7 +3405,7 @@ mod tests {
         assert!(s.official_model_default_migrated);
         assert!(s.workflows_default_migrated);
         assert_eq!(s.effort.as_deref(), Some("xhigh"));
-        assert_eq!(s.model_id.as_deref(), Some("grok-4.6"));
+        assert_eq!(s.model_id.as_deref(), Some("gpt-5.6"));
         assert!(s.official_effort_xhigh_migrated);
         assert!(s.official_effort_xhigh_rows_migrated);
         assert_eq!(s.preferred_agent, "");

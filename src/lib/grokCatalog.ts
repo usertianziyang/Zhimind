@@ -92,12 +92,48 @@ export const GROK_4_6_EFFORTS: EffortOption[] = [
  * Fallback catalog when Host has not returned live models yet.
  * Official OAuth exposes grok-4.6 (default) and grok-4.5 (2026-08 probe).
  * `grok-build` is NOT listed — CLI rejects it as unknown model id.
+ * GPT-5.x models are routed through Zhimind Responses API.
  */
 export const GROK_BUILD_MODELS: ModelOption[] = [
   {
+    id: "gpt-5.5",
+    label: "GPT-5.5",
+    isDefault: true,
+    source: "zhimind-api",
+    reasoningEfforts: GROK_4_6_EFFORTS,
+    contextWindow: 500000,
+  },
+  {
+    id: "gpt-5.6-sol",
+    label: "GPT-5.6 Sol",
+    source: "zhimind-api",
+    reasoningEfforts: GROK_4_6_EFFORTS,
+    contextWindow: 500000,
+  },
+  {
+    id: "gpt-5.6-luna",
+    label: "GPT-5.6 Luna",
+    source: "zhimind-api",
+    reasoningEfforts: GROK_4_6_EFFORTS,
+    contextWindow: 500000,
+  },
+  {
+    id: "gpt-5.6-terra",
+    label: "GPT-5.6 Terra",
+    source: "zhimind-api",
+    reasoningEfforts: GROK_4_6_EFFORTS,
+    contextWindow: 500000,
+  },
+  {
+    id: "gpt-image-2",
+    label: "GPT Image 2",
+    source: "zhimind-api",
+    reasoningEfforts: GROK_BUILD_EFFORTS,
+    contextWindow: 200000,
+  },
+  {
     id: "grok-4.6",
     label: "Zhimind 4.6",
-    isDefault: true,
     source: "official",
     reasoningEfforts: GROK_4_6_EFFORTS,
     contextWindow: 500000,
@@ -111,8 +147,7 @@ export const GROK_BUILD_MODELS: ModelOption[] = [
   },
 ];
 
-export const DEFAULT_MODEL_ID =
-  GROK_BUILD_MODELS.find((m) => m.isDefault)?.id ?? "grok-4.6";
+export const DEFAULT_MODEL_ID = "gpt-5.5";
 
 /**
  * Fallback context window (tokens) for custom providers that have not set one.
