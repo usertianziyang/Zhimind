@@ -19,7 +19,7 @@ describe("tauri dev identifier overlay", () => {
       identifier: string;
       productName?: string;
     };
-    expect(base.identifier).toBe("com.grokapp.desktop");
+    expect(base.identifier).toBe("com.zhimind.desktop");
     expect(dev.identifier).toBe("com.zhimind.desktop.dev");
     expect(dev.productName).toBe("Zhimind Dev");
   });
