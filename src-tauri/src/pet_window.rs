@@ -1497,7 +1497,7 @@ mod tests {
         assert!(script.contains("boot-gate"));
         assert!(script.contains("transparent"));
         assert!(script.contains("display:none"));
-        assert!(script.contains("__GROK_PET_BOOT__"));
+        assert!(script.contains("__ZHIMIND_PET_BOOT__"));
         assert!(script.contains("__ZHIMIND_BOOT_LOCALE__"));
         assert!(script.contains("__ZHIMIND_BOOT_OS_LANG__"));
         assert!(script.contains("green"));
@@ -1513,7 +1513,7 @@ mod tests {
         let script = pet_init_script(&normalize_prefs(prefs));
         assert!(script.contains("violet"));
         assert!(script.contains("cloud"));
-        assert!(script.contains("__GROK_PET_BOOT__"));
+        assert!(script.contains("__ZHIMIND_PET_BOOT__"));
     }
 
     #[test]
