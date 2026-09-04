@@ -7,11 +7,16 @@ use std::net::{IpAddr, Ipv4Addr, SocketAddr, UdpSocket};
 
 /// IPv4s that are usable as a phone-facing LAN URL host.
 pub fn is_usable_lan_ipv4(ip: Ipv4Addr) -> bool {
+    let o = ip.octets();
+    // Filter out RFC 2544 benchmark testing network (198.18.0.0/15)
+    let is_benchmark_net = o[0] == 198 && (o[1] == 18 || o[1] == 19);
+
     !ip.is_unspecified()
         && !ip.is_loopback()
         && !ip.is_link_local()
         && !ip.is_multicast()
         && !ip.is_broadcast()
+        && !is_benchmark_net
 }
 
 /// Lower is better. Prefer typical home Wi-Fi ranges.
