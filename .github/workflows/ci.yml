@@ -28,7 +28,43 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - name: Production dependency audit
         # Fail on moderate+ so known CVE bumps (e.g. DOMPurify / Mermaid) cannot silently regress.
-        run: pnpm run audit:prod
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          # The npm audit endpoint can transiently time out independently of
+          # package installation. Retry only known transport failures so an
+          # actual vulnerability (or another audit error) still fails CI.
+          max_attempts=3
+          for attempt in $(seq 1 "$max_attempts"); do
+            log_file="$(mktemp)"
+            set +e
+            pnpm run audit:prod 2>&1 | tee "$log_file"
+            status=${PIPESTATUS[0]}
+            set -e
+
+            if [[ "$status" -eq 0 ]]; then
+              rm -f "$log_file"
+              exit 0
+            fi
+
+            network_failure=0
+            if grep -Eiq \
+              'ERR_SOCKET_TIMEOUT|ETIMEDOUT|ECONNRESET|ECONNREFUSED|ENOTFOUND|EAI_AGAIN|fetch failed|request to .* failed' \
+              "$log_file"; then
+              network_failure=1
+            fi
+            rm -f "$log_file"
+
+            if [[ "$network_failure" -eq 1 && "$attempt" -lt "$max_attempts" ]]; then
+              delay=$((attempt * 5))
+              echo "npm audit transport failure; retrying in ${delay}s (attempt $((attempt + 1))/$max_attempts)"
+              sleep "$delay"
+              continue
+            fi
+
+            exit "$status"
+          done
       - run: pnpm typecheck
       - run: pnpm test
       - name: ESLint (minimal quality rules)
