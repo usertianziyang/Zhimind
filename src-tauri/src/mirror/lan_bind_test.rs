@@ -82,7 +82,11 @@ async fn lan_bind_accepts_detected_ipv4() {
         // even though they're detected. Skip the connectivity check if it times out.
         match lan_health_result {
             Ok(resp) => {
-                assert_eq!(resp.status().as_u16(), 200, "LAN health check should return 200");
+                assert_eq!(
+                    resp.status().as_u16(),
+                    200,
+                    "LAN health check should return 200"
+                );
             }
             Err(e) if e.is_timeout() => {
                 eprintln!("Warning: LAN IP {ip}:{port2} detected but not reachable (timeout). This can happen in CI environments.");
